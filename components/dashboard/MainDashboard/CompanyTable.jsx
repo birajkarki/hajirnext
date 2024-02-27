@@ -50,6 +50,7 @@ import {
   useUpdateCompanyStatusMutation,
   useGenerateQrCodeQuery,
 } from "@/services/api";
+import Image from "next/image";
 
 const CompanyTable = ({ companies, statusFilter }) => {
   const router = useRouter();
@@ -257,14 +258,17 @@ const CompanyTable = ({ companies, statusFilter }) => {
                       {company.status}
                     </TableCell>
                     <TableCell>
-                      {useImage({
-                        src: company.qr_path,
-                        height: 50,
-                        width: 50,
-                        style: {},
-                        alt: "QR Code",
-                        onClick: () => handleQrCodeClick(company.qr_path),
-                      })}
+                      <Image
+                        src={company.qr_path}
+                        height={50}
+                        width={50}
+                        alt="QR Code"
+                      />
+                      <IconButton
+                        onClick={() => handleQrCodeClick(company.qr_path)}
+                      >
+                        {/* Render your button icon here */}
+                      </IconButton>
                     </TableCell>
                     <TableCell>
                       {company.status === "Active" ? (
