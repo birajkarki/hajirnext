@@ -132,6 +132,9 @@ const CompanyTable = ({ companies, statusFilter }) => {
   };
   const handleUpdateClick = (companyId) => {
     setSelectedCompanyId(companyId);
+    const company = companies.find((company) => company.id === companyId);
+    setSelectedCompany(company);
+
     setUpdateDialogOpen(true);
   };
 
@@ -150,12 +153,12 @@ const CompanyTable = ({ companies, statusFilter }) => {
 
   const handleConfirmStatusUpdate = async () => {
     try {
-      let newStatus = "Inactive"; // Default new status is "Inactive"
+      let newStatus = "Inactive";
 
       if (selectedCompany && selectedCompany.status === "Active") {
-        newStatus = "Inactive"; // If current status is "Active", set new status to "Inactive"
+        newStatus = "Inactive";
       } else {
-        newStatus = "Active"; // If current status is not "Active" (i.e., it's "Inactive"), set new status to "Active"
+        newStatus = "Active";
       }
 
       await updateCompanyStatus({
@@ -274,7 +277,7 @@ const CompanyTable = ({ companies, statusFilter }) => {
                       {company.status === "Active" ? (
                         <>
                           <IconButton
-                            onClick={() => handleUpdateClick(company)}
+                            onClick={() => handleUpdateClick(company.id)}
                           >
                             <Edit />
                           </IconButton>
@@ -340,7 +343,11 @@ const CompanyTable = ({ companies, statusFilter }) => {
         <DialogTitle>Edit Company</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to update this company?
+            Are you sure you want to update{" "}
+            <span style={{ color: "red" }}>
+              {selectedCompany && selectedCompany.name}
+            </span>{" "}
+            company?
           </DialogContentText>
         </DialogContent>
         <DialogActions>

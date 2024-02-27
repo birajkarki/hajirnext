@@ -38,7 +38,6 @@ const VisuallyHiddenInput = styled("input")({
 
 const CreateCompany = () => {
   const router = useRouter();
-  const dispatch = useDispatch();
   const createCompanyMutation = useCreateCompanyMutation();
   const [file, setFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
