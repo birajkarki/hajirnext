@@ -8,11 +8,6 @@ const Step3Component = ({ formik }) => {
     console.log(values);
   };
 
-const Step3Component = ({ formik }) => {
-  onSubmit: (values) => {
-    console.log(values);
-  };
-
   const days = [
     "Sunday",
     "Monday",
@@ -56,7 +51,7 @@ const Step3Component = ({ formik }) => {
   return (
     <Grid container spacing={2}>
       {days.map((day, index) => (
-        <Grid item  sm={4}  key={day}>
+        <Grid item sm={4} key={day}>
           <Box
             sx={{
               display: "flex",
@@ -77,19 +72,22 @@ const Step3Component = ({ formik }) => {
               <Checkbox
                 checked={formik.values.week_days_off.includes(index + 1)}
                 onChange={() => handleDayClick(index)}
-
                 sx={{
                   color: formik.values.week_days_off.includes(index + 1)
                     ? "red"
                     : "black",
-
                 }}
               />
-              <Typography variant="body2"  sx={{
+              <Typography
+                variant="body2"
+                sx={{
                   color: formik.values.week_days_off.includes(index + 1)
                     ? "red"
                     : "black",
-                }}>{day}</Typography>
+                }}
+              >
+                {day}
+              </Typography>
             </Box>
             {formik.values.week_days_off.includes(index + 1) && (
               <Box
@@ -98,7 +96,7 @@ const Step3Component = ({ formik }) => {
                   alignItems: "center",
                   cursor: "pointer",
                   borderLeft: "1px solid #E0E0E0",
-                 marginLeft:'4px'
+                  marginLeft: "4px",
                 }}
                 onClick={(e) => e.stopPropagation()}
               >
@@ -113,7 +111,6 @@ const Step3Component = ({ formik }) => {
           </Box>
         </Grid>
       ))}
-
     </Grid>
   );
 };
