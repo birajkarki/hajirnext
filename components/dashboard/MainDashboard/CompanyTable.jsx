@@ -50,6 +50,7 @@ import {
   useUpdateCompanyStatusMutation,
   useGenerateQrCodeQuery,
 } from "@/services/api";
+import Image from "next/image";
 
 const CompanyTable = ({ companies, statusFilter }) => {
   const router = useRouter();
@@ -131,6 +132,9 @@ const CompanyTable = ({ companies, statusFilter }) => {
   };
   const handleUpdateClick = (companyId) => {
     setSelectedCompanyId(companyId);
+    const company = companies.find((company) => company.id === companyId);
+    setSelectedCompany(company);
+
     setUpdateDialogOpen(true);
   };
 
@@ -149,12 +153,12 @@ const CompanyTable = ({ companies, statusFilter }) => {
 
   const handleConfirmStatusUpdate = async () => {
     try {
-      let newStatus = "Inactive"; // Default new status is "Inactive"
+      let newStatus = "Inactive";
 
       if (selectedCompany && selectedCompany.status === "Active") {
-        newStatus = "Inactive"; // If current status is "Active", set new status to "Inactive"
+        newStatus = "Inactive";
       } else {
-        newStatus = "Active"; // If current status is not "Active" (i.e., it's "Inactive"), set new status to "Active"
+        newStatus = "Active";
       }
 
       await updateCompanyStatus({
@@ -257,20 +261,23 @@ const CompanyTable = ({ companies, statusFilter }) => {
                       {company.status}
                     </TableCell>
                     <TableCell>
-                      {useImage({
-                        src: company.qr_path,
-                        height: 50,
-                        width: 50,
-                        style: {},
-                        alt: "QR Code",
-                        onClick: () => handleQrCodeClick(company.qr_path),
-                      })}
+                      <Image
+                        src={company.qr_path}
+                        height={50}
+                        width={50}
+                        alt="QR Code"
+                      />
+                      <IconButton
+                        onClick={() => handleQrCodeClick(company.qr_path)}
+                      >
+                        {/* Render your button icon here */}
+                      </IconButton>
                     </TableCell>
                     <TableCell>
                       {company.status === "Active" ? (
                         <>
                           <IconButton
-                            onClick={() => handleUpdateClick(company)}
+                            onClick={() => handleUpdateClick(company.id)}
                           >
                             <Edit />
                           </IconButton>
@@ -336,7 +343,11 @@ const CompanyTable = ({ companies, statusFilter }) => {
         <DialogTitle>Edit Company</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to update this company?
+            Are you sure you want to update{" "}
+            <span style={{ color: "red" }}>
+              {selectedCompany && selectedCompany.name}
+            </span>{" "}
+            company?
           </DialogContentText>
         </DialogContent>
         <DialogActions>

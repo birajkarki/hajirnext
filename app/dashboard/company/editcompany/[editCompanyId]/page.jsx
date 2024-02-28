@@ -29,9 +29,6 @@ const EditCompany = () => {
   const getActiveCompany = useGetActiveCompanyQuery();
   const [updateCompany] = useUpdateCompanyMutation();
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
-
   // console.log(getActiveCompany, "getActiveCompany");
   // console.log(editCompanyId);
   const companyDataToUpdate = getActiveCompany.data?.data?.companies || [];
@@ -45,7 +42,6 @@ const EditCompany = () => {
     date_type: yup.string().required("Please select a date"),
     holiday_type: yup.string().required("Please enter holidays"),
   });
-  // console.log(selectedCompany?.code, "this is for testing");
 
   const formik = useFormik({
     initialValues: {
@@ -56,9 +52,12 @@ const EditCompany = () => {
       holiday_type: selectedCompany?.holiday_type || "",
       custom_holiday_file: "",
     },
+
     validationSchema: validationSchema,
     onSubmit: async (values, { resetForm }) => {
       try {
+        console.log(selectedCompany?.name, "this is for testing");
+
         console.log("Data being updated and sent:", values);
         const formData = new FormData();
         formData.append("name", values.name);
@@ -66,7 +65,6 @@ const EditCompany = () => {
         formData.append("holiday_type", values.holiday_type);
         formData.append("custom_holiday_file", file);
 
-        // Call the mutation function directly
         const { data } = await updateCompany({
           company_id: editCompanyId,
           companyData: formData,
@@ -74,28 +72,24 @@ const EditCompany = () => {
 
         console.log("Company updated successfully:", data);
 
-        // Show success message
         alert("Company updated successfully!");
 
-        // Reset the form
         resetForm();
 
-        // Navigate to the company dashboard or any other desired location
         router.push("/dashboard/company");
       } catch (error) {
         console.error("Error adding company:", error);
 
-        // Show a user-friendly error message
         alert("Error adding company. Please try again.");
       }
     },
   });
 
-  // console.log(selectedCompany, "selectedCompany");
-  // console.log(selectedCompany?.name || "", "name");
+  console.log(selectedCompany, "selectedCompany");
+  console.log(selectedCompany?.name || "", "name");
   // console.log(selectedCompany?.code || "", "code");
-  // console.log(selectedCompany?.date_type || "", "date_type");
-  // console.log(selectedCompany?.holiday_type || "", "holiday_type");
+  console.log(selectedCompany?.date_type || "", "date_type");
+  console.log(selectedCompany?.holiday_type || "", "holiday_type");
 
   const handleFileChange = (event) => {
     const uploadedFile = event.target.files[0];
