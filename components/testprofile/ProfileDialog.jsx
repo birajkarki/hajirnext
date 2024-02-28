@@ -16,7 +16,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { useFormik } from "formik";
+import { useMediaQuery } from "@mui/material";
+
 import EditProfileDialog from "./EditProfileDialog";
+import { Content } from "next/font/google";
 
 const ProfileDialog = ({ open, handleClose, profileData }) => {
   const [editProfileOpen, setEditProfileOpen] = useState(false); // State to manage visibility of Edit Profile dialog
@@ -46,6 +49,8 @@ const ProfileDialog = ({ open, handleClose, profileData }) => {
   const handleCloseDialog = () => {
     handleClose();
   };
+  const isScreenSmall = useMediaQuery("(max-width:1024px)");
+  const isScreenExtraSmall = useMediaQuery("(max-width:732px)");
 
   return (
     <>
@@ -74,17 +79,7 @@ const ProfileDialog = ({ open, handleClose, profileData }) => {
           <CloseIcon />
         </IconButton>
         <DialogContent>
-          {/* <Avatar
-            src={"/avatar.svg"}
-            sx={{
-              width: 100,
-              height: 100,
-              margin: "auto",
-              marginBottom: 20,
-            }}
-            alt="Profile
-            Avatar"
-          /> */}
+          <div style={{ display:'flex',justifyContent:'center'}}>
           <Avatar
             src={
               formikView.values.uploadfile instanceof File
@@ -94,22 +89,30 @@ const ProfileDialog = ({ open, handleClose, profileData }) => {
             sx={{
               width: 110,
               height: 110,
-              marginLeft: "380px",
+      
+      
               marginTop: "-10px",
               cursor: "pointer",
+            justifyContent:'center'
+             
             }}
             alt="Profile Avatar"
           />
-          <DialogActions>
+          </div>
+          <DialogActions  sx={{
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: "10px", // Adjust the top margin as needed
+  }}>
+          
             <Button
               onClick={handleEditProfileOpen}
               sx={{
-                marginRight: "350px",
                 backgroundColor: "rgba(0, 128, 0, 0.2)",
                 color: "#000",
                 textAlign: "center",
                 alignItems: "center",
-                justifyContent: "center",
+            
                 marginTop: "20px",
               }}
             >
@@ -117,10 +120,11 @@ const ProfileDialog = ({ open, handleClose, profileData }) => {
               <EditIcon />
               Edit Profile
             </Button>
+        
           </DialogActions>
           <span>Personal details</span>
-          <form onSubmit={formikView.handleSubmit}>
-            <FormControl style={{ width: "120px", marginBottom: "20px" }}>
+          <form onSubmit={formikView.handleSubmit} >
+            <FormControl style={{ width: isScreenExtraSmall ? "80px" : "120px", marginBottom: "20px" }}>
               <Select
                 id="gender"
                 name="gender"
@@ -139,7 +143,9 @@ const ProfileDialog = ({ open, handleClose, profileData }) => {
               variant="outlined"
               value={formikView.values.name}
               disabled
-              sx={{ width: "310px", marginLeft: "20px", marginBottom: "20px" }}
+              sx={{ 
+              width: isScreenExtraSmall ? "110px" : isScreenSmall ? "230px" : "310px",
+              marginLeft: "20px", marginBottom: "20px" }}
             />
             <TextField
               id="email"
@@ -148,7 +154,10 @@ const ProfileDialog = ({ open, handleClose, profileData }) => {
               variant="outlined"
               value={formikView.values.email}
               disabled
-              sx={{ width: "380px", marginLeft: "20px", marginBottom: "20px" }}
+              sx={{
+                width:
+              isScreenExtraSmall ? "195px" : isScreenSmall ? "230px" : "310px",
+              marginLeft: "20px", marginBottom: "20px" }}
             />
             <TextField
               id="birthdate"
@@ -161,7 +170,9 @@ const ProfileDialog = ({ open, handleClose, profileData }) => {
               InputLabelProps={{
                 shrink: true,
               }}
-              sx={{ width: "450px", marginBottom: "20px" }}
+              sx={{
+              width: isScreenExtraSmall ? "210px" : isScreenSmall ? "370px" : "450px",
+              marginBottom: "20px" }}
             />
 
             <FormControl>
@@ -172,7 +183,7 @@ const ProfileDialog = ({ open, handleClose, profileData }) => {
                 value={formikView.values.maritalStatus}
                 disabled
                 sx={{
-                  width: "380px",
+                  width: isScreenExtraSmall ? "195px" : isScreenSmall ? "230px" : "310px",
                   marginLeft: "20px",
                   marginBottom: "20px",
                 }}
@@ -188,7 +199,9 @@ const ProfileDialog = ({ open, handleClose, profileData }) => {
               variant="outlined"
               value={formikView.values.phone}
               disabled
-              sx={{ width: "450px", marginBottom: "20px" }}
+              sx={{ 
+              width: isScreenExtraSmall ? "425px" : isScreenSmall ? "369px" : "450px", 
+              marginBottom: "20px" }}
             />
           </form>
         </DialogContent>

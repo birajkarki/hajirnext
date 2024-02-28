@@ -14,6 +14,9 @@ const ProfileContainer = styled(Button)({
   alignItems: "center",
   padding: "20px",
   cursor: "pointer",
+  justifyContent:'center',
+ textAlign:'center',
+
 });
 
 const TestProfileCard = () => {
@@ -40,7 +43,7 @@ const TestProfileCard = () => {
     <div>
       <ProfileContainer
         onClick={handleOpenDialog}
-        style={{ marginLeft: "-10px" }}
+    
       >
         <label htmlFor="photo">
           <Avatar
@@ -49,6 +52,10 @@ const TestProfileCard = () => {
               width: 100,
               height: 100,
               cursor: "pointer", // Add cursor pointer for clickable effect
+              justifyContent:'center',
+              alignContent:'center',
+              alignItems:'center',
+              textAlign:'center'
             }}
             alt="Profile Avatar"
           />
@@ -73,7 +80,7 @@ const TestProfileCard = () => {
           {profileData?.email}
         </Typography>
       </ProfileContainer>
-{/* i am commenting  */}
+
       <ProfileDialog
         open={openDialog}
         handleClose={handleCloseDialog}
