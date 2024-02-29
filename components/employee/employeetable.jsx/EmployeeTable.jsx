@@ -36,6 +36,7 @@ import { useRouter } from "next/navigation";
 import { CloseOutlined, Edit, MoreVert } from "@mui/icons-material";
 import DoNotDisturbAltIcon from "@mui/icons-material/DoNotDisturbAlt";
 import { useMediaQuery } from "@mui/material";
+import EmployeeDetailsDialog from "./EmployeeDetailsDialog";
 
 const EmployeeTable = ({ candidateData, statusFilter }) => {
   const router = useRouter();
@@ -217,6 +218,7 @@ const isScreenSmall = useMediaQuery("(max-width:1024px)");
               <TableCell>Department</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Phone</TableCell>
+       
               <TableCell>Staff ID</TableCell>
               <TableCell>Action</TableCell>
             </TableRow>
@@ -273,6 +275,7 @@ const isScreenSmall = useMediaQuery("(max-width:1024px)");
                     </TableCell>
                     <TableCell>{candidate.phone}</TableCell>
                     <TableCell>{candidate.code}</TableCell>
+             
                     <TableCell>
                       <IconButton aria-label="update" onClick={() => setIsUpdateDialogOpen(true)}>
                         <Edit />
@@ -393,104 +396,11 @@ selectedCandidate.status === "active" ? (
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </TableContainer>
-      <Dialog open={isRowDialogOpen} onClose={() => setIsRowDialogOpen(false)}>
-        <div style={{display:'flex', flexDirection:'row', marginTop:'10px', marginBottom:'-20px'}} >
-      <Avatar
-                          src=   {selectedRowCandidate && selectedRowCandidate.profile_image || "/default-avatar.png"}
-                          sx={{
-                            width: 45,
-                            height: 42,
-                            cursor: "pointer",
-                            marginTop:'8px',
-                            marginLeft:'13px'
-                          }}
-                          alt="Profile Avatar"
-                        />
-  <DialogTitle style={{marginTop:'-16px'}}>{selectedRowCandidate && selectedRowCandidate.name} <br/> <span style={{fontWeight:'300', fontSize:'15px', marginTop:'0px'}}>{selectedRowCandidate && selectedRowCandidate.designation}</span> </DialogTitle>
-  <DialogActions>
-    <Button onClick={() => setIsRowDialogOpen(false)} sx={{marginTop:'-50px', marginLeft:'190px'}}><CloseOutlined style={{color:'black'}}/></Button>
- 
-  </DialogActions>
-  </div>
-  <DialogContent>
-    <TableContainer component={Paper}>
-      <Table>
-      
-        <TableBody >
-        
-          {selectedRowCandidate && (
-            <>
-            <TableRow >
-              <TableCell sx= {{borderRight: "1px solid #ccc", padding: "8px" }} >Mobile Number</TableCell>
-              <TableCell>{selectedRowCandidate.phone}</TableCell>
-              </TableRow >
-                  <TableRow>
-              <TableCell sx= {{borderRight: "1px solid #ccc", padding: "8px" }}>Department</TableCell>
-              <TableCell>{selectedRowCandidate.designation}</TableCell>
-              </TableRow>
-              <TableRow>
-              <TableCell sx= {{borderRight: "1px solid #ccc", padding: "8px" }}>Marital Status</TableCell>
-              <TableCell>{selectedRowCandidate.marriage_status}</TableCell>
-              </TableRow>
-              <TableRow>
-              <TableCell sx= {{borderRight: "1px solid #ccc", padding: "8px" }}>Salary</TableCell>
-              <TableCell></TableCell>
-              </TableRow>
-              <TableRow>
-              <TableCell sx= {{borderRight: "1px solid #ccc", padding: "8px" }}>Salary Type</TableCell>
-              <TableCell></TableCell>
-              </TableRow>
-              <TableRow>
-              <TableCell sx= {{borderRight: "1px solid #ccc", padding: "8px" }}>Probation Periods</TableCell>
-              <TableCell></TableCell>
-              </TableRow>
-              <TableRow>
-              <TableCell sx= {{borderRight: "1px solid #ccc", padding: "8px" }}>Working hours</TableCell>
-              <TableCell></TableCell>
-              </TableRow>
-             <TableRow>
-              <TableCell sx= {{borderRight: "1px solid #ccc", padding: "8px" }}>Weekly off</TableCell>
-              <TableCell></TableCell>
-              </TableRow>
-              
-              <TableRow>
-              <TableCell sx= {{borderRight: "1px solid #ccc", padding: "8px" }}>Joining Date</TableCell>
-              <TableCell></TableCell>
-              </TableRow>
-              <TableRow>
-              <TableCell sx= {{borderRight: "1px solid #ccc", padding: "8px" }}>Allow late clock in</TableCell>
-              <TableCell></TableCell>
-              </TableRow>
-              <TableRow>
-              <TableCell sx= {{borderRight: "1px solid #ccc", padding: "8px" }}>Overtime</TableCell>
-              <TableCell></TableCell>
-              </TableRow>
-              <TableRow>
-              <TableCell sx= {{borderRight: "1px solid #ccc", padding: "8px" }}>Allowance</TableCell>
-              <TableCell></TableCell>
-              </TableRow>
-              <TableRow>
-              <TableCell sx= {{borderRight: "1px solid #ccc", padding: "8px" }}>Sick leave</TableCell>
-              <TableCell></TableCell>
-              </TableRow>
-              <TableRow>
-              <TableCell sx= {{borderRight: "1px solid #ccc", padding: "8px" }}>Casual Leave</TableCell>
-              <TableCell></TableCell>
-              </TableRow>
-              <TableRow>
-              <TableCell sx= {{borderRight: "1px solid #ccc", padding: "8px" }}>Network access</TableCell>
-              <TableCell></TableCell>
-              </TableRow>
-              </>
-          )}
-     
-        </TableBody>
-      </Table>
-    </TableContainer>
-  </DialogContent>
- 
-</Dialog>
-
+      <EmployeeDetailsDialog
+        isOpen={isRowDialogOpen}
+        onClose={() => setIsRowDialogOpen(false)}
+        selectedRowCandidate={selectedRowCandidate}
+      />
 <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
 <DialogTitle>Invite Candidate</DialogTitle>
 <DialogContent>
