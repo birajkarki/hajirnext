@@ -68,7 +68,7 @@ const Step3Component = ({ formik }) => {
             }}
             onClick={() => handleDayClick(index)}
           >
-            <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Box sx={{ display: "flex", flexDirection:'row', alignItems: "center" }}>
               <Checkbox
                 checked={formik.values.week_days_off.includes(index + 1)}
                 onChange={() => handleDayClick(index)}
