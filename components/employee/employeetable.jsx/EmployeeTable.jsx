@@ -23,10 +23,9 @@ import {
   Menu,
   MenuItem,
   InputLabel,
-  Avatar, // Added TablePagination import
+  Avatar,
 } from "@mui/material";
 import ShareIcon from "@mui/icons-material/Share";
-
 import InsertInvitationIcon from "@mui/icons-material/InsertInvitation";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import EditIcon from "@mui/icons-material/Edit";
@@ -37,18 +36,14 @@ import {
 } from "@/services/api";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { Edit, MoreVert } from "@mui/icons-material";
+import { CloseOutlined, Edit, MoreVert } from "@mui/icons-material";
 import DoNotDisturbAltIcon from "@mui/icons-material/DoNotDisturbAlt";
+import { useMediaQuery } from "@mui/material";
+import EmployeeDetailsDialog from "./EmployeeDetailsDialog";
+
 const EmployeeTable = ({ candidateData, statusFilter }) => {
   const router = useRouter();
-
   const { companyId } = useParams();
-
-  // const candidates =
-  //   statusFilter === "active"
-  //     ? candidateData?.data?.active_candidates
-  //     : candidateData?.data?.inactive_candidates;
-
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedCandidate, setSelectedCandidate] = useState(null);
   const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] =
@@ -69,9 +64,12 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [inviteCandidate] = useInviteCandidateMutation();
   const deleteCandidate = useDeleteCandidateQuery();
-  // const [selectedCandidateId, setSelectedCandidateId] = useState();
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedCandidateId, setSelectedCandidateId] = useState(null);
+  const [isRowDialogOpen, setIsRowDialogOpen] = useState(false);
+  const [selectedRowCandidate, setSelectedRowCandidate] = useState(null);
+
   const handleClickMenu = (event, candidate_id) => {
     setAnchorEl(event.currentTarget);
     setSelectedCandidateId(candidate_id);
@@ -87,6 +85,7 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
     switch (action) {
       case "edit":
         setIsUpdateDialogOpen(true);
+
         break;
       case "inactive":
         setIsStatusChangeDialogOpen(true);
@@ -181,7 +180,15 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
   const handleStatusChange = () => {
     // Implement status change functionality here
   };
+  const handleRowClick = (candidate, event) => {
+    const isButtonClicked = event.target.closest("button");
+    if (!isButtonClicked) {
+      setSelectedRowCandidate(candidate);
+      setIsRowDialogOpen(true);
+    }
+  };
 
+  const isScreenSmall = useMediaQuery("(max-width:1024px)");
   return (
     <Box sx={{ display: "flex", flexDirection: "column", height: 1000, mt: 3 }}>
       <Box sx={{ mb: 2 }}>
@@ -196,7 +203,7 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
         <FormControl variant="outlined" size="small" sx={{ ml: 2, width: 200 }}>
           <InputLabel>Department</InputLabel>
           <Select label="Department" autoWidth={false}>
-            <MenuItem value="">All Departments</MenuItem>
+            <MenuItem>All Departments</MenuItem>
           </Select>
         </FormControl>
         <br />
@@ -214,7 +221,6 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
               <TableCell>Phone</TableCell>
 
               <TableCell>Staff ID</TableCell>
-
               <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>
@@ -227,6 +233,8 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
                   <TableRow
                     key={candidate.id}
                     sx={{ borderBottom: "0.7px dotted #ccc" }}
+                    onClick={(event) => handleRowClick(candidate, event)}
+                    style={{ cursor: "pointer" }}
                   >
                     <TableCell>{candidate.id}</TableCell>
                     <TableCell>
@@ -236,13 +244,12 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
                           sx={{
                             width: 50,
                             height: 50,
-                            cursor: "pointer", // Add cursor pointer for clickable effect
+                            cursor: "pointer",
                           }}
                           alt="Profile Avatar"
                         />
                       </label>
                     </TableCell>
-
                     <TableCell>{candidate.name}</TableCell>
                     <TableCell>{candidate.designation}</TableCell>
                     <TableCell
@@ -268,6 +275,7 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
                     </TableCell>
                     <TableCell>{candidate.phone}</TableCell>
                     <TableCell>{candidate.code}</TableCell>
+
                     <TableCell>
                       <IconButton
                         aria-label="update"
@@ -275,6 +283,7 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
                       >
                         <Edit />
                       </IconButton>
+
                       <IconButton
                         aria-label="menu"
                         onClick={(event) =>
@@ -290,27 +299,37 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
                         onClose={handleCloseMenu}
                         PaperProps={{
                           style: {
-                            height: "114px",
-                            width: "115px",
+                            height: "104px",
+                            width: "90px",
                             elevation: 0,
                             padding: "0px",
-                            marginLeft: "-105px",
-                            marginTop: "-70px",
+                            marginLeft: "-89px",
+                            marginTop: "-80px",
                             boxShadow: "none",
                             border: "0.3px solid #eee",
                           },
                         }}
                       >
-                        {/* <MenuItem onClick={() => handleMenuItemClick("edit")} dense > <Edit /> <span style={{marginLeft:'6px'}}>Edit</span></MenuItem>
-    <MenuItem onClick={() => handleMenuItemClick("inactive")} dense><DoNotDisturbAltIcon/><span style={{color:'black',marginLeft:'6px'}}>Inactive</span></MenuItem>
-    <MenuItem onClick={() => handleMenuItemClick("invitation")} dense><ShareIcon /><span style={{marginLeft:'6px'}}>invitation</span></MenuItem>
-   */}
                         <MenuItem
                           onClick={() => handleMenuItemClick("edit")}
                           dense
+                          style={{ width: "25px" }}
                         >
-                          <Edit />
-                          <span style={{ marginLeft: "6px" }}>Edit</span>
+                          <Button style={{ justifyContent: "center" }}>
+                            <Edit
+                              style={{ fontSize: "19px", marginRight: "7px" }}
+                            />
+                            <span
+                              style={{
+                                fontSize: "18px",
+                                color: "black",
+                                textTransform: "lowercase",
+                                fontWeight: "300",
+                              }}
+                            >
+                              Edit
+                            </span>
+                          </Button>
                         </MenuItem>
 
                         {selectedCandidate &&
@@ -388,7 +407,11 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </TableContainer>
-
+      <EmployeeDetailsDialog
+        isOpen={isRowDialogOpen}
+        onClose={() => setIsRowDialogOpen(false)}
+        selectedRowCandidate={selectedRowCandidate}
+      />
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
         <DialogTitle>Invite Candidate</DialogTitle>
         <DialogContent>

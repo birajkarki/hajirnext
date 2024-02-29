@@ -8,6 +8,7 @@ import { useFormik } from "formik";
 
 const UpdateHoliday = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0); // State to track upload progress
   const [updateCustomHoliday] = useUpdateCustomHolidayMutation();
   const { companyId } = useParams(); // Corrected variable name to match the parameter name in the route
 
@@ -23,10 +24,16 @@ const UpdateHoliday = () => {
         const formData = new FormData();
         formData.append("custom_holiday_file", values.custom_holiday_file);
 
-        const { data } = await updateCustomHoliday({
-          company_id: companyId, // Corrected variable name to match the parameter name in the mutation
-          formData: formData,
-        });
+        const config = {
+          onUploadProgress: (progressEvent) => {
+            const percentCompleted = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            );
+            setUploadProgress(percentCompleted);
+          },
+        };
+
+        const { data } = await updateCustomHoliday(formData, config);
         console.log("Company id ", companyId); // Corrected variable name to match the parameter name in the route
         console.log("File successfully uploaded:", data);
 
@@ -36,6 +43,7 @@ const UpdateHoliday = () => {
         alert("Error uploading holiday file!");
       } finally {
         setIsLoading(false);
+        setUploadProgress(0); // Reset upload progress
       }
     },
   });
@@ -98,7 +106,7 @@ const UpdateHoliday = () => {
                 accept=".xls,.xlsx"
               />
             </Button>
-            {isLoading && <LinearProgress value={0} />}
+            {isLoading && <LinearProgress value={uploadProgress} />}
             {formik.values.custom_holiday_file && (
               <Typography variant="body2" sx={{ marginTop: "8px" }}>
                 Uploaded File: {formik.values.custom_holiday_file.name}

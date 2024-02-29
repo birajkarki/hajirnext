@@ -82,7 +82,8 @@ const MainSidebar = () => {
         ))}
       </List>
 
-      <List>
+      <List style={{marginTop:'220px'}}>
+      <Divider/>
         <LogoutButton onClick={onLogoutClick} />
       </List>
     </Drawer>
