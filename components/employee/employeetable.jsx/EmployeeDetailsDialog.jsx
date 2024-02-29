@@ -153,25 +153,25 @@ const EmployeeDetailsDialog = ({ isOpen, onClose, selectedRowCandidate }) => {
     { label: 'Network access', value: '' },
   ];
   return (
-    <Dialog open={isOpen} onClose={onClose}>
-      <div style={{ display: 'flex', flexDirection: 'row', marginTop: '10px', marginBottom: '-20px' }}>
+    <Dialog open={isOpen} onClose={onClose} >
+      <div style={{ display: 'flex', flexDirection: 'row', marginTop: '15px', marginBottom: '-20px' }}>
         <Avatar
           src={selectedRowCandidate && selectedRowCandidate.profile_image || "/default-avatar.png"}
           sx={{
-            width: 45,
-            height: 42,
+            width: 60,
+            height: 58,
             cursor: 'pointer',
             marginTop: '8px',
-            marginLeft: '13px'
+            marginLeft: '23px'
           }}
           alt="Profile Avatar"
         />
-        <DialogTitle style={{ marginTop: '-16px' }}>
+        <DialogTitle style={{ marginTop: '-5px' }}>
           {selectedRowCandidate && selectedRowCandidate.name} <br />
-          <span style={{ fontWeight: '300', fontSize: '15px', marginTop: '0px' }}>{selectedRowCandidate && selectedRowCandidate.designation}</span>
+          <div style={{ fontWeight: '300', fontSize: '15px', marginTop: '-3px' }}>{selectedRowCandidate && selectedRowCandidate.designation}</div>
         </DialogTitle>
         <DialogActions>
-          <Button onClick={onClose} sx={{ marginTop: '-50px', marginLeft: '190px' }}>
+          <Button onClick={onClose} sx={{ marginTop: '-19px', marginLeft: '190px' }}>
             <CloseOutlined style={{ color: 'black' }} />
           </Button>
         </DialogActions>

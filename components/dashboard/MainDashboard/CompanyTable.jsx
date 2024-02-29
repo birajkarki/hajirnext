@@ -51,6 +51,7 @@ import {
   useGenerateQrCodeQuery,
 } from "@/services/api";
 import Image from "next/image";
+import { textTransform } from "@mui/system";
 
 const CompanyTable = ({ companies, statusFilter }) => {
   const router = useRouter();
@@ -364,22 +365,25 @@ const CompanyTable = ({ companies, statusFilter }) => {
         open={isStatusUpdateConfirmationDialogOpen}
         onClose={handleCloseConfirmationDialog}
       >
-        <DialogTitle>Confirm Status Update</DialogTitle>
+        <DialogTitle>    {selectedCompany && selectedCompany.status === "Active"
+              ? "Inactive"
+              : "Active"} Company</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to change the status of{" "}
-            <span style={{ color: "red" }}>
+            Are you sure  to {" "}
+            {/* <span style={{ color: "red" }}>
               {selectedCompany && selectedCompany.name}
             </span>{" "}
-            to{" "}
+            to{" "} */}
             {selectedCompany && selectedCompany.status === "Active"
               ? "Inactive"
-              : "Active"}
-            ?
+              : "Active"}  
+
+         <span>  company?</span> 
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseConfirmationDialog} color="primary">
+          <Button onClick={handleCloseConfirmationDialog} color="primary" variant="contained" sx={{borderRadius:'23%'}}>
             Cancel
           </Button>
           <Button onClick={handleConfirmStatusUpdate} color="primary">
