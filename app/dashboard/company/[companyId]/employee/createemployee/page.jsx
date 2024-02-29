@@ -80,21 +80,21 @@ const HorizontalLinearStepper = () => {
   const formik = useFormik({
     initialValues: {
       name_holder: "Mr", //required string
-      name: "BIraj Karki", // required
-      code: "CAAA", // required
-      contact: "9845971897", // required
-      designation: "CEO", // required
-      marriage_status: "Unmarried", //required enum['Married', 'Unmarried']
-      salary_type: "Weekly", // required - enum ['Weekly', 'Monthly']
-      salary: "Fixed", // required - enum ['Fixed', 'Breakdown']
-      salary_amount: 2000.0, // required - double
-      allowance_amount: 2000.0, // nullable - double
+      name: "", // required
+      code: "", // required
+      contact: "", // required
+      designation: "", // required
+      marriage_status: "", //required enum['Married', 'Unmarried']
+      salary_type: "", // required - enum ['Weekly', 'Monthly']
+      salary: "", // required - enum ['Fixed', 'Breakdown']
+      salary_amount: "", // required - double
+      allowance_amount: "", // nullable - double
       joining_date: "", // required - date
-      working_hours: "8:00", // required
-      duty_time: "08:00", // required - time
-      probation_period: 1, // required - unsignedBigInt
-      break_duration: "8:00", // required - min/hr to seconds - string
-      departments: 1, // required - array - api:{{globalLiveUrl}}/employer/all-departments
+      working_hours: "", // required
+      duty_time: "", // required - time
+      probation_period: "", // required - unsignedBigInt
+      break_duration: "", // required - min/hr to seconds - string
+      departments: "", // required - array - api:{{globalLiveUrl}}/employer/all-departments
       allow_late_attendance: "", // nullable -time
       casual_leave: "", //required - unsignedInteger
       sick_leave: "", //required - unsignedInteger
@@ -103,11 +103,11 @@ const HorizontalLinearStepper = () => {
       week_days_off: [], // array
       half_days: [], // array
       allow_network_access: "", // required - enum['All Net', 'QR']
-      confirmPhoneNumber: "9845971897",
-      allow_late_attendance_checked: 0,
-      casual_leave_checked: 0,
-      overtime_checked: 0,
-      sick_leave_checked: 0,
+      confirmPhoneNumber: "",
+      allow_late_attendance_checked: "",
+      casual_leave_checked: "",
+      overtime_checked: "",
+      sick_leave_checked: "",
     },
     validationSchema: validationSchemas[activeStep],
     onSubmit: async (values, { resetForm }) => {
