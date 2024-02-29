@@ -198,7 +198,13 @@ const CompanyTable = ({ companies, statusFilter }) => {
       console.error("Error generating QR code:", error);
     }
   };
+  const [activeCompanyId, setActiveCompanyId] = useState(null);
 
+  const handleRowClick = (companyId) => {
+ 
+    setActiveCompanyId(companyId);
+  };
+  
   return (
     <Box sx={{ display: "flex", flexDirection: "column", height: 1000, mt: 3 }}>
       <Box sx={{ mb: 2 }}>
@@ -216,9 +222,10 @@ const CompanyTable = ({ companies, statusFilter }) => {
         <Table>
           <TableHead>
             <TableRow>
+              <TableCell>ID</TableCell>
               <TableCell>Company Name</TableCell>
-              <TableCell>Employee Count</TableCell>
-              <TableCell>Approver Count</TableCell>
+              <TableCell>Employee</TableCell>
+              <TableCell>Approver</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>QR Code</TableCell>
               <TableCell>Action</TableCell>
@@ -229,14 +236,17 @@ const CompanyTable = ({ companies, statusFilter }) => {
               filteredData.length > 0 &&
               filteredData
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((company) => (
+                .map((company, index) => (
                   <TableRow
                     key={company.id}
-                    // sx={{ borderBottom: "0.7px dotted #ccc" }}
+                    sx={{ borderBottom: "0.7px dotted #ccc",backgroundColor: activeCompanyId === company.id ? "#f1f1f1" : "",
+                  }}
+                  onClick={() => handleRowClick(company.id)} // Handle row clicks
                   >
+                      <TableCell>{company.id}</TableCell>
                     <TableCell>
                       <Link href={`/dashboard/company/${company.id}`} passHref>
-                        <Button color="primary">{company.name}</Button>
+                        <Button sx={{color:'#555555', fontWeight:'440'}}>{company.name}</Button>
                       </Link>
                     </TableCell>
                     <TableCell>{company.employee_count}</TableCell>
@@ -324,18 +334,23 @@ const CompanyTable = ({ companies, statusFilter }) => {
         open={isDeleteConfirmationDialogOpen}
         onClose={handleCloseConfirmationDialog}
       >
-        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogTitle sx={{display:'flex', justifyContent:'center'}}>Delete Company</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Are you sure you want to delete this company?
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseConfirmationDialog} color="primary">
-            Cancel
+        <DialogActions sx={{justifyContent:'space-evenly', marginTop:'-10px', marginBottom:'20px'}}>
+          <Button onClick={handleCloseConfirmationDialog} variant="contained"
+           style={{ borderRadius: '20px 20px 20px 20px', width:'100px'}}
+          >
+            C<span style={{textTransform:'lowercase'}}>ancel</span>
+   
           </Button>
-          <Button onClick={handleConfirmDelete} color="primary">
-            Confirm
+          <Button onClick={handleConfirmDelete}     style={{ width:'100px',  color:'red',borderRadius: '20px 20px 20px 20px', boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)' }}>
+            D<span style={{color:'red', textTransform:'lowercase'}}>
+          elete
+          </span>
           </Button>
         </DialogActions>
       </Dialog>
@@ -351,30 +366,28 @@ const CompanyTable = ({ companies, statusFilter }) => {
             company?
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseConfirmationDialog} color="primary">
+        <DialogActions style={{display:'flex', justifyContent:'space-evenly', marginBottom:'10px'}}>
+          <Button onClick={handleCloseConfirmationDialog} color="primary" variant="contained"
+          style={{ borderRadius: '20px 20px 20px 20px', width:'100px'}}>
             Cancel
           </Button>
-          <Button onClick={handleUpdate} color="primary">
-            Update
+          <Button onClick={handleUpdate} variant="contained"   style={{ color:'black', borderRadius: '20px 20px 20px 20px', backgroundColor:'white', width:'100px', boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)'}}>
+          U<span style={{ textTransform:'lowercase'}}>
+          pdate
+          </span>
           </Button>
         </DialogActions>
       </Dialog>
-      {/* Status Update Confirmation Dialog */}
       <Dialog
         open={isStatusUpdateConfirmationDialogOpen}
         onClose={handleCloseConfirmationDialog}
       >
-        <DialogTitle>    {selectedCompany && selectedCompany.status === "Active"
+        <DialogTitle sx={{ display:'flex',justifyContent:'center'}}>    {selectedCompany && selectedCompany.status === "Active"
               ? "Inactive"
               : "Active"} Company</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Are you sure  to {" "}
-            {/* <span style={{ color: "red" }}>
-              {selectedCompany && selectedCompany.name}
-            </span>{" "}
-            to{" "} */}
             {selectedCompany && selectedCompany.status === "Active"
               ? "Inactive"
               : "Active"}  
@@ -382,20 +395,23 @@ const CompanyTable = ({ companies, statusFilter }) => {
          <span>  company?</span> 
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseConfirmationDialog} color="primary" variant="contained" sx={{borderRadius:'23%'}}>
-            Cancel
+        <DialogActions sx={{justifyContent:'space-evenly', marginTop:'-10px', marginBottom:'20px'}}>
+          <Button onClick={handleCloseConfirmationDialog} color="primary" variant="contained" sx={{
+         borderRadius: '20px 20px 20px 20px', width:'100px'
+          }}>
+            C<span style={{textTransform:'lowercase'}}>ancel</span>
           </Button>
-          <Button onClick={handleConfirmStatusUpdate} color="primary">
-            Confirm
+          <Button onClick={handleConfirmStatusUpdate}  style={{borderRadius: '20px 20px 20px 20px', color:'red', backgroundColor:'white', width:'100px', boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)'}}>
+          {selectedCompany && selectedCompany.status === "Active"
+        ? <span>A<span style={{ textTransform: 'lowercase' }}>ctive</span></span>
+        : <span>I<span style={{ textTransform: 'lowercase' }}>nactive</span></span>
+    }
           </Button>
         </DialogActions>
       </Dialog>
-      {/* QR Code Modal */}
       <Dialog open={openQrCodeModal} onClose={() => setOpenQrCodeModal(false)}>
         <DialogTitle>QR Code</DialogTitle>
         <DialogContent>
-          {/* Display QR code image */}
           <Button onClick={generateNewQrCode}>
             <Typography
               sx={{
