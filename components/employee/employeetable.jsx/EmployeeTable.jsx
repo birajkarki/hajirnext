@@ -30,7 +30,10 @@ import InsertInvitationIcon from "@mui/icons-material/InsertInvitation";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import EditIcon from "@mui/icons-material/Edit";
 import StatusChangeIcon from "@mui/icons-material/TrackChanges";
-import { useDeleteCandidateQuery, useInviteCandidateMutation } from "@/services/api";
+import {
+  useDeleteCandidateQuery,
+  useInviteCandidateMutation,
+} from "@/services/api";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { CloseOutlined, Edit, MoreVert } from "@mui/icons-material";
@@ -61,7 +64,7 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [inviteCandidate] = useInviteCandidateMutation();
   const deleteCandidate = useDeleteCandidateQuery();
- 
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedCandidateId, setSelectedCandidateId] = useState(null);
   const [isRowDialogOpen, setIsRowDialogOpen] = useState(false);
@@ -81,10 +84,8 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
 
     switch (action) {
       case "edit":
-       
+        setIsUpdateDialogOpen(true);
 
-          setIsUpdateDialogOpen(true);
-    
         break;
       case "inactive":
         setIsStatusChangeDialogOpen(true);
@@ -180,14 +181,14 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
     // Implement status change functionality here
   };
   const handleRowClick = (candidate, event) => {
-    const isButtonClicked = event.target.closest('button');
+    const isButtonClicked = event.target.closest("button");
     if (!isButtonClicked) {
-        setSelectedRowCandidate(candidate);
-        setIsRowDialogOpen(true);
+      setSelectedRowCandidate(candidate);
+      setIsRowDialogOpen(true);
     }
-};
+  };
 
-const isScreenSmall = useMediaQuery("(max-width:1024px)");
+  const isScreenSmall = useMediaQuery("(max-width:1024px)");
   return (
     <Box sx={{ display: "flex", flexDirection: "column", height: 1000, mt: 3 }}>
       <Box sx={{ mb: 2 }}>
@@ -218,7 +219,7 @@ const isScreenSmall = useMediaQuery("(max-width:1024px)");
               <TableCell>Department</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Phone</TableCell>
-       
+
               <TableCell>Staff ID</TableCell>
               <TableCell>Action</TableCell>
             </TableRow>
@@ -232,7 +233,6 @@ const isScreenSmall = useMediaQuery("(max-width:1024px)");
                   <TableRow
                     key={candidate.id}
                     sx={{ borderBottom: "0.7px dotted #ccc" }}
-                   
                     onClick={(event) => handleRowClick(candidate, event)}
                     style={{ cursor: "pointer" }}
                   >
@@ -275,12 +275,15 @@ const isScreenSmall = useMediaQuery("(max-width:1024px)");
                     </TableCell>
                     <TableCell>{candidate.phone}</TableCell>
                     <TableCell>{candidate.code}</TableCell>
-             
+
                     <TableCell>
-                      <IconButton aria-label="update" onClick={() => setIsUpdateDialogOpen(true)}>
+                      <IconButton
+                        aria-label="update"
+                        onClick={() => setIsUpdateDialogOpen(true)}
+                      >
                         <Edit />
                       </IconButton>
-                     
+
                       <IconButton
                         aria-label="menu"
                         onClick={(event) =>
@@ -289,99 +292,107 @@ const isScreenSmall = useMediaQuery("(max-width:1024px)");
                       >
                         <MoreVert />
                       </IconButton>
-<Menu
-id="candidate-menu"
-anchorEl={anchorEl}
-open={Boolean(anchorEl)}
-onClose={handleCloseMenu}
-PaperProps={{
-  style: {
-    height: "104px",
-    width: "90px",
-    elevation: 0,
-    padding: "0px",
-    marginLeft: "-89px",
-    marginTop: "-80px",
-    boxShadow: "none",
-    border: "0.3px solid #eee",
-  },
-}}
->
+                      <Menu
+                        id="candidate-menu"
+                        anchorEl={anchorEl}
+                        open={Boolean(anchorEl)}
+                        onClose={handleCloseMenu}
+                        PaperProps={{
+                          style: {
+                            height: "104px",
+                            width: "90px",
+                            elevation: 0,
+                            padding: "0px",
+                            marginLeft: "-89px",
+                            marginTop: "-80px",
+                            boxShadow: "none",
+                            border: "0.3px solid #eee",
+                          },
+                        }}
+                      >
+                        <MenuItem
+                          onClick={() => handleMenuItemClick("edit")}
+                          dense
+                          style={{ width: "25px" }}
+                        >
+                          <Button style={{ justifyContent: "center" }}>
+                            <Edit
+                              style={{ fontSize: "19px", marginRight: "7px" }}
+                            />
+                            <span
+                              style={{
+                                fontSize: "18px",
+                                color: "black",
+                                textTransform: "lowercase",
+                                fontWeight: "300",
+                              }}
+                            >
+                              Edit
+                            </span>
+                          </Button>
+                        </MenuItem>
 
-<MenuItem
-  onClick={() => handleMenuItemClick("edit")}
-  dense
-style={{width:'25px'}}
->
-  <Button style={{justifyContent:'center'}}>
-  <Edit  style={{fontSize:'19px', marginRight:'7px'}}/>
-  <span style={{fontSize:'18px',color:'black',  textTransform: "lowercase", fontWeight:'300'}}>Edit</span>
-  </Button>
-</MenuItem>
-
-{selectedCandidate &&
-selectedCandidate.status === "active" ? (
-  <>
-    <MenuItem
-      onClick={() => handleMenuItemClick("inactive")}
-      dense
-    >
-      <DoNotDisturbAltIcon />
-      <span
-        style={{ color: "black", marginLeft: "6px" }}
-      >
-        Inactive
-      </span>
-    </MenuItem>
-    <MenuItem
-      onClick={() => handleMenuItemClick("invitation")}
-      dense
-    >
-      <ShareIcon />
-      <span style={{ marginLeft: "6px" }}>
-        Invitation
-      </span>
-    </MenuItem>
-  </>
-) : (
-  selectedCandidate && (
-    <>
-      <MenuItem
-        onClick={() => handleMenuItemClick("active")}
-        dense
-      >
-        <StatusChangeIcon />
-        <span style={{ marginLeft: "6px" }}>
-          Activate
-        </span>
-      </MenuItem>
-      <MenuItem
-        onClick={() => handleMenuItemClick("delete")}
-        dense
-      >
-        <DeleteOutlineIcon />
-        <span style={{ marginLeft: "6px" }}>
-          Delete
-        </span>
-      </MenuItem>
-      <MenuItem
-        onClick={() =>
-          handleMenuItemClick("invitation")
-        }
-        dense
-      >
-        <InsertInvitationIcon />
-        <span style={{ marginLeft: "6px" }}>
-          Invitation
-        </span>
-      </MenuItem>
-    </>
-  )
-)}
-</Menu>
-
+                        {selectedCandidate &&
+                        selectedCandidate.status === "active" ? (
+                          <>
+                            <MenuItem
+                              onClick={() => handleMenuItemClick("inactive")}
+                              dense
+                            >
+                              <DoNotDisturbAltIcon />
+                              <span
+                                style={{ color: "black", marginLeft: "6px" }}
+                              >
+                                Inactive
+                              </span>
+                            </MenuItem>
+                            <MenuItem
+                              onClick={() => handleMenuItemClick("invitation")}
+                              dense
+                            >
+                              <ShareIcon />
+                              <span style={{ marginLeft: "6px" }}>
+                                Invitation
+                              </span>
+                            </MenuItem>
+                          </>
+                        ) : (
+                          selectedCandidate && (
+                            <>
+                              <MenuItem
+                                onClick={() => handleMenuItemClick("active")}
+                                dense
+                              >
+                                <StatusChangeIcon />
+                                <span style={{ marginLeft: "6px" }}>
+                                  Activate
+                                </span>
+                              </MenuItem>
+                              <MenuItem
+                                onClick={() => handleMenuItemClick("delete")}
+                                dense
+                              >
+                                <DeleteOutlineIcon />
+                                <span style={{ marginLeft: "6px" }}>
+                                  Delete
+                                </span>
+                              </MenuItem>
+                              <MenuItem
+                                onClick={() =>
+                                  handleMenuItemClick("invitation")
+                                }
+                                dense
+                              >
+                                <InsertInvitationIcon />
+                                <span style={{ marginLeft: "6px" }}>
+                                  Invitation
+                                </span>
+                              </MenuItem>
+                            </>
+                          )
+                        )}
+                      </Menu>
                     </TableCell>
-                    
                   </TableRow>
                 ))}
           </TableBody>
@@ -401,80 +412,78 @@ selectedCandidate.status === "active" ? (
         onClose={() => setIsRowDialogOpen(false)}
         selectedRowCandidate={selectedRowCandidate}
       />
-<Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-<DialogTitle>Invite Candidate</DialogTitle>
-<DialogContent>
-  <DialogContentText>
-    Do you want to invite {selectedCandidate && selectedCandidate.name}?
-  </DialogContentText>
-</DialogContent>
-<DialogActions>
-  <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
-  <Button onClick={handleInvite} variant="contained" color="primary">
-    Invite
-  </Button>
-</DialogActions>
-</Dialog>
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+        <DialogTitle>Invite Candidate</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Do you want to invite {selectedCandidate && selectedCandidate.name}?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
+          <Button onClick={handleInvite} variant="contained" color="primary">
+            Invite
+          </Button>
+        </DialogActions>
+      </Dialog>
 
-<Dialog
-open={isConfirmationDialogOpen}
-onClose={handleCloseConfirmationDialog}
->
-<DialogTitle>Confirm Delete</DialogTitle>
-<DialogContent>
-  <DialogContentText>
-    Are you sure you want to delete this employee?
-  </DialogContentText>
-</DialogContent>
-<DialogActions>
-  <Button onClick={handleCloseConfirmationDialog} color="primary">
-    Cancel
-  </Button>
-  <Button onClick={handleConfirmDelete} color="primary">
-    Confirm
-  </Button>
-</DialogActions>
-</Dialog>
+      <Dialog
+        open={isConfirmationDialogOpen}
+        onClose={handleCloseConfirmationDialog}
+      >
+        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this employee?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseConfirmationDialog} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleConfirmDelete} color="primary">
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
 
-<Dialog open={isUpdateDialogOpen} onClose={handleCloseUpdateDialog}>
-<DialogTitle>Edit Candidate</DialogTitle>
-<DialogContent>
-  <DialogContentText>
-    Are you sure you want to update this employee?
-  </DialogContentText>
-</DialogContent>
-<DialogActions>
-  <Button onClick={handleCloseUpdateDialog} color="primary">
-    Cancel
-  </Button>
-  <Button onClick={handleUpdate} color="primary">
-    Update
-  </Button>
-</DialogActions>
-</Dialog>
+      <Dialog open={isUpdateDialogOpen} onClose={handleCloseUpdateDialog}>
+        <DialogTitle>Edit Candidate</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to update this employee?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseUpdateDialog} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleUpdate} color="primary">
+            Update
+          </Button>
+        </DialogActions>
+      </Dialog>
 
-<Dialog
-open={isStatusChangeDialogOpen}
-onClose={handleCloseStatusChangeDialog}
->
-<DialogTitle>Status Change</DialogTitle>
-<DialogContent>
-  <DialogContentText>
-    Are you sure you want to change the status of{" "}
-    {selectedCandidate && selectedCandidate.name}?
-  </DialogContentText>
-</DialogContent>
-<DialogActions>
-  <Button onClick={handleCloseStatusChangeDialog} color="primary">
-    Cancel
-  </Button>
-  <Button onClick={handleStatusChange} color="primary">
-    Confirm
-  </Button>
-</DialogActions>
-</Dialog>
-
-    
+      <Dialog
+        open={isStatusChangeDialogOpen}
+        onClose={handleCloseStatusChangeDialog}
+      >
+        <DialogTitle>Status Change</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to change the status of{" "}
+            {selectedCandidate && selectedCandidate.name}?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseStatusChangeDialog} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleStatusChange} color="primary">
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
