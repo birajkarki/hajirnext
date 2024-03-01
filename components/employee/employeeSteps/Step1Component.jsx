@@ -5,6 +5,7 @@ import TextField from "@mui/material/TextField";
 import { FormControl, Grid, InputLabel, MenuItem, Select } from "@mui/material";
 import { Box } from "@mui/system";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'; // Import the icon you want to use
+import { useMediaQuery } from "@mui/material";
 
 
 
@@ -16,6 +17,8 @@ const Step1Component = ({ formik, validationErrors }) => {
   //   console.log("Step 1 Form Values:", formik.values);
   //   // Proceed to Step 2 logic...
   // };
+  const isScreenSmall = useMediaQuery("(max-width:1390px)");
+  const isScreenSM = useMediaQuery("(max-width:978px)");
   return (
     <Grid container spacing={2}>
       <Grid item xs={6}>
@@ -34,7 +37,7 @@ const Step1Component = ({ formik, validationErrors }) => {
           <TextField
             label="Staff Code"
             variant="outlined"
-            sx={{ width: "500px" }}
+            sx={{ width:  isScreenSM ?"250px" :isScreenSmall ? '300px':"500px" }}
             margin="normal"
             name="code"
             {...formik.getFieldProps("code")}
@@ -62,13 +65,11 @@ const Step1Component = ({ formik, validationErrors }) => {
             Candidate details <span style={{ color: "red" }}> *</span>
           </div>
           <div style={{ display: "flex", alignItems: "baseline" }}>
-            <FormControl sx={{width:'100px', marginTop:'15px'}}>
+            <FormControl sx={{width: isScreenSmall? '80px':'100px', marginTop:'15px'}}>
               <InputLabel htmlFor="demo-simple-select-label">
-                {/* Name Holder <span style={{ color: "red" }}> *</span> */}
               </InputLabel>
               <Select
                 value={formik.values.name_holder}
-                // label="Name Holder"
                 onChange={formik.handleChange}
                 name="name_holder"
                 IconComponent={ArrowDropDownIcon} // Use ArrowDropDownIcon as the icon component
@@ -83,7 +84,7 @@ const Step1Component = ({ formik, validationErrors }) => {
             <TextField
               label="Full Name"
               variant="outlined"
-              sx={{ marginLeft: 3, width: "380px", marginTop: 0.1 }}
+              sx={{ marginLeft: 3, width: isScreenSM?"150px": isScreenSmall ?'200px':"380px", marginTop: 0.1 }}
               margin="normal"
               name="name"
               {...formik.getFieldProps("name")}
@@ -111,7 +112,7 @@ const Step1Component = ({ formik, validationErrors }) => {
           <TextField
           
             variant="outlined"
-            sx={{ width: "505px", marginTop: 0.9 }}
+            sx={{ width: isScreenSM?"255px": isScreenSmall ? "305px":"505px", marginTop: 0.9, marginBottom:2 }}
             margin="normal"
             name="contact"
             {...formik.getFieldProps("contact")}
@@ -138,7 +139,7 @@ const Step1Component = ({ formik, validationErrors }) => {
           <TextField
             label="Designation"
             variant="outlined"
-            sx={{ width: "700px", marginTop: 0.1 }}
+            sx={{ width: isScreenSM?"255px": isScreenSmall ? "305px":"505px", marginTop: 0.1, marginBottom: 2 }}
             margin="normal"
             name="designation"
             {...formik.getFieldProps("designation")}
@@ -162,7 +163,7 @@ const Step1Component = ({ formik, validationErrors }) => {
           />
 
           {/* Marriage Status */}
-          <FormControl sx={{ width: "700px", marginTop: 0.1 }}>
+          <FormControl sx={{ width: isScreenSM?"255px": isScreenSmall ? "305px":"505px", marginTop: 0.1 }}>
             <InputLabel
               htmlFor="demo-simple-select-label"
               sx={{ marginBottom: 0 }}
@@ -194,7 +195,8 @@ const Step1Component = ({ formik, validationErrors }) => {
           <TextField
             label="Confirm Phone Number"
             variant="outlined"
-            sx={{ width: "505px", marginTop: 10.4, marginLeft:'-60px' }}
+            sx={{ width: isScreenSM ?"200px" :isScreenSmall? "350px":"505px", marginTop:
+             7.7, marginLeft: isScreenSM? "30px": isScreenSmall? "-20px":'40px' ,marginBottom:2}}
             margin="normal"
             name="confirmPhoneNumber"
             {...formik.getFieldProps("confirmPhoneNumber")}
@@ -222,7 +224,9 @@ const Step1Component = ({ formik, validationErrors }) => {
           />
 
           {/* Departments */}
-          <FormControl sx={{ width: "700px", marginTop: 2.8 }}>
+          <FormControl sx={{ width: isScreenSM? "200px": isScreenSmall? "350px":"505px", marginTop: 0.1 ,
+          marginLeft: isScreenSM? "30px": isScreenSmall? "-20px":'40px' 
+          }}>
             <InputLabel
               htmlFor="demo-simple-select-label"
               sx={{ marginBottom: 0 }}
@@ -235,7 +239,7 @@ const Step1Component = ({ formik, validationErrors }) => {
               onChange={formik.handleChange}
               name="departments"
               IconComponent={ArrowDropDownIcon} // Use ArrowDropDownIcon as the icon component
-              sx={{ '& .MuiSvgIcon-root': { color: 'darkblue' } }}
+              sx={{'& .MuiSvgIcon-root': { color: 'darkblue' } }}
             >
               <MenuItem value="1">IT departments</MenuItem>
               <MenuItem value="2">Finance departments</MenuItem>

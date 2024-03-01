@@ -320,27 +320,12 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
                         <MenuItem
                           onClick={() => handleMenuItemClick("edit")}
                           dense
-                          style={{ width: "25px" }}
+                      
                         >
-                          <Button style={{ justifyContent: "center" }}>
-                            <Edit
-                              style={{ fontSize: "19px", marginRight: "7px" }}
-                            />
-                            <span
-                              style={{
-                                fontSize: "18px",
-                                color: "black",
-                                textTransform: "lowercase",
-                                fontWeight: "300",
-                              }}
-                            >
-                              Edit
-                            </span>
-                          </Button>
+                          <Edit/> Edit                         
                         </MenuItem>
-
                         {selectedCandidate &&
-                        selectedCandidate.status === "active" ? (
+                        selectedCandidate.status === "Active" ? (
                           <>
                             <MenuItem
                               onClick={() => handleMenuItemClick("inactive")}

@@ -13,6 +13,8 @@ import {
 } from "@mui/material";
 import DatePick from "./DatePick"; // Import DatePick component
 import { useFormik } from "formik";
+import { useMediaQuery } from "@mui/material";
+
 const Step4Component = ({ formik }) => {
   const handleAccessNetworkChange = (event) => {
     formik.setFieldValue("allow_network_access", event.target.value);
@@ -38,13 +40,9 @@ const Step4Component = ({ formik }) => {
     const newValue = increase ? currentValue + 0.1 : currentValue - 0.1;
     formik.setFieldValue("overtime_ratio", newValue.toFixed(1));
   };
-  // const handleDateSelect = (selectedDate) => {
-  //   formik.setFieldValue("joining_date", selectedDate);
-  // };
+
   const handleDateSelect = (selectedDate) => {
-    // const parsedDate = new Date(selectedDate); // Parse the selectedDate string into a Date object
-    // const formattedDate = parsedDate.toLocaleDateString('en-GB'); // Convert the Date object to the desired format
-    // formik.setFieldValue("joining_date", formattedDate);
+
 
     const parsedDate = new Date(selectedDate); // Parse the selectedDate string into a Date object
     const year = parsedDate.getFullYear();
@@ -53,25 +51,33 @@ const Step4Component = ({ formik }) => {
     const formattedDate = `${year}-${month}-${day}`;
     formik.setFieldValue("joining_date", formattedDate);
   };
+  const isScreenSmall = useMediaQuery("(max-width:1209px)");
+const isScreenSm = useMediaQuery("(max-width:1000px)");
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={6}>
+      <Grid item xs={6} >
         <Box
           sx={{
             display: "flex",
             flexDirection: "column",
             alignItems: "start",
             mt: 1,
+            width:'300px'
           }}
         >
           <Typography variant="body1">
-            Joining Date <span sx={{ color: "red" }}> *</span>
+
+            Joining Date <span sx={{ width:'150px',color: "red" }}> *</span>
           </Typography>
-          <DatePick
-            style={{ marginLeft: "23px" }}
-            onSelect={handleDateSelect}
-          />
+
+            <div style={{ width: '50px' }}>
+      <DatePick
+        style={{ marginLeft: '23px' }}
+        onSelect={handleDateSelect}
+      />
+    </div>
+   
 
           <Typography sx={{ marginTop: 2 }} variant="body1">
             Overtime Hours <span sx={{ color: "red" }}>(Optional)</span>
@@ -91,7 +97,7 @@ const Step4Component = ({ formik }) => {
               name="overtime_checked"
             />
             <TextField
-              sx={{ width: "540px", ml: 2 }}
+              sx={{ width: "450px", ml: 2 }}
               label="eg : 2 ,4 ,5 , 6"
               disabled={!formik.values.overtime_checked}
               {...formik.getFieldProps("overtime_hrs")}
@@ -106,7 +112,7 @@ const Step4Component = ({ formik }) => {
               width: "605px",
             }}
           >
-            <Box sx={{ width: "50%" }}>
+            <Box sx={{ width: "40%" }}>
               <Typography variant="body1">
                 Sick Leave <span style={{ color: "red" }}>*</span>
               </Typography>
@@ -140,7 +146,7 @@ const Step4Component = ({ formik }) => {
                 />
               </Box>
             </Box>
-            <Box sx={{ width: "50%", ml: 2 }}>
+            <Box sx={{ width: "42%", ml: 2 }}>
               <Typography variant="body1" style={{ marginLeft: "50px" }}>
                 Casual Leave <span style={{ color: "red" }}>*</span>
               </Typography>
@@ -226,7 +232,7 @@ const Step4Component = ({ formik }) => {
               <TextField
                 label="Working Hours"
                 variant="outlined"
-                sx={{ width: "333px", textAlign: "center" }}
+                sx={{ width: "300px", textAlign: "center" }}
                 margin="normal"
                 name="working_hours"
                 inputProps={{ style: { textAlign: "center" } }}
@@ -258,7 +264,7 @@ const Step4Component = ({ formik }) => {
               value={formik.values.overtime_ratio}
               onChange={formik.handleChange}
               name="overtime_ratio"
-              sx={{ mt: -0.2, mb: 2, ml: 7, width: "480px" }}
+              sx={{ mt: -0.2, mb: 2, ml: 7, width: "510px" }}
               disabled={!formik.values.overtime_checked}
             />
           </Box>

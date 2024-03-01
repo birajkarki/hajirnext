@@ -51,17 +51,17 @@ const Step3Component = ({ formik }) => {
   return (
     <Grid container spacing={2}>
       {days.map((day, index) => (
-        <Grid item sm={4} key={day}>
+        <Grid item key={day} xs={12} sm={6} md={5} lg={4}>
           <Box
             sx={{
               display: "flex",
-              flexDirection: "column",
+              flexDirection: "row",
               alignItems: "center",
               justifyContent: "space-between",
               border: "1px solid #F0F0F0",
               borderRadius: "4px",
               padding: "6px",
-              width: "93%",
+              width: "100%",
 
               cursor: "pointer",
               marginBottom: "8px",
@@ -84,6 +84,7 @@ const Step3Component = ({ formik }) => {
                   color: formik.values.week_days_off.includes(index + 1)
                     ? "red"
                     : "black",
+                
                 }}
               >
                 {day}
@@ -93,6 +94,7 @@ const Step3Component = ({ formik }) => {
               <Box
                 sx={{
                   display: "flex",
+                  justifyContent:'center',
                   alignItems: "center",
                   cursor: "pointer",
                   borderLeft: "1px solid #E0E0E0",
@@ -105,7 +107,10 @@ const Step3Component = ({ formik }) => {
                   onChange={() => handleHalfDayClick(index)}
                   // sx={{ color: "red" }}
                 />
-                <Typography variant="body2">Half Day?</Typography>
+                <Typography variant="body2"
+                sx={{     
+              }}
+              >Half Day?</Typography>
               </Box>
             )}
           </Box>
