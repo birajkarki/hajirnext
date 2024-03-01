@@ -183,10 +183,12 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
   const handleRowClick = (candidate, event) => {
     const isButtonClicked = event.target.closest("button");
     if (!isButtonClicked) {
+      setSelectedRow(candidate.id === selectedRow ? null : candidate.id);
       setSelectedRowCandidate(candidate);
       setIsRowDialogOpen(true);
     }
   };
+  const [selectedRow, setSelectedRow] = useState(null);
 
   const isScreenSmall = useMediaQuery("(max-width:1024px)");
   return (
@@ -213,15 +215,16 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Employee ID</TableCell>
-              <TableCell>Employee photo</TableCell>
-              <TableCell>Employee Name</TableCell>
-              <TableCell>Department</TableCell>
-              <TableCell>Status</TableCell>
+              <TableCell >ID</TableCell>
+             
+              <TableCell >Employee Name</TableCell>
+              <TableCell  >Department</TableCell>
+              
+              <TableCell >Staff ID</TableCell>
+              <TableCell >Status</TableCell>
               <TableCell>Phone</TableCell>
 
-              <TableCell>Staff ID</TableCell>
-              <TableCell>Action</TableCell>
+              <TableCell >Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -232,12 +235,14 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
                 .map((candidate) => (
                   <TableRow
                     key={candidate.id}
-                    sx={{ borderBottom: "0.7px dotted #ccc" }}
+                    sx={{ borderBottom: "0.7px dotted #ccc", backgroundColor: candidate.id === selectedRow ? "#f2f2f2" : "" }}
                     onClick={(event) => handleRowClick(candidate, event)}
                     style={{ cursor: "pointer" }}
                   >
                     <TableCell>{candidate.id}</TableCell>
-                    <TableCell>
+                 
+                    <TableCell sx={{width:'40px'}}>
+                      <div style={{display:'flex', flexDirection:'row'}}>
                       <label htmlFor="photo">
                         <Avatar
                           src={candidate.profile_image || "/default-avatar.png"}
@@ -245,37 +250,39 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
                             width: 50,
                             height: 50,
                             cursor: "pointer",
+                            marginRight:'10px'
                           }}
                           alt="Profile Avatar"
                         />
                       </label>
-                    </TableCell>
-                    <TableCell>{candidate.name}</TableCell>
+                      <div style={{display:'flex', flexDirection:'column', marginTop:'5px'}}>
+                      <span> {candidate.name}</span>
+                      <span style={{color:'gray'}}>{candidate.email}</span>
+                      </div>
+                      </div></TableCell>
                     <TableCell>{candidate.designation}</TableCell>
-                    <TableCell
-                      sx={{
-                        backgroundColor:
-                          candidate.status === "inactive"
-                            ? "#FF505033"
-                            : "#00800033",
-                        color:
-                          candidate.status === "inactive" ? "red" : "green",
-                        padding: "7px",
-                        borderRadius: "4px",
-                        marginTop: "20px",
-                        textAlign: "center",
-                        justifyContent: "center",
-                        marginRight: "10px",
-                        height: "34px",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      {candidate.status}
-                    </TableCell>
-                    <TableCell>{candidate.phone}</TableCell>
                     <TableCell>{candidate.code}</TableCell>
+                    <TableCell>
+                  <span
+                    style={{
+             
+                      backgroundColor:
+                      candidate.status === "inactive"
+                        ? "#FF505033"
+                        : "#00800033",
+                    color:
+                      candidate.status === "inactive" ? "red" : "green",
+                      padding: "7px",
+                      borderRadius: "4px",
+                    }}
+                  >
+                    {candidate.status}
+                  </span>
 
+                </TableCell>
+
+                    <TableCell>{candidate.phone}</TableCell>
+              
                     <TableCell>
                       <IconButton
                         aria-label="update"
