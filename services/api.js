@@ -150,7 +150,11 @@ export const api = createApi({
         body: { candidate_id, status },
       }),
     }),
-
+    // get candidate all details
+    getCandidateDetail: builder.query({
+      query: ({ company_id, candidate_id }) =>
+        `employer/candidate/get-candidate/${company_id}/${candidate_id}`,
+    }),
     // deleteCandidate
     deleteCandidate: builder.query({
       query: ({ companyId, candidate_id }) => ({
@@ -332,4 +336,5 @@ export const {
   useUpdateMissingLeaveMutation,
   useGetAllLeaveTypesQuery,
   useChangePhoneNumberMutation,
+  useGetCandidateDetailQuery,
 } = api;

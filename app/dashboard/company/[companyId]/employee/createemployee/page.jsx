@@ -1,5 +1,4 @@
 "use client";
-// HorizontalLinearStepper.jsx
 
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
@@ -65,7 +64,7 @@ const validationSchemaStep4 = Yup.object({
 const HorizontalLinearStepper = () => {
   const { companyId } = useParams();
   console.log(companyId, "companyId by useParams");
-  const [createCandidateMutation] = useCreateCandidateMutation(); // Ensure the correct destructuring
+  const [createCandidateMutation] = useCreateCandidateMutation();
 
   const [activeStep, setActiveStep] = useState(0);
   const router = useRouter();
