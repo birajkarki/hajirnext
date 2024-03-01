@@ -34,7 +34,7 @@ const EmployeeDetailsDialog = ({ isOpen, onClose, selectedRowCandidate }) => {
     },
     {
       label: "Department",
-      value: candidateDetail
+      value: candidateDetail?.data?.departments
         ? candidateDetail.data.departments
             .map((department) => department.name)
             .join(", ")

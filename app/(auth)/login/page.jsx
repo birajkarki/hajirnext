@@ -17,14 +17,16 @@ const validationSchema = yup.object({
   phone: yup
     .string()
     .required("Phone number is required")
-    .matches(
-      /^\+?\d{10,}$/,
-      "Invalid phone number. Must be at least 10 digits"
-    ),
+    .test(
+      "len",
+      "Phone number must be exactly 10 digits",
+      (val) => val && val.length === 10
+    )
+    .matches(/^\+?\d{10}$/, "Invalid phone number. Must be  10 digits"),
 });
 
 export default function Signin() {
-  const router = useRouter(); // Define the router object using the useRouter hook
+  const router = useRouter();
 
   useEffect(() => {
     const token =
@@ -34,7 +36,6 @@ export default function Signin() {
       typeof window !== "undefined" && JSON.parse(localStorage.getItem("user"));
 
     if (token && user) {
-      // Redirect to dashboard if user is already logged in
       router.push("/dashboard");
     }
   }, [router]);
@@ -44,11 +45,14 @@ export default function Signin() {
       width: 175,
       height: 180,
       alt: "First Image",
-   
+
       content: (
         <>
-          <p>Login with employer will help you to <br/>track your
-         all the staff activities from your <br/>smart devices.</p>
+          <p>
+            Login with employer will help you to <br />
+            track your all the staff activities from your <br />
+            smart devices.
+          </p>
         </>
       ),
     },
@@ -59,9 +63,11 @@ export default function Signin() {
       alt: "Second Image",
       content: (
         <>
-          <p>You can manage your employee <br/>
-           attendance, salary,overtime and payroll <br/>
-           anywhere in the world.</p>
+          <p>
+            You can manage your employee <br />
+            attendance, salary,overtime and payroll <br />
+            anywhere in the world.
+          </p>
         </>
       ),
     },
@@ -72,8 +78,12 @@ export default function Signin() {
       alt: "Third Image",
       content: (
         <>
-          <p>Live attendance, quick reports,<br/>allowance & overtime
-          expense calculation  <br/> and export reports in csv/excel/pdf.</p>
+          <p>
+            Live attendance, quick reports,
+            <br />
+            allowance & overtime expense calculation <br /> and export reports
+            in csv/excel/pdf.
+          </p>
         </>
       ),
     },
@@ -135,16 +145,17 @@ export default function Signin() {
   });
 
   return (
-    <Box sx={{
-      flexGrow: 1,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      height: "100vh",
-      objectFit: "cover",
-      overflow: "hidden",
-    
-    }}>
+    <Box
+      sx={{
+        flexGrow: 1,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh",
+        objectFit: "cover",
+        overflow: "hidden",
+      }}
+    >
       <Grid container spacing={3} justifyContent="center" alignItems="center">
         <Grid item xs={12} md={6}>
           {!isScreenSmall && (
@@ -154,22 +165,20 @@ export default function Signin() {
               // layout="responsive" // Making the image responsive
               width={isScreenSmall ? 300 : 900} // Adjusted width based on screen size
               height={900}
-              style={{   display: "block",
-              maxWidth: "100%",
-              height: "auto",}}
+              style={{ display: "block", maxWidth: "100%", height: "auto" }}
               priority
             />
           )}
         </Grid>
         <Grid item xs={12} md={6}>
-
-        <Paper
+          <Paper
             sx={{
-              backgroundColor: theme => theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+              backgroundColor: (theme) =>
+                theme.palette.mode === "dark" ? "#1A2027" : "#fff",
               typography: "body2",
               padding: "16px",
               textAlign: "center",
-              color: theme => theme.palette.text.secondary,
+              color: (theme) => theme.palette.text.secondary,
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
@@ -180,14 +189,31 @@ export default function Signin() {
               background: "transparent",
             }}
           >
-          
-            <div style={{marginTop:'50px', marginBottom:'0px'}}>
-              <Image src="/hajir-logo.png" width={140} height={50} alt="Logo"/>
+            <div style={{ marginTop: "50px", marginBottom: "0px" }}>
+              <Image src="/hajir-logo.png" width={140} height={50} alt="Logo" />
             </div>
 
-         <h1 style={{ color: 'rgba(34, 64, 139, 0.87)' , fontWeight:'500', fontSize:'18px', marginTop:'1px'}}>Smart attendance system</h1>
-       
-            <div style={{ marginBottom: "0px" , fontWeight:'500', marginTop:'-7px', paddingTop:'0px', paddingBottom:'0px', marginTop:'-6px'}}>
+            <h1
+              style={{
+                color: "rgba(34, 64, 139, 0.87)",
+                fontWeight: "500",
+                fontSize: "18px",
+                marginTop: "1px",
+              }}
+            >
+              Smart attendance system
+            </h1>
+
+            <div
+              style={{
+                marginBottom: "0px",
+                fontWeight: "500",
+                marginTop: "-7px",
+                paddingTop: "0px",
+                paddingBottom: "0px",
+                marginTop: "-6px",
+              }}
+            >
               {images[selectedImageIndex].content}
             </div>
 
@@ -212,7 +238,6 @@ export default function Signin() {
               onSubmit={formik.handleSubmit}
               style={{ width: "250px" }}
             >
-      
               <TextField
                 fullWidth
                 id="phone"
@@ -228,38 +253,50 @@ export default function Signin() {
                   marginTop: "26px",
                   width: "300px",
                   marginLeft: "6px",
-              justifyContent:'center',
-              alignItems:'center'
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
               />
               <Button
                 variant="contained"
                 type="submit"
                 disabled={buttonClicked}
-                style={{ width: "300px", marginLeft: "10px", marginTop:'2px' }}
+                style={{ width: "300px", marginLeft: "10px", marginTop: "2px" }}
               >
                 Get OTP
               </Button>
-        
             </Box>
 
-            <p style={{ whiteSpace: "pre-line", marginTop: "10px" , marginBottom:'13px', color:'black', fontSize:'14px'}}>
+            <p
+              style={{
+                whiteSpace: "pre-line",
+                marginTop: "10px",
+                marginBottom: "13px",
+                color: "black",
+                fontSize: "14px",
+              }}
+            >
               We will send OTP on this mobile number
             </p>
 
-            <p style={{ whiteSpace: "pre-line" , marginTop:'-6px', color:'black', marginBottom:'20px'}}>
-              I have read and agree {" "}
+            <p
+              style={{
+                whiteSpace: "pre-line",
+                marginTop: "-6px",
+                color: "black",
+                marginBottom: "20px",
+              }}
+            >
+              I have read and agree{" "}
               <span
                 style={{ textDecoration: "none", cursor: "pointer" }}
                 onClick={handleOpen}
-
               >
                 Terms & Services
               </span>
             </p>
 
             <ScrollDialog open={open} onClose={handleClose} />
-          
           </Paper>
         </Grid>
       </Grid>
