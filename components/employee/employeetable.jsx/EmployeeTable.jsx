@@ -267,11 +267,11 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
                     style={{
              
                       backgroundColor:
-                      candidate.status === "inactive"
-                        ? "#FF505033"
-                        : "#00800033",
-                    color:
-                      candidate.status === "inactive" ? "red" : "green",
+            
+                      candidate.status === "Active"
+                      ? "#00800033"
+                      : "#FF505033",
+                  color: candidate.status === "Active" ? "green" : "red",
                       padding: "7px",
                       borderRadius: "4px",
                     }}
@@ -420,14 +420,15 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
         selectedRowCandidate={selectedRowCandidate}
       />
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <DialogTitle>Invite Candidate</DialogTitle>
+        <DialogTitle  sx={{display:'flex', justifyContent:'center'}}>Invite Candidate</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Do you want to invite {selectedCandidate && selectedCandidate.name}?
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
+        <DialogActions style={{display:'flex', justifyContent:'space-evenly', marginBottom:'10px'}}>
+          <Button onClick={() => setOpenDialog(false)} color="primary" variant="contained"
+          style={{ borderRadius: '20px 20px 20px 20px', width:'100px'}}>C<span style={{textTransform:'lowercase'}}>ancel</span></Button>
           <Button onClick={handleInvite} variant="contained" color="primary">
             Invite
           </Button>
@@ -438,15 +439,16 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
         open={isConfirmationDialogOpen}
         onClose={handleCloseConfirmationDialog}
       >
-        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogTitle sx={{display:'flex', justifyContent:'center'}}>Delete Employee</DialogTitle>
         <DialogContent>
-          <DialogContentText>
+          <DialogContentText >
             Are you sure you want to delete this employee?
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseConfirmationDialog} color="primary">
-            Cancel
+        <DialogActions style={{display:'flex', justifyContent:'space-evenly', marginBottom:'10px'}}>
+          <Button onClick={handleCloseConfirmationDialog} color="primary" variant="contained"
+          style={{ borderRadius: '20px 20px 20px 20px', width:'100px'}}>
+            C<span style={{textTransform:'lowercase'}}></span>
           </Button>
           <Button onClick={handleConfirmDelete} color="primary">
             Confirm
@@ -455,18 +457,19 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
       </Dialog>
 
       <Dialog open={isUpdateDialogOpen} onClose={handleCloseUpdateDialog}>
-        <DialogTitle>Edit Candidate</DialogTitle>
+        <DialogTitle sx={{display:'flex', justifyContent:'center'}}>Edit Candidate</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Are you sure you want to update this employee?
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseUpdateDialog} color="primary">
-            Cancel
+        <DialogActions style={{display:'flex', justifyContent:'space-evenly', marginBottom:'10px'}}>
+          <Button onClick={handleCloseUpdateDialog} color="primary" variant="contained"
+          style={{ borderRadius: '20px 20px 20px 20px', width:'100px'}}>
+            C<span style={{textTransform:'lowercase'}}>ancel</span>
           </Button>
-          <Button onClick={handleUpdate} color="primary">
-            Update
+          <Button onClick={handleUpdate} color="primary" variant="contained"  style={{ color:'red', borderRadius: '20px 20px 20px 20px', backgroundColor:'white', width:'100px', boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)'}}>
+            U<span style={{textTransform:'lowercase'}}>pdate</span>
           </Button>
         </DialogActions>
       </Dialog>
@@ -475,19 +478,19 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
         open={isStatusChangeDialogOpen}
         onClose={handleCloseStatusChangeDialog}
       >
-        <DialogTitle>Status Change</DialogTitle>
+        <DialogTitle sx={{display:'flex', justifyContent:'center'}}>Status Change</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Are you sure you want to change the status of{" "}
             {selectedCandidate && selectedCandidate.name}?
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
+        <DialogActions style={{display:'flex', justifyContent:'space-evenly', marginBottom:'10px'}}>
           <Button onClick={handleCloseStatusChangeDialog} color="primary">
-            Cancel
+            C<span style={{textTransform:'lowercase'}}>ancel</span>
           </Button>
-          <Button onClick={handleStatusChange} color="primary">
-            Confirm
+          <Button onClick={handleStatusChange} variant="contained"  style={{ color:'red', borderRadius: '20px 20px 20px 20px', backgroundColor:'white', width:'100px', boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)'}}>
+            C<span style={{textTransform:'lowercase'}}>onfirm</span>
           </Button>
         </DialogActions>
       </Dialog>
