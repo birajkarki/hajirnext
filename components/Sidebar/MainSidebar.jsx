@@ -32,8 +32,8 @@ const MainSidebar = () => {
   const onLogoutClick = async (e) => {
     const logout = await getRequest(`/employer/logout`);
     if (logout) {
-      localStorage.setItem("token", null);
-      localStorage.setItem("user", null);
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
 
       return router.push("/login");
     }
