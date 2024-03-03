@@ -28,7 +28,8 @@ export default function DatePick({ onSelect }) {
     }
     return () => {};
   }, [cleared]);
-
+  const isScreenSmall = useMediaQuery("(max-width:1214px)");
+  const isScreenSm = useMediaQuery("(max-width:910px)");
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box
@@ -42,7 +43,7 @@ export default function DatePick({ onSelect }) {
       >
         <DemoItem>
           <DatePicker
-            sx={{ width: "505px"}}
+            sx={{ width: isScreenSm? "200px": isScreenSmall ? "300px": "505px"}}
             slotProps={{
               field: { clearable: true, onClear: () => setCleared(true) },
             }}

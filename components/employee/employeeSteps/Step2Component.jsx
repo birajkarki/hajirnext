@@ -129,7 +129,7 @@ const isScreenSm = useMediaQuery("(max-width:1000px)");
             </Select>
           </FormControl>
           <Typography sx={{ marginTop: 2 }} variant="body1">
-            Salary <span sx={{ color: "red" }}> *</span>
+            Salary <span style={{ color: "red" }}> *</span>
           </Typography>
           <FormControl component="fieldset">
             <RadioGroup
@@ -210,7 +210,6 @@ const isScreenSm = useMediaQuery("(max-width:1000px)");
         </Box>
       </Grid>
 
-      {/* Right Column */}
       <Grid item xs={6}>
         <Box
           sx={{
@@ -221,7 +220,7 @@ const isScreenSm = useMediaQuery("(max-width:1000px)");
           }}
         >
           <Typography variant="body1">
-            Working Hours <span sx={{ color: "red" }}> *</span>
+            Working Hours <span style={{ color: "red" }}> *</span>
           </Typography>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <Button
@@ -250,7 +249,7 @@ const isScreenSm = useMediaQuery("(max-width:1000px)");
           </div>
 
           <Typography variant="body1">
-            Duty Time <span sx={{ color: "red" }}> *</span>
+            Duty Time <span style={{ color: "red" }}> *</span>
           </Typography>
           <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <TextField
@@ -280,7 +279,7 @@ const isScreenSm = useMediaQuery("(max-width:1000px)");
           </Box>
 
           <Typography variant="body1">
-            Break Time <span sx={{ color: "red" }}> *</span>
+            Break Time <span style={{ color: "red" }}> *</span>
           </Typography>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <Button
@@ -309,7 +308,7 @@ const isScreenSm = useMediaQuery("(max-width:1000px)");
           </div>
 
           <Typography variant="body1">
-            Probation Period <span sx={{ color: "red" }}> *</span>
+            Probation Period <span style={{ color: "red" }}> *</span>
           </Typography>
           <FormControl sx={{ width: isScreenSm?"230px":isScreenSmall?"330px": "462px" }}>
             <Select

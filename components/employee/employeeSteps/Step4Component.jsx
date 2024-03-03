@@ -51,8 +51,8 @@ const Step4Component = ({ formik }) => {
     const formattedDate = `${year}-${month}-${day}`;
     formik.setFieldValue("joining_date", formattedDate);
   };
-  const isScreenSmall = useMediaQuery("(max-width:1209px)");
-const isScreenSm = useMediaQuery("(max-width:1000px)");
+  const isScreenSmall = useMediaQuery("(max-width:1214px)");
+const isScreenSm = useMediaQuery("(max-width:910px)");
 
   return (
     <Grid container spacing={2}>
@@ -97,7 +97,7 @@ const isScreenSm = useMediaQuery("(max-width:1000px)");
               name="overtime_checked"
             />
             <TextField
-              sx={{ width: "450px", ml: 2 }}
+              sx={{ width: isScreenSm? "140px": isScreenSmall ? "240px": "445px", ml: 2 }}
               label="eg : 2 ,4 ,5 , 6"
               disabled={!formik.values.overtime_checked}
               {...formik.getFieldProps("overtime_hrs")}
@@ -134,20 +134,21 @@ const isScreenSm = useMediaQuery("(max-width:1000px)");
                         )
                       }
                       name="sick_leave_checked"
+                      sx={{ml:'9px'}}
                     />
                   }
                 />
                 <TextField
-                  fullWidth
+              
                   label="eg : 2 ,4 ,5 , 6"
-                  sx={{ ml: 2 }}
+                  sx={{ width: isScreenSm?"60px": isScreenSmall? '110px':'auto',ml: isScreenSmall? -2: 2 }}
                   {...formik.getFieldProps("sick_leave")}
                   disabled={!formik.values.sick_leave_checked}
                 />
               </Box>
             </Box>
             <Box sx={{ width: "42%", ml: 2 }}>
-              <Typography variant="body1" style={{ marginLeft: "50px" }}>
+              <Typography variant="body1" style={{ marginLeft:isScreenSm?"-140px": isScreenSmall?"-80px":"30px" }}>
                 Casual Leave <span style={{ color: "red" }}>*</span>
               </Typography>
               <Box
@@ -168,14 +169,14 @@ const isScreenSm = useMediaQuery("(max-width:1000px)");
                         )
                       }
                       name="casual_leave_checked"
-                      style={{ marginLeft: "50px", marginRight: "-25px" }}
+                      style={{ marginLeft: isScreenSm?"-140px": isScreenSmall? -101: "30px", marginRight: "-5px" }}
                     />
                   }
                 />
                 <TextField
-                  fullWidth
+               
                   label="eg : 2 ,4 ,5 , 6"
-                  sx={{ ml: 2 }}
+                  sx={{ width: isScreenSm?"60px": isScreenSmall? '110px':'auto',ml: isScreenSm?"-120px": isScreenSmall?'-80px': 1.5}}
                   {...formik.getFieldProps("casual_leave")}
                   disabled={!formik.values.casual_leave_checked}
                 />
@@ -232,7 +233,7 @@ const isScreenSm = useMediaQuery("(max-width:1000px)");
               <TextField
                 label="Working Hours"
                 variant="outlined"
-                sx={{ width: "300px", textAlign: "center" }}
+                sx={{ width: "230px", textAlign: "center" }}
                 margin="normal"
                 name="working_hours"
                 inputProps={{ style: { textAlign: "center" } }}
@@ -264,7 +265,7 @@ const isScreenSm = useMediaQuery("(max-width:1000px)");
               value={formik.values.overtime_ratio}
               onChange={formik.handleChange}
               name="overtime_ratio"
-              sx={{ mt: -0.2, mb: 2, ml: 7, width: "510px" }}
+              sx={{ mt: -0.2, mb: 2, ml: 7, width: "405px" }}
               disabled={!formik.values.overtime_checked}
             />
           </Box>
