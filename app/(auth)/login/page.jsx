@@ -17,16 +17,29 @@ const validationSchema = yup.object({
   phone: yup
     .string()
     .required("Phone number is required")
+    .matches(/^(98|97|96)\d{8}$/, {
+      message:
+        "Phone number must start with 98, 97, or 96 and be exactly 10 digits",
+      excludeEmptyString: true,
+    })
     .test(
-      "len",
+      "is-ten-digits",
       "Phone number must be exactly 10 digits",
-      (val) => val && val.length === 10
+      (val) => val.length === 10
     )
-    .matches(/^\+?\d{10}$/, "Invalid phone number. Must be  10 digits"),
+    .test(
+      "starts-with-979698",
+      "Phone number must start with 98, 97, or 96",
+      (val) => {
+        const firstTwoDigits = val.substring(0, 2);
+        return ["98", "97", "96"].includes(firstTwoDigits);
+      }
+    ),
 });
 
 export default function Signin() {
   const router = useRouter();
+  const [termsChecked, setTermsChecked] = useState(false);
 
   useEffect(() => {
     const token =
@@ -260,7 +273,7 @@ export default function Signin() {
               <Button
                 variant="contained"
                 type="submit"
-                disabled={buttonClicked}
+                disabled={!termsChecked || buttonClicked}
                 style={{ width: "300px", marginLeft: "10px", marginTop: "2px" }}
               >
                 Get OTP
@@ -270,30 +283,26 @@ export default function Signin() {
             <p
               style={{
                 whiteSpace: "pre-line",
-                marginTop: "10px",
-                marginBottom: "13px",
-                color: "black",
-                fontSize: "14px",
-              }}
-            >
-              We will send OTP on this mobile number
-            </p>
-
-            <p
-              style={{
-                whiteSpace: "pre-line",
                 marginTop: "-6px",
                 color: "black",
                 marginBottom: "20px",
+                marginTop: "20px",
               }}
             >
-              I have read and agree{" "}
-              <span
-                style={{ textDecoration: "none", cursor: "pointer" }}
-                onClick={handleOpen}
-              >
-                Terms & Services
-              </span>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={termsChecked}
+                  onChange={(e) => setTermsChecked(e.target.checked)}
+                />{" "}
+                I have read and agree{" "}
+                <span
+                  style={{ textDecoration: "underline", cursor: "pointer" }}
+                  onClick={handleOpen}
+                >
+                  Terms & Services
+                </span>
+              </label>
             </p>
 
             <ScrollDialog open={open} onClose={handleClose} />

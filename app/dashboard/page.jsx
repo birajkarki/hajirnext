@@ -18,7 +18,7 @@ export default function Dashboard() {
         }}
       >
         <Grid container spacing={2}>
-          <Box p={3}>
+          <Box pt={4}>
             <DashboardFirstComponent />
           </Box>
         </Grid>

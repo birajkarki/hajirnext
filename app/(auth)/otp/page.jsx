@@ -146,62 +146,87 @@ const Otp = () => {
   const isMobile = useMediaQuery("(max-width:900px)");
 
   return (
-    <Box sx={{flexGrow: 1,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      height: "100vh", // Adjusted minHeight instead of maxHeight
-      objectFit: "cover",
-      overflow: "hidden",}}>
-      <Grid container  spacing={3} justifyContent="center" alignItems="center">
+    <Box
+      sx={{
+        flexGrow: 1,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh", // Adjusted minHeight instead of maxHeight
+        objectFit: "cover",
+        overflow: "hidden",
+      }}
+    >
+      <Grid container spacing={3} justifyContent="center" alignItems="center">
         <Grid item xs={6}>
-          
           {!isMobile && ( // Hide the image on mobile screens
             <Image
-            src="/auth/login.png"
+              src="/auth/login.png"
               alt="login image"
-              width={isMobile ? 300 : 900} 
+              width={isMobile ? 300 : 900}
               height={900}
-              style={ {  display: "block",
-              maxWidth: "100%",
-              height: "auto",}}
+              style={{ display: "block", maxWidth: "100%", height: "auto" }}
               priority
             />
           )}
         </Grid>
         <Grid item xs={12} md={6}>
-        <Paper style={{
-          
-            typography: "body2",
-            padding: "16px",
-            textAlign: "center",
-            color: "gray",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100%",
-            boxShadow: "none",
-            elevation: 0,
-            background: "transparent",
-          }}>
-            <div style={{marginTop:"50px"}}>
-              <Image src="/hajir-logo.png" width={140} height={50} alt="Logo"  priority/>
+          <Paper
+            style={{
+              typography: "body2",
+              padding: "16px",
+              textAlign: "center",
+              color: "gray",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100%",
+              boxShadow: "none",
+              elevation: 0,
+              background: "transparent",
+            }}
+          >
+            <div style={{ marginTop: "50px" }}>
+              <Image
+                src="/hajir-logo.png"
+                width={140}
+                height={50}
+                alt="Logo"
+                priority
+              />
             </div>
-             <div>
-              
-              <h1 style={{ color: 'rgba(34, 64, 139, 0.87)' , fontWeight:'500', fontSize:'18px', marginTop:'7px'}}>Smart attendance system</h1>
-                        
-                           <h1 style={{fontWeight:'400', fontSize:'14px',whiteSpace: "pre-line",marginTop:'5px'}}>Enter the OTP code that has been sent to your mobile number </h1>
-                         </div>
+            <div>
+              <h1
+                style={{
+                  color: "rgba(34, 64, 139, 0.87)",
+                  fontWeight: "500",
+                  fontSize: "18px",
+                  marginTop: "7px",
+                }}
+              >
+                Smart attendance system
+              </h1>
+
+              <h1
+                style={{
+                  fontWeight: "400",
+                  fontSize: "14px",
+                  whiteSpace: "pre-line",
+                  marginTop: "5px",
+                }}
+              >
+                Enter the OTP code that has been sent to your mobile number{" "}
+              </h1>
+            </div>
             <Image
-src="/auth/maskotp.png"
-    width={175}
-    height={170}
-   style={{marginTop:'20px', marginBottom:'60px'}}
-   alt="otp"
-   priority
-/>
+              src="/auth/maskotp.png"
+              width={175}
+              height={170}
+              style={{ marginTop: "20px", marginBottom: "60px" }}
+              alt="otp"
+              priority
+            />
 
             <Box
               component="form"
@@ -222,9 +247,6 @@ src="/auth/maskotp.png"
                   flexDirection: "column",
                 }}
               >
-                {/* Loading indicator */}
-                {loading && <p>Loading...</p>}
-
                 {/* OTP input boxes */}
                 <div className="flex space-x-2">
                   {otp.map((digit, index) => (
@@ -238,14 +260,14 @@ src="/auth/maskotp.png"
                       variant="outlined"
                       size="small"
                       sx={{
-                        width: "50px", // Adjust the width as needed
-                        height: "40px", // Adjust the height as needed
+                        width: "50px",
+                        height: "40px",
                         textAlign: "center",
                         justifyContent: "center",
                         marginRight: "20px",
                         alignItems: "center",
-                        paddingLeft: "8px", // Add marginRight to create a gap between input boxes
-                        marginTop:'-20px'
+                        paddingLeft: "8px",
+                        marginTop: "-20px",
                       }}
                     />
                   ))}
@@ -254,9 +276,23 @@ src="/auth/maskotp.png"
                 <br />
 
                 {/* Verify button */}
-            
-                <Button type="submit" variant="contained" color="primary" sx={{marginTop:'5px', width:'260px'}}>
-                  Verify
+
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  sx={{ marginTop: "10px", width: "260px" }}
+                >
+                  {loading ? (
+                    <Image
+                      src="/loading/loading.svg"
+                      alt="Loading"
+                      width={35}
+                      height={35}
+                    />
+                  ) : (
+                    "Verify"
+                  )}
                 </Button>
               </div>
             </Box>
@@ -267,7 +303,7 @@ src="/auth/maskotp.png"
                 marginTop: "8px",
                 display: "flex",
                 alignItems: "center",
-                marginTop:'2px'
+                marginTop: "2px",
               }}
             >
               <p style={{ color: timer === 0 ? "red" : "inherit" }}>
@@ -292,7 +328,7 @@ src="/auth/maskotp.png"
                 </Button>
               )}
             </div>
-            
+
             {/* <p
               style={{
                 whiteSpace: "pre-line",

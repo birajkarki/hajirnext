@@ -39,14 +39,12 @@ const DashboardFirstComponent = () => (
         </Typography>
       </div>
       <div style={{ width: "50%" }}>
-        <ButtonBase>
-          <Image
-            width={450}
-            height={450}
-            alt="complex"
-            src="/dashboard/right-img.png"
-          />
-        </ButtonBase>
+        <Image
+          width={450}
+          height={450}
+          alt="complex"
+          src="/dashboard/right-img.png"
+        />
       </div>
     </div>
   </Paper>

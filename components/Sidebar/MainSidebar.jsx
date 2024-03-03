@@ -52,10 +52,11 @@ const MainSidebar = () => {
           top: ["48px", "56px", "64px"],
           height: "auto",
           bottom: 0,
+          backgroundColor: "#E7E7E7",
         },
       }}
     >
-      <div style={{ marginLeft: "50px" }}>
+      <div style={{ marginLeft: "4px" }}>
         <TestProfileCard />
       </div>
       <List>
@@ -82,8 +83,8 @@ const MainSidebar = () => {
         ))}
       </List>
 
-      <List style={{marginTop:'220px'}}>
-      <Divider/>
+      <List style={{ marginTop: "220px" }}>
+        <Divider />
         <LogoutButton onClick={onLogoutClick} />
       </List>
     </Drawer>

@@ -1,4 +1,3 @@
-// Header.jsx
 import React from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -11,25 +10,19 @@ import HeaderMenu from "./HeaderMenu";
 import Image from "next/image";
 
 const Header = ({ onMenuIconClick }) => (
-  <AppBar position="fixed" elevation={1} color="inherit">
+  <AppBar
+    position="fixed"
+    // elevation={1}
+    color="inherit"
+    // height="513px"
+    sx={{ backgroundColor: "#E7E7E7" }}
+  >
     <Toolbar>
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <Image src="/hajir-logo.png" width={140} height={50} alt="Hajir Logo" />
+      <div style={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
+        <Image src="/hajir-logo.png" width={150} height={50} alt="Hajir Logo" />
       </div>
 
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          marginLeft: "56px",
-          gap: "100px",
-          flexGrow: 1,
-
-          justifyContent: "space-between",
-        }}
-      >
-        <Search />
-
+      <div style={{ display: "flex", alignItems: "center" }}>
         <HeaderMenu />
       </div>
     </Toolbar>

@@ -61,10 +61,10 @@ const EmployeeDetailsDialog = ({ isOpen, onClose, selectedRowCandidate }) => {
       label: "Working hours",
       value: candidateDetail ? candidateDetail?.data?.working_hours : "",
     },
-    {
-      label: "Weekly off",
-      value: candidateDetail ? candidateDetail?.data?.weekly_off : "",
-    },
+    // {
+    //   label: "Weekly off",
+    //   value: candidateDetail ? candidateDetail?.data?.weekly_off : "",
+    // },
     {
       label: "Joining Date",
       value: candidateDetail ? candidateDetail?.data?.joining_date : "",

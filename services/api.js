@@ -10,7 +10,7 @@ const hardcodedToken =
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://veloxlabs.net/api/v2",
+    baseUrl: process.env.NEXT_PUBLIC_API_URL,
     // Include headers in each request
     prepareHeaders: (headers) => {
       const newHeaders = new Headers(headers);
