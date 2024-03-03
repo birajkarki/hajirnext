@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   Avatar,
@@ -14,8 +15,7 @@ import {
   TableRow,
 } from "@mui/material";
 import { CloseOutlined } from "@mui/icons-material";
-import { useGetCandidateDetailQuery } from "@/services/api";
-import { useParams } from "next/navigation";
+
 const EmployeeDetailsDialog = ({ isOpen, onClose, selectedRowCandidate }) => {
   const selectedEmployee = selectedRowCandidate?.candidate_id;
   const { companyId } = useParams();
@@ -96,6 +96,7 @@ const EmployeeDetailsDialog = ({ isOpen, onClose, selectedRowCandidate }) => {
       value: candidateDetail ? candidateDetail?.data?.allow_network_access : "",
     },
   ];
+
   return (
     <Dialog open={isOpen} onClose={onClose}>
       <div
@@ -112,19 +113,25 @@ const EmployeeDetailsDialog = ({ isOpen, onClose, selectedRowCandidate }) => {
             "/default-avatar.png"
           }
           sx={{
-            width: 45,
-            height: 42,
+            width: 53,
+            height: 52,
             cursor: "pointer",
-            marginTop: "8px",
-            marginLeft: "13px",
+            marginTop: "10px",
+            marginLeft: "22px",
           }}
           alt="Profile Avatar"
         />
-        <DialogTitle style={{ marginTop: "-16px" }}>
-          {selectedRowCandidate && selectedRowCandidate.name} <br />
-          <span
-            style={{ fontWeight: "300", fontSize: "15px", marginTop: "0px" }}
-          >
+        <DialogTitle
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            marginTop: "-6px",
+          }}
+        >
+          <span style={{ marginBottom: "-2px", color: "#434345" }}>
+            {selectedRowCandidate && selectedRowCandidate.name}
+          </span>
+          <span style={{ fontWeight: "300", fontSize: "16px" }}>
             {selectedRowCandidate && selectedRowCandidate.designation}
           </span>
         </DialogTitle>
@@ -138,17 +145,34 @@ const EmployeeDetailsDialog = ({ isOpen, onClose, selectedRowCandidate }) => {
         </DialogActions>
       </div>
       <DialogContent>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} sx={{ border: "1px solid #ccc" }}>
           <Table>
             <TableBody>
               {tableRows.map((row, index) => (
                 <TableRow key={index}>
                   <TableCell
-                    sx={{ borderRight: "1px solid #ccc", padding: "8px" }}
+                    sx={{
+                      borderRight: "1px solid #ccc",
+                      borderBottom:
+                        index === tableRows.length - 1
+                          ? "none"
+                          : "1px solid #ccc",
+                      padding: "8px",
+                    }}
                   >
                     {row.label}
                   </TableCell>
-                  <TableCell>{row.value}</TableCell>
+                  <TableCell
+                    sx={{
+                      borderBottom:
+                        index === tableRows.length - 1
+                          ? "none"
+                          : "1px solid #ccc",
+                      padding: "8px",
+                    }}
+                  >
+                    {row.value}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
