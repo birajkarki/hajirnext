@@ -369,7 +369,7 @@ const CompanyTable = ({ companies, statusFilter }) => {
         <DialogActions style={{display:'flex', justifyContent:'space-evenly', marginBottom:'10px'}}>
           <Button onClick={handleCloseConfirmationDialog} color="primary" variant="contained"
           style={{ borderRadius: '20px 20px 20px 20px', width:'100px'}}>
-            Cancel
+            C <span style={{textTransform:'lowercase'}}>ancel</span>
           </Button>
           <Button onClick={handleUpdate} variant="contained"   style={{ color:'black', borderRadius: '20px 20px 20px 20px', backgroundColor:'white', width:'100px', boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)'}}>
           U<span style={{ textTransform:'lowercase'}}>

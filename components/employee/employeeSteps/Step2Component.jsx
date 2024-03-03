@@ -16,6 +16,8 @@ import {
 import { Box } from "@mui/system";
 import * as yup from "yup";
 import { useFormik } from "formik";
+import { useMediaQuery } from "@mui/material";
+
 
 const Step2Component = ({ formik }) => {
   const handleSalaryTypeChange = (event) => {
@@ -86,7 +88,8 @@ const handlebreak_durationChange = (decrease) => {
     formik.setFieldValue("duty_time", formattedTime);
 };
 
-
+const isScreenSmall = useMediaQuery("(max-width:1209px)");
+const isScreenSm = useMediaQuery("(max-width:1000px)");
   return (
     <Grid container spacing={2}>
       {/* Left Column */}
@@ -98,8 +101,11 @@ const handlebreak_durationChange = (decrease) => {
             alignItems: "start",
             mt: 1,
           }}
-        >
-          <FormControl sx={{ width: "700px", marginTop: 2 }}>
+        > 
+         <Typography  variant="body1">
+            Salary Type <span style={{ color: "red" }}> *</span>
+          </Typography>
+          <FormControl sx={{ width:isScreenSm?"200px": isScreenSmall?"350px" :"450px", marginTop: 2 }}>
             <InputLabel
               htmlFor="salary_type"
               sx={{ color: "black", marginBottom: 0 }}
@@ -123,7 +129,7 @@ const handlebreak_durationChange = (decrease) => {
             </Select>
           </FormControl>
           <Typography sx={{ marginTop: 2 }} variant="body1">
-            Salary <span sx={{ color: "red" }}> *</span>
+            Salary <span style={{ color: "red" }}> *</span>
           </Typography>
           <FormControl component="fieldset">
             <RadioGroup
@@ -155,7 +161,7 @@ const handlebreak_durationChange = (decrease) => {
               label="Salary Amount"
               variant="outlined"
               margin="normal"
-              sx={{ width: "700px" }}
+              sx={{ width: isScreenSm?"200px":isScreenSmall?"350px" :"450px" , marginTop:8}}
               name="salary_amount"
               {...formik.getFieldProps("salary_amount")}
               error={
@@ -171,7 +177,7 @@ const handlebreak_durationChange = (decrease) => {
               <TextField
                 label="Basic Salary"
                 variant="outlined"
-                sx={{ width: "700px" }}
+                sx={{  width: isScreenSm?"200px":isScreenSmall?"350px" :"450px" }}
                 margin="normal"
                 name="salary_amount"
                 {...formik.getFieldProps("salary_amount")}
@@ -186,7 +192,7 @@ const handlebreak_durationChange = (decrease) => {
               <TextField
                 label="allowance_amount"
                 variant="outlined"
-                sx={{ width: "700px" }}
+                sx={{  width: isScreenSm?"200px":isScreenSmall?"350px" :"450px" }}
                 margin="normal"
                 name="allowance_amount"
                 {...formik.getFieldProps("allowance_amount")}
@@ -204,7 +210,6 @@ const handlebreak_durationChange = (decrease) => {
         </Box>
       </Grid>
 
-      {/* Right Column */}
       <Grid item xs={6}>
         <Box
           sx={{
@@ -215,19 +220,20 @@ const handlebreak_durationChange = (decrease) => {
           }}
         >
           <Typography variant="body1">
-            Working Hours <span sx={{ color: "red" }}> *</span>
+            Working Hours <span style={{ color: "red" }}> *</span>
           </Typography>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <Button
               variant="outlined"
               onClick={() => handleworking_hoursChange(false)}
+              sx={{ height: "55px", marginRight: -1.25, marginTop: 0.9 }}
             >
               -
             </Button>
             <TextField
               label="Working Hours"
               variant="outlined"
-              sx={{ width: "333px", textAlign: "center" }}
+              sx={{ width: isScreenSm?"100px":isScreenSmall?"200px": "333px", textAlign: "center" }}
               margin="normal"
               name="working_hours"
               inputProps={{ style: { textAlign: "center" } }}
@@ -236,13 +242,14 @@ const handlebreak_durationChange = (decrease) => {
             <Button
               variant="outlined"
               onClick={() => handleworking_hoursChange(true)}
+              sx={{ height: "55px", marginLeft: -1.2, marginTop: 0.9 }}
             >
               +
             </Button>
           </div>
 
           <Typography variant="body1">
-            Duty Time <span sx={{ color: "red" }}> *</span>
+            Duty Time <span style={{ color: "red" }}> *</span>
           </Typography>
           <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <TextField
@@ -251,9 +258,9 @@ const handlebreak_durationChange = (decrease) => {
               margin="normal"
               name="duty_time"
               {...formik.getFieldProps("duty_time")}
-              sx={{ width: "375px", textAlign: "center" }}
+              sx={{ width:isScreenSm?"160px": isScreenSmall?"270px":"395px", textAlign: "center" }}
             />
-            <FormControl sx={{ width: "95px", marginTop: 1 }}>
+            <FormControl sx={{ width: "53px", marginTop: 1 }}>
               <InputLabel htmlFor="am">AM/PM</InputLabel>
               <Select
                 value={formik.values.ampm}
@@ -263,6 +270,7 @@ const handlebreak_durationChange = (decrease) => {
                   handleAmPmChange();
                 }}
                 name="ampm"
+                sx={{marginLeft:-1.3}}
               >
                 <MenuItem value="am">AM</MenuItem>
                 <MenuItem value="pm">PM</MenuItem>
@@ -271,19 +279,20 @@ const handlebreak_durationChange = (decrease) => {
           </Box>
 
           <Typography variant="body1">
-            Break Time <span sx={{ color: "red" }}> *</span>
+            Break Time <span style={{ color: "red" }}> *</span>
           </Typography>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <Button
               variant="outlined"
               onClick={() => handlebreak_durationChange(false)}
+              sx={{ height: "55px", marginRight: -1.25, marginTop: 0.9 }}
             >
               -
             </Button>
             <TextField
               label="Break Time"
               variant="outlined"
-              sx={{ width: "333px", textAlign: "center" }}
+              sx={{ width: isScreenSm?"100px":isScreenSmall?"200px":"333px", textAlign: "center" }}
               margin="normal"
               name="break_duration"
               inputProps={{ style: { textAlign: "center" } }}
@@ -292,15 +301,16 @@ const handlebreak_durationChange = (decrease) => {
             <Button
               variant="outlined"
               onClick={() => handlebreak_durationChange(true)}
+              sx={{ height: "55px", marginLeft: -1.2, marginTop: 0.9 }}
             >
               +
             </Button>
           </div>
 
           <Typography variant="body1">
-            Probation Period <span sx={{ color: "red" }}> *</span>
+            Probation Period <span style={{ color: "red" }}> *</span>
           </Typography>
-          <FormControl sx={{ width: "482px" }}>
+          <FormControl sx={{ width: isScreenSm?"230px":isScreenSmall?"330px": "462px" }}>
             <Select
               value={formik.values.probation_period}
               label="Probation Period"
