@@ -25,9 +25,12 @@ import { getRequest } from "@/services/ApiRequestService";
 import { useRouter } from "next/navigation";
 
 const CompanySidebar = () => {
+  const router = useRouter();
+
   const [openSettings, setOpenSettings] = useState(false);
   const [openReport, setOpenReport] = useState(false); // Add this line
   const { companyId } = useParams();
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const onLogoutClick = async (e) => {
     const logout = await getRequest(`/employer/logout`);
@@ -133,22 +136,33 @@ const CompanySidebar = () => {
         },
       }}
     >
-      <Divider />
-      <TestProfileCard />
-      <List sx={{ flexGrow: 1 }}>
+      <div style={{ marginLeft: "4px" }}>
+        <TestProfileCard />
+      </div>
+      <List>
         {LINKS.map(({ text, href, icon: Icon, sublinks }) => (
           <div key={href || text}>
             <ListItem disablePadding>
               <ListItemButton
                 component={href ? Link : undefined}
                 href={href}
-                onClick={
-                  sublinks
-                    ? text === "Report"
-                      ? handleReportClick
-                      : handleSettingsClick
-                    : undefined
-                }
+                onClick={() => {
+                  if (sublinks) {
+                    if (text === "Report") {
+                      handleReportClick();
+                    } else if (text === "Setting") {
+                      handleSettingsClick();
+                    }
+                  } else {
+                    setSelectedItem(href);
+                  }
+                }}
+                style={{
+                  backgroundColor:
+                    selectedItem === href || router.pathname === href
+                      ? "#eee"
+                      : "transparent",
+                }}
               >
                 <ListItemIcon>
                   <Icon />
@@ -193,8 +207,8 @@ const CompanySidebar = () => {
           </div>
         ))}
       </List>
-      <Divider />
-      <List>
+
+      <List style={{ marginTop: "220px" }}>
         <LogoutButton onClick={(e) => onLogoutClick(e)} />
       </List>
     </Drawer>

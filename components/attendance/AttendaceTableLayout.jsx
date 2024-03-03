@@ -85,7 +85,15 @@ const AttendanceTable = () => {
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", height: 1000, mt: 3 }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        height: 1000,
+        mt: 3,
+        marginTop: "80px",
+      }}
+    >
       <Box sx={{ mb: 2 }}>
         <TextField
           label="Search by Employee Name"

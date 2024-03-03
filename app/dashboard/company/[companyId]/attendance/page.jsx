@@ -7,9 +7,7 @@ const Page = () => {
   return (
     <>
       <HeaderAttendance />
-      <br />
-      <br />
-      <br />
+
       <AttendaceTableLayout />
     </>
   );

@@ -60,14 +60,14 @@ const HeaderAttendance = () => {
   return (
     <Stack
       direction={{ xs: "column", sm: "row" }}
-      sx={{ width: "100%" }}
+      sx={{ width: "100%", marginTop: "20px" }}
       spacing={{ xs: 1, sm: 2, md: 12 }}
     >
       <Item sx={{ backgroundColor: "#0080000D " }}>
         <Typography sx={{ color: "#FF5050" }} variant="h6">
           {getAttendaceReportToday?.data?.total_attendee}
         </Typography>
-        <Typography variant="body1">Attended</Typography>
+        <Typography variant="body1">Attendee</Typography>
       </Item>
 
       <Item sx={{ backgroundColor: "#FF00000D " }}>

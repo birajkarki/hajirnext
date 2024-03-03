@@ -15,6 +15,8 @@ import {
   TableRow,
 } from "@mui/material";
 import { CloseOutlined } from "@mui/icons-material";
+import { useParams } from "next/navigation";
+import { useGetCandidateDetailQuery } from "@/services/api";
 
 const EmployeeDetailsDialog = ({ isOpen, onClose, selectedRowCandidate }) => {
   const selectedEmployee = selectedRowCandidate?.candidate_id;
