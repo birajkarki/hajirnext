@@ -28,7 +28,6 @@ import {
 import ShareIcon from "@mui/icons-material/Share";
 import InsertInvitationIcon from "@mui/icons-material/InsertInvitation";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import EditIcon from "@mui/icons-material/Edit";
 import StatusChangeIcon from "@mui/icons-material/TrackChanges";
 import {
   useDeleteCandidateQuery,
@@ -215,16 +214,16 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell >ID</TableCell>
-             
-              <TableCell >Employee Name</TableCell>
-              <TableCell  >Department</TableCell>
-              
-              <TableCell >Staff ID</TableCell>
-              <TableCell >Status</TableCell>
+              <TableCell>ID</TableCell>
+
+              <TableCell>Employee Name</TableCell>
+              <TableCell>Department</TableCell>
+
+              <TableCell>Staff ID</TableCell>
+              <TableCell>Status</TableCell>
               <TableCell>Phone</TableCell>
 
-              <TableCell >Action</TableCell>
+              <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -235,54 +234,67 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
                 .map((candidate) => (
                   <TableRow
                     key={candidate.id}
-                    sx={{ borderBottom: "0.7px dotted #ccc", backgroundColor: candidate.id === selectedRow ? "#f2f2f2" : "" }}
+                    sx={{
+                      borderBottom: "0.7px dotted #ccc",
+                      backgroundColor:
+                        candidate.id === selectedRow ? "#f2f2f2" : "",
+                    }}
                     onClick={(event) => handleRowClick(candidate, event)}
                     style={{ cursor: "pointer" }}
                   >
                     <TableCell>{candidate.id}</TableCell>
-                 
-                    <TableCell sx={{width:'40px'}}>
-                      <div style={{display:'flex', flexDirection:'row'}}>
-                      <label htmlFor="photo">
-                        <Avatar
-                          src={candidate.profile_image || "/default-avatar.png"}
-                          sx={{
-                            width: 50,
-                            height: 50,
-                            cursor: "pointer",
-                            marginRight:'10px'
+
+                    <TableCell sx={{ width: "40px" }}>
+                      <div style={{ display: "flex", flexDirection: "row" }}>
+                        <label htmlFor="photo">
+                          <Avatar
+                            src={
+                              candidate.profile_image || "/default-avatar.png"
+                            }
+                            sx={{
+                              width: 50,
+                              height: 50,
+                              cursor: "pointer",
+                              marginRight: "10px",
+                            }}
+                            alt="Profile Avatar"
+                          />
+                        </label>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            marginTop: "5px",
                           }}
-                          alt="Profile Avatar"
-                        />
-                      </label>
-                      <div style={{display:'flex', flexDirection:'column', marginTop:'5px'}}>
-                      <span> {candidate.name}</span>
-                      <span style={{color:'gray'}}>{candidate.email}</span>
+                        >
+                          <span> {candidate.name}</span>
+                          <span style={{ color: "gray" }}>
+                            {candidate.email}
+                          </span>
+                        </div>
                       </div>
-                      </div></TableCell>
+                    </TableCell>
                     <TableCell>{candidate.designation}</TableCell>
                     <TableCell>{candidate.code}</TableCell>
                     <TableCell>
-                  <span
-                    style={{
-             
-                      backgroundColor:
-            
-                      candidate.status === "Active"
-                      ? "#00800033"
-                      : "#FF505033",
-                  color: candidate.status === "Active" ? "green" : "red",
-                      padding: "7px",
-                      borderRadius: "4px",
-                    }}
-                  >
-                    {candidate.status}
-                  </span>
-
-                </TableCell>
+                      <span
+                        style={{
+                          backgroundColor:
+                            candidate.status === "Active"
+                              ? "#00800033"
+                              : "#FF505033",
+                          color:
+                            candidate.status === "Active" ? "green" : "red",
+                          padding: "7px",
+                          borderRadius: "4px",
+                        }}
+                      >
+                        {candidate.status}
+                      </span>
+                    </TableCell>
 
                     <TableCell>{candidate.phone}</TableCell>
-              
+
                     <TableCell>
                       <IconButton
                         aria-label="update"
@@ -320,9 +332,8 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
                         <MenuItem
                           onClick={() => handleMenuItemClick("edit")}
                           dense
-                      
                         >
-                          <Edit/> Edit                         
+                          <Edit /> Edit
                         </MenuItem>
                         {selectedCandidate &&
                         selectedCandidate.status === "Active" ? (
@@ -405,15 +416,29 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
         selectedRowCandidate={selectedRowCandidate}
       />
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <DialogTitle  sx={{display:'flex', justifyContent:'center'}}>Invite Candidate</DialogTitle>
+        <DialogTitle sx={{ display: "flex", justifyContent: "center" }}>
+          Invite Candidate
+        </DialogTitle>
         <DialogContent>
           <DialogContentText>
             Do you want to invite {selectedCandidate && selectedCandidate.name}?
           </DialogContentText>
         </DialogContent>
-        <DialogActions style={{display:'flex', justifyContent:'space-evenly', marginBottom:'10px'}}>
-          <Button onClick={() => setOpenDialog(false)} color="primary" variant="contained"
-          style={{ borderRadius: '20px 20px 20px 20px', width:'100px'}}>C<span style={{textTransform:'lowercase'}}>ancel</span></Button>
+        <DialogActions
+          style={{
+            display: "flex",
+            justifyContent: "space-evenly",
+            marginBottom: "10px",
+          }}
+        >
+          <Button
+            onClick={() => setOpenDialog(false)}
+            color="primary"
+            variant="contained"
+            style={{ borderRadius: "20px 20px 20px 20px", width: "100px" }}
+          >
+            C<span style={{ textTransform: "lowercase" }}>ancel</span>
+          </Button>
           <Button onClick={handleInvite} variant="contained" color="primary">
             Invite
           </Button>
@@ -424,16 +449,28 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
         open={isConfirmationDialogOpen}
         onClose={handleCloseConfirmationDialog}
       >
-        <DialogTitle sx={{display:'flex', justifyContent:'center'}}>Delete Employee</DialogTitle>
+        <DialogTitle sx={{ display: "flex", justifyContent: "center" }}>
+          Delete Employee
+        </DialogTitle>
         <DialogContent>
-          <DialogContentText >
+          <DialogContentText>
             Are you sure you want to delete this employee?
           </DialogContentText>
         </DialogContent>
-        <DialogActions style={{display:'flex', justifyContent:'space-evenly', marginBottom:'10px'}}>
-          <Button onClick={handleCloseConfirmationDialog} color="primary" variant="contained"
-          style={{ borderRadius: '20px 20px 20px 20px', width:'100px'}}>
-            C<span style={{textTransform:'lowercase'}}></span>
+        <DialogActions
+          style={{
+            display: "flex",
+            justifyContent: "space-evenly",
+            marginBottom: "10px",
+          }}
+        >
+          <Button
+            onClick={handleCloseConfirmationDialog}
+            color="primary"
+            variant="contained"
+            style={{ borderRadius: "20px 20px 20px 20px", width: "100px" }}
+          >
+            C<span style={{ textTransform: "lowercase" }}></span>
           </Button>
           <Button onClick={handleConfirmDelete} color="primary">
             Confirm
@@ -442,19 +479,42 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
       </Dialog>
 
       <Dialog open={isUpdateDialogOpen} onClose={handleCloseUpdateDialog}>
-        <DialogTitle sx={{display:'flex', justifyContent:'center'}}>Edit Candidate</DialogTitle>
+        <DialogTitle sx={{ display: "flex", justifyContent: "center" }}>
+          Edit Candidate
+        </DialogTitle>
         <DialogContent>
           <DialogContentText>
             Are you sure you want to update this employee?
           </DialogContentText>
         </DialogContent>
-        <DialogActions style={{display:'flex', justifyContent:'space-evenly', marginBottom:'10px'}}>
-          <Button onClick={handleCloseUpdateDialog} color="primary" variant="contained"
-          style={{ borderRadius: '20px 20px 20px 20px', width:'100px'}}>
-            C<span style={{textTransform:'lowercase'}}>ancel</span>
+        <DialogActions
+          style={{
+            display: "flex",
+            justifyContent: "space-evenly",
+            marginBottom: "10px",
+          }}
+        >
+          <Button
+            onClick={handleCloseUpdateDialog}
+            color="primary"
+            variant="contained"
+            style={{ borderRadius: "20px 20px 20px 20px", width: "100px" }}
+          >
+            C<span style={{ textTransform: "lowercase" }}>ancel</span>
           </Button>
-          <Button onClick={handleUpdate} color="primary" variant="contained"  style={{ color:'red', borderRadius: '20px 20px 20px 20px', backgroundColor:'white', width:'100px', boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)'}}>
-            U<span style={{textTransform:'lowercase'}}>pdate</span>
+          <Button
+            onClick={handleUpdate}
+            color="primary"
+            variant="contained"
+            style={{
+              color: "red",
+              borderRadius: "20px 20px 20px 20px",
+              backgroundColor: "white",
+              width: "100px",
+              boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
+            }}
+          >
+            U<span style={{ textTransform: "lowercase" }}>pdate</span>
           </Button>
         </DialogActions>
       </Dialog>
@@ -463,19 +523,37 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
         open={isStatusChangeDialogOpen}
         onClose={handleCloseStatusChangeDialog}
       >
-        <DialogTitle sx={{display:'flex', justifyContent:'center'}}>Status Change</DialogTitle>
+        <DialogTitle sx={{ display: "flex", justifyContent: "center" }}>
+          Status Change
+        </DialogTitle>
         <DialogContent>
           <DialogContentText>
             Are you sure you want to change the status of{" "}
             {selectedCandidate && selectedCandidate.name}?
           </DialogContentText>
         </DialogContent>
-        <DialogActions style={{display:'flex', justifyContent:'space-evenly', marginBottom:'10px'}}>
+        <DialogActions
+          style={{
+            display: "flex",
+            justifyContent: "space-evenly",
+            marginBottom: "10px",
+          }}
+        >
           <Button onClick={handleCloseStatusChangeDialog} color="primary">
-            C<span style={{textTransform:'lowercase'}}>ancel</span>
+            C<span style={{ textTransform: "lowercase" }}>ancel</span>
           </Button>
-          <Button onClick={handleStatusChange} variant="contained"  style={{ color:'red', borderRadius: '20px 20px 20px 20px', backgroundColor:'white', width:'100px', boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)'}}>
-            C<span style={{textTransform:'lowercase'}}>onfirm</span>
+          <Button
+            onClick={handleStatusChange}
+            variant="contained"
+            style={{
+              color: "red",
+              borderRadius: "20px 20px 20px 20px",
+              backgroundColor: "white",
+              width: "100px",
+              boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
+            }}
+          >
+            C<span style={{ textTransform: "lowercase" }}>onfirm</span>
           </Button>
         </DialogActions>
       </Dialog>

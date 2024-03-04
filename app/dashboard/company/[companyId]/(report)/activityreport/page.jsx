@@ -8,7 +8,6 @@ const page = () => {
     <>
       <ActivityReportHeader />
       <AttendanceOverview />
-      <h2>h</h2>
     </>
   );
 };

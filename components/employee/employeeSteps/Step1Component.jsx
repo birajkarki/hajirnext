@@ -267,7 +267,7 @@ const Step1Component = ({ formik, validationErrors }) => {
               htmlFor="demo-simple-select-label"
               sx={{ marginBottom: 0 }}
             >
-              Departments <span sx={{ color: "red" }}> *</span>
+              Departments <span style={{ color: "red" }}> *</span>
             </InputLabel>
             <Select
               value={formik.values.departments}

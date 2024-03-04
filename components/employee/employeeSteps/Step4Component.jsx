@@ -201,7 +201,7 @@ const Step4Component = ({ formik }) => {
                       ? "60px"
                       : isScreenSmall
                       ? "110px"
-                      : "auto",
+                      : "160px",
                     ml: isScreenSm ? "-120px" : isScreenSmall ? "-80px" : 1.5,
                   }}
                   {...formik.getFieldProps("casual_leave")}
@@ -214,126 +214,178 @@ const Step4Component = ({ formik }) => {
       </Grid>
 
       <Grid item xs={6}>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "start",
-            mt: -0.7,
-          }}
-        >
-          <Typography variant="body1" style={{ marginLeft: "55px" }}>
-            Allow Late Attendance <span style={{ color: "red" }}>*</span>
-          </Typography>
+        <div style={{ marginLeft: isScreenSm ? "25px" : "auto" }}>
           <Box
             sx={{
               display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              gap: "10px",
+              flexDirection: "column",
+              alignItems: "start",
+              mt: -0.7,
+              ml: isScreenSm ? "-10px" : "auto",
             }}
           >
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={formik.values.allow_late_attendance_checked === 1}
-                  onChange={(e) =>
-                    formik.setFieldValue(
-                      "allow_late_attendance_checked",
-                      e.target.checked ? 1 : 0
-                    )
-                  }
-                  name="allow_late_attendance_checked"
-                  style={{ marginLeft: "45px" }}
-                />
-              }
-            />
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <Button
-                sx={{ height: "55px", marginRight: -1.25, marginTop: 0.9 }}
-                variant="outlined"
-                onClick={() => handleHoursChange(false)}
-                disabled={!formik.values.allow_late_attendance_checked}
-              >
-                -
-              </Button>
-              <TextField
-                label="Working Hours"
-                variant="outlined"
-                sx={{ width: "230px", textAlign: "center" }}
-                margin="normal"
-                name="working_hours"
-                inputProps={{ style: { textAlign: "center" } }}
-                {...formik.getFieldProps("working_hours")}
-                InputProps={{
-                  disabled: !formik.values.allow_late_attendance_checked,
-                }}
+            <Typography
+              variant="body1"
+              style={{
+                marginLeft: isScreenSmall ? "-12px" : "55px",
+                marginTop: "10px",
+                marginBottom: "-16px",
+              }}
+            >
+              Allow Late Attendance <span style={{ color: "red" }}>*</span>
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                gap: "10px",
+                marginLeft: isScreenSmall ? "1px" : "60px",
+              }}
+            >
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={formik.values.allow_late_attendance_checked === 1}
+                    onChange={(e) =>
+                      formik.setFieldValue(
+                        "allow_late_attendance_checked",
+                        e.target.checked ? 1 : 0
+                      )
+                    }
+                    name="allow_late_attendance_checked"
+                    style={{
+                      marginRight: isScreenSm
+                        ? "30px"
+                        : isScreenSmall
+                        ? "47px"
+                        : "-10px",
+                      marginLeft: isScreenSm
+                        ? "-18px"
+                        : isScreenSmall
+                        ? "-14px"
+                        : "auto",
+                    }}
+                  />
+                }
               />
-              <Button
-                variant="outlined"
-                sx={{ height: "55px", marginLeft: -1.3, marginTop: 0.9 }}
-                onClick={() => handleHoursChange(true)}
-                disabled={!formik.values.allow_late_attendance_checked}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  marginLeft: isScreenSmall ? "-60px" : "auto",
+                }}
               >
-                +
-              </Button>
-            </div>
-          </Box>
+                <Button
+                  sx={{ height: "55px", marginRight: -1.25, marginTop: 0.9 }}
+                  variant="outlined"
+                  onClick={() => handleHoursChange(false)}
+                  disabled={!formik.values.allow_late_attendance_checked}
+                >
+                  -
+                </Button>
+                <TextField
+                  label="Working Hours"
+                  variant="outlined"
+                  sx={{
+                    width: isScreenSm
+                      ? "80px"
+                      : isScreenSmall
+                      ? "160px"
+                      : "230px",
+                    textAlign: "center",
+                  }}
+                  margin="normal"
+                  name="working_hours"
+                  inputProps={{ style: { textAlign: "center" } }}
+                  {...formik.getFieldProps("working_hours")}
+                  InputProps={{
+                    disabled: !formik.values.allow_late_attendance_checked,
+                  }}
+                />
+                <Button
+                  variant="outlined"
+                  sx={{ height: "55px", marginLeft: -1.3, marginTop: 0.9 }}
+                  onClick={() => handleHoursChange(true)}
+                  disabled={!formik.values.allow_late_attendance_checked}
+                >
+                  +
+                </Button>
+              </div>
+            </Box>
 
-          <Typography
-            variant="body1"
-            style={{ marginTop: "7px", marginLeft: "60px" }}
-          >
-            Over Time Ratio <span style={{ color: "red" }}>*</span>
-          </Typography>
-          <Box>
-            <TextField
-              label="eg ratio: 2, 4, 5, 6"
-              value={formik.values.overtime_ratio}
-              onChange={formik.handleChange}
-              name="overtime_ratio"
-              sx={{ mt: -0.2, mb: 2, ml: 7, width: "405px" }}
-              disabled={!formik.values.overtime_checked}
-            />
+            <Typography
+              variant="body1"
+              style={{
+                marginTop: "12px",
+                marginBottom: "1px",
+                marginLeft: isScreenSmall ? "-10px" : "60px",
+              }}
+            >
+              Over Time Ratio <span style={{ color: "red" }}>*</span>
+            </Typography>
+            <Box>
+              <TextField
+                label="eg ratio: 2, 4, 5, 6"
+                value={formik.values.overtime_ratio}
+                onChange={formik.handleChange}
+                name="overtime_ratio"
+                sx={{
+                  mt: -0.1,
+                  mb: 2,
+                  ml: isScreenSmall ? -1.1 : 7,
+                  width: isScreenSm
+                    ? "226px"
+                    : isScreenSmall
+                    ? "330px"
+                    : "405px",
+                }}
+                disabled={!formik.values.overtime_checked}
+              />
+            </Box>
+            <Typography
+              variant="body1"
+              style={{ marginLeft: isScreenSmall ? "-12px" : "55px" }}
+            >
+              Allow access Network <span style={{ color: "red" }}>*</span>
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+                padding: "10px",
+                width: isScreenSm ? "220px" : isScreenSmall ? "330px" : "400px",
+                ml: isScreenSmall ? -1 : 7,
+                height: "55px",
+              }}
+            >
+              <FormControlLabel
+                value="all"
+                control={<Radio />}
+                label="All"
+                checked={formik.values.allow_network_access === "all"}
+                onChange={formik.handleChange}
+                name="allow_network_access"
+              />
+              <Divider
+                style={{ height: "55px", marginTop: "-11px" }}
+                orientation="vertical"
+                flexItem
+              />
+              <FormControlLabel
+                value="QR code"
+                control={<Radio />}
+                label="QR code"
+                checked={formik.values.allow_network_access === "QR code"}
+                onChange={formik.handleChange}
+                name="allow_network_access"
+              />
+            </Box>
           </Box>
-          <Typography variant="body1" style={{ marginLeft: "55px" }}>
-            Allow access Network <span style={{ color: "red" }}>*</span>
-          </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              border: "1px solid #ccc",
-              borderRadius: "5px",
-              padding: "10px",
-              width: "50%",
-              ml: 7,
-              height: "55px",
-            }}
-          >
-            <FormControlLabel
-              value="all"
-              control={<Radio />}
-              label="All"
-              checked={formik.values.allow_network_access === "all"}
-              onChange={formik.handleChange}
-              name="allow_network_access"
-            />
-            <Divider
-              style={{ height: "55px", marginTop: "-11px" }}
-              orientation="vertical"
-              flexItem
-            />
-            <FormControlLabel
-              value="QR code"
-              control={<Radio />}
-              label="QR code"
-              checked={formik.values.allow_network_access === "QR code"}
-              onChange={formik.handleChange}
-              name="allow_network_access"
-            />
-          </Box>
-        </Box>
+        </div>
       </Grid>
     </Grid>
   );

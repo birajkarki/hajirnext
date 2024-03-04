@@ -102,14 +102,14 @@ export default function Signin() {
       ),
     },
   ];
-  // commment
+
   useEffect(() => {
     const intervalId = setInterval(() => {
       setSelectedImageIndex((prevIndex) => (prevIndex + 1) % images.length);
     }, 2000);
 
     return () => clearInterval(intervalId);
-  }, []); // Run the effect only once when the component mounts
+  }, []);
 
   const [open, setOpen] = useState(false);
   const [buttonClicked, setButtonClicked] = useState(false);
@@ -176,8 +176,7 @@ export default function Signin() {
             <Image
               src="/auth/login.png"
               alt="login image"
-              // layout="responsive" // Making the image responsive
-              width={isScreenSmall ? 300 : 900} // Adjusted width based on screen size
+              width={isScreenSmall ? 300 : 900}
               height={900}
               style={{ display: "block", maxWidth: "100%", height: "auto" }}
               priority

@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
@@ -12,7 +11,7 @@ import { useFormik } from "formik";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useMediaQuery } from "@mui/material";
 const Otp = () => {
-  const router = useRouter(); // Define the router object using the useRouter hook
+  const router = useRouter();
 
   useEffect(() => {
     const token =
@@ -152,14 +151,14 @@ const Otp = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        height: "100vh", // Adjusted minHeight instead of maxHeight
+        height: "100vh",
         objectFit: "cover",
         overflow: "hidden",
       }}
     >
       <Grid container spacing={3} justifyContent="center" alignItems="center">
         <Grid item xs={6}>
-          {!isMobile && ( // Hide the image on mobile screens
+          {!isMobile && (
             <Image
               src="/auth/login.png"
               alt="login image"
@@ -328,18 +327,6 @@ const Otp = () => {
                 </Button>
               )}
             </div>
-
-            {/* <p
-              style={{
-                whiteSpace: "pre-line",
-                textDecoration: "underline",
-                cursor: "pointer",
-                color: "#3f51b5",
-              }}
-              onClick={() => router.push("/login")}
-            >
-              Change number again{" "}
-            </p> */}
           </Paper>
         </Grid>
       </Grid>
