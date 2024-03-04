@@ -16,22 +16,22 @@ import LogoutButton from "./LogoutButton";
 import BusinessIcon from "@mui/icons-material/Business";
 import Link from "next/link";
 import ExpandLess from "@mui/icons-material/ExpandLess";
+import PersonIcon from "@mui/icons-material/Person";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import Collapse from "@mui/material/Collapse";
 import { useParams } from "next/navigation";
 import { Button } from "@mui/material";
 import TestProfileCard from "../testprofile/TestProfileCard";
 import { getRequest } from "@/services/ApiRequestService";
+import CreditCardIcon from "@mui/icons-material/CreditCard";
+import SsidChartIcon from "@mui/icons-material/SsidChart";
 import { useRouter } from "next/navigation";
 
 const CompanySidebar = () => {
-  const router = useRouter();
-
   const [openSettings, setOpenSettings] = useState(false);
   const [openReport, setOpenReport] = useState(false); // Add this line
   const [activeLink, setActiveLink] = useState("");
   const { companyId } = useParams();
-  const [selectedItem, setSelectedItem] = useState(null);
 
   const onLogoutClick = async (e) => {
     const logout = await getRequest(`/employer/logout`);
@@ -53,26 +53,27 @@ const CompanySidebar = () => {
     {
       text: "Employee",
       href: `/dashboard/company/${companyId}/`,
-      icon: HomeIcon,
+      icon: "/employee.svg",
     },
     {
       text: "Attendance",
       href: `/dashboard/company/${companyId}/attendance/`,
-      icon: HomeIcon,
+
+      icon: "/attendance.svg",
     },
     {
       text: "Report",
-      icon: HomeIcon,
+      icon: "/registerr.svg",
       sublinks: [
         {
           text: "Activity Report",
           href: `/dashboard/company/${companyId}/activityreport/`,
-          icon: BusinessIcon,
+          icon: "/tabler.svg",
         },
         {
           text: "Payments Reports",
           href: `/dashboard/company/${companyId}/paymentreport/`,
-          icon: StarIcon,
+          icon: "/moneyy.svg",
         },
       ],
     },
@@ -84,32 +85,32 @@ const CompanySidebar = () => {
           text: "Messenger Inbox",
           href: `/dashboard/company/${companyId}/messaginginbox/`,
 
-          icon: BusinessIcon,
+          icon: "/Message.svg ",
         },
 
         {
           text: "Missing Attendance",
           href: `/dashboard/company/${companyId}/missingattendance/`,
 
-          icon: ChecklistIcon,
+          icon: "/missingattendance.svg",
         },
         {
           text: "Missing Leave",
           href: `/dashboard/company/${companyId}/missingleave/`,
 
-          icon: ChecklistIcon,
+          icon: "/missingLeave.svg",
         },
         {
           text: "Add Approval",
           href: `/dashboard/company/${companyId}/addapproval/`,
 
-          icon: SettingsIcon,
+          icon: "/AddApprover.svg",
         },
         {
           text: "Update Holiday",
           href: `/dashboard/company/${companyId}/updateholiday/`,
 
-          icon: SettingsIcon,
+          icon: "/updateHolidays.svg",
         },
       ],
     },
@@ -139,10 +140,9 @@ const CompanySidebar = () => {
         },
       }}
     >
-      <div style={{ marginLeft: "4px" }}>
-        <TestProfileCard />
-      </div>
-      <List>
+      <Divider />
+      <TestProfileCard />
+      <List sx={{ flexGrow: 1 }}>
         {LINKS.map(({ text, href, icon: Icon, sublinks }) => (
           <div key={href || text}>
             <ListItem disablePadding>
@@ -154,12 +154,20 @@ const CompanySidebar = () => {
                     ? text === "Report"
                       ? handleReportClick
                       : handleSettingsClick
-                    : undefined
+                    : () => handleLinkClick(text)
                 }
+                // sx={activeLink === text ? { backgroundColor: "#22408B15" } : {}}
+                sx={{
+                  "&:hover, &:active": {
+                    backgroundColor: "#22408B15", // Change background color on hover and click
+                  },
+                }}
               >
-                <ListItemIcon>
-                  <Icon />
-                </ListItemIcon>
+                {typeof Icon === "string" ? (
+                  <img src={Icon} alt={text} style={{ marginRight: "18px" }} />
+                ) : (
+                  <Icon style={{ marginLeft: "-3px", marginRight: "16px" }} />
+                )}
                 <ListItemText primary={text} />
                 {sublinks &&
                   (text === "Report" ? (
@@ -186,11 +194,26 @@ const CompanySidebar = () => {
                     <ListItemButton
                       component={href ? Link : undefined}
                       href={href}
-                      sx={{ pl: 4 }}
+                      onClick={() => handleLinkClick(text)} // Set active link when clicked
+                      sx={{
+                        pl: 4,
+                        // ...(activeLink === text && { backgroundColor: "#22408B15" })
+                        "&:hover, &:active": {
+                          backgroundColor: "#22408B15", // Change background color on hover and click
+                        },
+                      }}
                     >
-                      <ListItemIcon>
-                        <SubIcon />
-                      </ListItemIcon>
+                      {typeof SubIcon === "string" ? (
+                        <img
+                          src={SubIcon}
+                          alt={text}
+                          style={{ marginRight: "8px" }}
+                        />
+                      ) : (
+                        <ListItemIcon>
+                          <SubIcon />
+                        </ListItemIcon>
+                      )}
                       <ListItemText primary={text} />
                     </ListItemButton>
                   </ListItem>
@@ -200,8 +223,8 @@ const CompanySidebar = () => {
           </div>
         ))}
       </List>
-
-      <List style={{ marginTop: "220px" }}>
+      <Divider />
+      <List>
         <LogoutButton onClick={(e) => onLogoutClick(e)} />
       </List>
     </Drawer>
