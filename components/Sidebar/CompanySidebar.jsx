@@ -28,6 +28,7 @@ import SsidChartIcon from "@mui/icons-material/SsidChart";
 import { useRouter } from "next/navigation";
 
 const CompanySidebar = () => {
+  const router = useRouter();
   const [openSettings, setOpenSettings] = useState(false);
   const [openReport, setOpenReport] = useState(false); // Add this line
   const [activeLink, setActiveLink] = useState("");
@@ -58,7 +59,6 @@ const CompanySidebar = () => {
     {
       text: "Attendance",
       href: `/dashboard/company/${companyId}/attendance/`,
-
       icon: "/attendance.svg",
     },
     {

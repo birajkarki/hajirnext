@@ -6,6 +6,7 @@ import {
   Radio,
   RadioGroup,
   FormControlLabel,
+  useMediaQuery,
 } from "@mui/material";
 
 const CustomRadioGroup = ({
@@ -21,8 +22,10 @@ const CustomRadioGroup = ({
     },
     [name, setFieldValue]
   );
+  const isScreenSmall = useMediaQuery("(max-width:1390px)");
+  const isScreenSM = useMediaQuery("(max-width:978px)");
   return (
-    <RadioGroup row name={name} value={value} onChange={onChange}>
+    <RadioGroup row name={name} value={value} onChange={onChange} sx={{}}>
       {options.map((option) => (
         <Box
           key={option.value}
@@ -31,9 +34,12 @@ const CustomRadioGroup = ({
             borderRadius: "4px",
             padding: "16px",
             display: "flex",
-            width: "330px",
+            width: isScreenSM ? "250px" : isScreenSmall ? "300px" : "500px",
+
+            // width: "330px",
             alignItems: "center",
             paddingRight: "50px",
+            marginBottom: "17px",
             paddingLeft: "50px",
             marginRight: "38px",
             cursor: "pointer",

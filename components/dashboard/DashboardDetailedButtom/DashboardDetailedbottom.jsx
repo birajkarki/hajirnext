@@ -9,7 +9,7 @@ import { useGetEmployerCompaniesQuery } from "@/services/api";
 
 const DashboardDetailedbottom = () => {
   const { companyId } = useParams();
-  console.log("companyId:", companyId);
+  // console.log("companyId:", companyId);
 
   const {
     data: companyData,

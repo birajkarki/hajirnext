@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import { useDispatch } from "react-redux";
 import {
   Box,
   Typography,
@@ -13,16 +12,12 @@ import {
   FormControlLabel,
   RadioGroup,
   LinearProgress,
+  useMediaQuery,
 } from "@mui/material";
-// import { addCompany } from "@/redux/companySlice";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-// import RadioField from "@/components/common/Fields/RadioField";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
-import Hamburger from "@/components/common/hamburger";
 import CustomRadioGroup from "@/components/company/createcompany/RadioButton";
-import InputField from "@/components/common/Fields/InputField";
 import { useCreateCompanyMutation } from "@/services/api";
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -42,7 +37,8 @@ const CreateCompany = () => {
   const [file, setFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-
+  const isScreenSmall = useMediaQuery("(max-width:1390px)");
+  const isScreenSM = useMediaQuery("(max-width:978px)");
   const validationSchema = yup.object({
     name: yup
       .string()
@@ -69,7 +65,6 @@ const CreateCompany = () => {
       // custom_holiday_file: "",
     },
     validationSchema: validationSchema,
-    // onSubmit function
     onSubmit: async (values, { resetForm }) => {
       try {
         setIsLoading(true);
@@ -83,12 +78,10 @@ const CreateCompany = () => {
         formData.append("holiday_type", values.holiday_type);
         formData.append("custom_holiday_file", file);
 
-        // Destructure the elements of the array
         const [mutateAsync] = createCompanyMutation;
 
         const { data } = await mutateAsync(formData, {
           onUploadProgress: (progressEvent) => {
-            // Calculate upload progress
             const progress = Math.round(
               (progressEvent.loaded / progressEvent.total) * 100
             );
@@ -100,14 +93,12 @@ const CreateCompany = () => {
         console.log("Company added successfully:", data);
 
         alert("Company added successfully!");
-        // Reset the form
         resetForm();
 
         router.push("/dashboard/company");
       } catch (error) {
         console.error("Error adding company:", error);
 
-        // Show a user-friendly error message
         alert("Error adding company. Please try again.");
       }
     },
@@ -203,7 +194,7 @@ const CreateCompany = () => {
         onSubmit={formik.handleSubmit}
         style={{ marginTop: "20px", marginLeft: "30px" }}
       >
-        <Grid container spacing={2}>
+        <Grid container>
           {/* Left Column */}
           <Grid item xs={6}>
             <Box
@@ -221,7 +212,13 @@ const CreateCompany = () => {
               <TextField
                 label="Enter Company Name"
                 variant="outlined"
-                fullWidth
+                sx={{
+                  width: isScreenSM
+                    ? "250px"
+                    : isScreenSmall
+                    ? "300px"
+                    : "500px",
+                }}
                 margin="normal"
                 {...formik.getFieldProps("name")}
                 error={formik.touched.name && Boolean(formik.errors.name)}
@@ -248,7 +245,6 @@ const CreateCompany = () => {
                     label: "Custom",
                     description: "E.g.: 021, 022 or 0100, 0101 ",
                   },
-                  // Add more options as needed
                 ]}
                 setFieldValue={formik.setFieldValue}
               />
@@ -307,7 +303,12 @@ const CreateCompany = () => {
                     border: "1px solid #ccc",
                     borderRadius: "4px",
                     padding: "16px",
-                    width: "500px",
+                    width: isScreenSM
+                      ? "250px"
+                      : isScreenSmall
+                      ? "300px"
+                      : "500px",
+
                     display: "flex",
                     transition: "background 0.3s, border 0.3s",
                     "&:hover": { background: "#f5f5f5" },
@@ -327,7 +328,7 @@ const CreateCompany = () => {
                     />
                   </RadioGroup>
                 </Box>
-                {/* need to pdate this part */}
+                {/* need to update this part */}
                 {formik.touched.holiday_type &&
                   formik.errors.holiday_type === "" && (
                     <Typography sx={{ color: "red", marginTop: "4px" }}>
@@ -354,7 +355,13 @@ const CreateCompany = () => {
                     border: "1px solid #ccc",
                     borderRadius: "4px",
                     padding: "16px",
-                    width: "500px",
+
+                    width: isScreenSM
+                      ? "250px"
+                      : isScreenSmall
+                      ? "300px"
+                      : "500px",
+
                     display: "flex",
                     transition: "background 0.3s, border 0.3s",
                     "&:hover": { background: "#f5f5f5" },
@@ -401,7 +408,6 @@ const CreateCompany = () => {
                 </Button>
                 {isLoading && <LinearProgress value={uploadProgress} />}
 
-                {/* Conditionally render the file name if uploadedFile is not null */}
                 {file && (
                   <Typography variant="body2" sx={{ marginTop: "8px" }}>
                     Uploaded File: {file.name}
