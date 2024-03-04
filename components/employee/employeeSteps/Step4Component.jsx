@@ -176,7 +176,7 @@ const isScreenSm = useMediaQuery("(max-width:910px)");
                 <TextField
                
                   label="eg : 2 ,4 ,5 , 6"
-                  sx={{ width: isScreenSm?"60px": isScreenSmall? '110px':'auto',ml: isScreenSm?"-120px": isScreenSmall?'-80px': 1.5}}
+                  sx={{ width: isScreenSm?"60px": isScreenSmall? '110px':'160px',ml: isScreenSm?"-120px": isScreenSmall?'-80px': 1.5}}
                   {...formik.getFieldProps("casual_leave")}
                   disabled={!formik.values.casual_leave_checked}
                 />
@@ -187,15 +187,17 @@ const isScreenSm = useMediaQuery("(max-width:910px)");
       </Grid>
 
       <Grid item xs={6}>
+        <div style={{marginLeft: isScreenSm?"25px":"auto"}}>
         <Box
           sx={{
             display: "flex",
             flexDirection: "column",
             alignItems: "start",
             mt: -0.7,
+            ml: isScreenSm?'-10px':'auto',
           }}
         >
-          <Typography variant="body1" style={{ marginLeft: "55px" }}>
+          <Typography variant="body1" style={{ marginLeft:isScreenSmall?"-12px": "55px", marginTop:'10px', marginBottom:'-16px' }}>
             Allow Late Attendance <span style={{ color: "red" }}>*</span>
           </Typography>
           <Box
@@ -204,6 +206,7 @@ const isScreenSm = useMediaQuery("(max-width:910px)");
               flexDirection: "row",
               alignItems: "center",
               gap: "10px",
+            marginLeft: isScreenSmall?"1px":"60px" 
             }}
           >
             <FormControlLabel
@@ -217,11 +220,11 @@ const isScreenSm = useMediaQuery("(max-width:910px)");
                     )
                   }
                   name="allow_late_attendance_checked"
-                  style={{ marginLeft: "45px" }}
+                  style={{marginRight: isScreenSm?"30px":isScreenSmall?"47px":'-10px', marginLeft:isScreenSm?"-18px" :isScreenSmall?"-14px":"auto" }}
                 />
               }
             />
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginLeft: isScreenSmall?"-60px":"auto" }}>
               <Button
                 sx={{ height: "55px", marginRight: -1.25, marginTop: 0.9 }}
                 variant="outlined"
@@ -233,7 +236,7 @@ const isScreenSm = useMediaQuery("(max-width:910px)");
               <TextField
                 label="Working Hours"
                 variant="outlined"
-                sx={{ width: "230px", textAlign: "center" }}
+                sx={{ width: isScreenSm?"80px": isScreenSmall?"160px": "230px", textAlign: "center" }}
                 margin="normal"
                 name="working_hours"
                 inputProps={{ style: { textAlign: "center" } }}
@@ -255,7 +258,7 @@ const isScreenSm = useMediaQuery("(max-width:910px)");
 
           <Typography
             variant="body1"
-            style={{ marginTop: "7px", marginLeft: "60px" }}
+            style={{ marginTop: "12px" , marginBottom:'1px', marginLeft: isScreenSmall?"-10px": "60px"}}
           >
             Over Time Ratio <span style={{ color: "red" }}>*</span>
           </Typography>
@@ -265,11 +268,11 @@ const isScreenSm = useMediaQuery("(max-width:910px)");
               value={formik.values.overtime_ratio}
               onChange={formik.handleChange}
               name="overtime_ratio"
-              sx={{ mt: -0.2, mb: 2, ml: 7, width: "405px" }}
+              sx={{ mt: -0.1, mb: 2, ml: isScreenSmall?-1.1: 7, width: isScreenSm?"226px": isScreenSmall?"330px": "405px" }}
               disabled={!formik.values.overtime_checked}
             />
           </Box>
-          <Typography variant="body1" style={{ marginLeft: "55px" }}>
+          <Typography variant="body1" style={{ marginLeft:isScreenSmall?"-12px": "55px" }}>
             Allow access Network <span style={{ color: "red" }}>*</span>
           </Typography>
           <Box
@@ -279,8 +282,8 @@ const isScreenSm = useMediaQuery("(max-width:910px)");
               border: "1px solid #ccc",
               borderRadius: "5px",
               padding: "10px",
-              width: "50%",
-              ml: 7,
+              width: isScreenSm?"220px": isScreenSmall?"330px":"400px",
+              ml: isScreenSmall? -1:7,
               height: "55px",
             }}
           >
@@ -307,6 +310,7 @@ const isScreenSm = useMediaQuery("(max-width:910px)");
             />
           </Box>
         </Box>
+        </div>
       </Grid>
     </Grid>
   );

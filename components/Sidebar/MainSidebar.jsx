@@ -20,7 +20,7 @@ import { getRequest } from "@/services/ApiRequestService";
 
 const MainSidebar = () => {
   const router = useRouter();
-
+  const [hoveredItem, setHoveredItem] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
 
   const LINKS = [
@@ -38,6 +38,11 @@ const MainSidebar = () => {
       return router.push("/login");
     }
   };
+  const handleItemClick = (href) => {
+    setSelectedItem(href);
+    setHoveredItem(null); // Reset the hoveredItem state when an item is clicked
+  };
+
 
   return (
     <Drawer
@@ -66,13 +71,21 @@ const MainSidebar = () => {
               component={Link}
               href={href}
               selected={selectedItem === href || router.pathname === href}
-              onClick={() => setSelectedItem(href)}
-              style={{
-                backgroundColor:
-                  selectedItem === href || router.pathname === href
-                    ? "#eee"
-                    : "transparent",
+              onClick={() => handleItemClick(href)}
+              onMouseEnter={() => setHoveredItem(href)}
+              onMouseLeave={() => setHoveredItem(null)}
+              
+              sx={{
+                "&:hover": {
+                  backgroundColor: hoveredItem === href ? "#22408B15" : "transparent",
+                },
+                ...(selectedItem === href || router.pathname === href
+                  ? {
+                      backgroundColor: "#22408B15",
+                    }
+                  : {}),
               }}
+
             >
               <ListItemIcon>
                 <Icon />

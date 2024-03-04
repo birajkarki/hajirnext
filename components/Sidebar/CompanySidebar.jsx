@@ -29,6 +29,7 @@ const CompanySidebar = () => {
 
   const [openSettings, setOpenSettings] = useState(false);
   const [openReport, setOpenReport] = useState(false); // Add this line
+  const [activeLink, setActiveLink] = useState("");
   const { companyId } = useParams();
   const [selectedItem, setSelectedItem] = useState(null);
 
@@ -40,7 +41,9 @@ const CompanySidebar = () => {
       return router.push("/login");
     }
   };
-
+  const handleLinkClick = (text) => {
+    setActiveLink(text);
+  };
   const LINKS = [
     {
       text: "Home",
@@ -146,23 +149,13 @@ const CompanySidebar = () => {
               <ListItemButton
                 component={href ? Link : undefined}
                 href={href}
-                onClick={() => {
-                  if (sublinks) {
-                    if (text === "Report") {
-                      handleReportClick();
-                    } else if (text === "Setting") {
-                      handleSettingsClick();
-                    }
-                  } else {
-                    setSelectedItem(href);
-                  }
-                }}
-                style={{
-                  backgroundColor:
-                    selectedItem === href || router.pathname === href
-                      ? "#eee"
-                      : "transparent",
-                }}
+                onClick={
+                  sublinks
+                    ? text === "Report"
+                      ? handleReportClick
+                      : handleSettingsClick
+                    : undefined
+                }
               >
                 <ListItemIcon>
                   <Icon />
