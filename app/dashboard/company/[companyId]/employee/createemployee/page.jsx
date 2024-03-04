@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
@@ -78,35 +77,31 @@ const HorizontalLinearStepper = () => {
 
   const formik = useFormik({
     initialValues: {
-      name_holder: "Mr", //required string
-      name: "", // required
-      code: "", // required
-      contact: "", // required
-      designation: "", // required
-      marriage_status: "", //required enum['Married', 'Unmarried']
-      salary_type: "", // required - enum ['Weekly', 'Monthly']
-      salary: "", // required - enum ['Fixed', 'Breakdown']
-      salary_amount: "", // required - double
-      allowance_amount: "", // nullable - double
-      joining_date: "", // required - date
-      working_hours: "", // required
-      duty_time: "", // required - time
-      probation_period: "", // required - unsignedBigInt
-      break_duration: "", // required - min/hr to seconds - string
-      departments: "", // required - array - api:{{globalLiveUrl}}/employer/all-departments
-      allow_late_attendance: "", // nullable -time
-      casual_leave: "", //required - unsignedInteger
-      sick_leave: "", //required - unsignedInteger
-      overtime_ratio: "", // double(2.2)
-      overtime_hrs: "", // float(2.2)
-      week_days_off: [], // array
-      half_days: [], // array
-      allow_network_access: "", // required - enum['All Net', 'QR']
-      confirmPhoneNumber: "",
-      allow_late_attendance_checked: "",
-      casual_leave_checked: "",
-      overtime_checked: "",
-      sick_leave_checked: "",
+      name_holder: "Mr",
+      confirmPhoneNumber: "9861389660",
+
+      name: "Roshan Pokharel",
+      code: "sasa",
+      contact: "9861389660",
+      designation: "QA",
+      marriage_status: "Unmarried",
+      salary_type: "Weekly",
+      salary: "Fixed",
+      salary_amount: 20000.0,
+      allowance_amount: 2000.0,
+      joining_date: "2024-02-22",
+      working_hours: "8:00",
+      duty_time: "08:00",
+      probation_period: 1,
+      break_duration: "30",
+      departments: [1, 2, 3],
+      allow_late_attendance: "30",
+      casual_leave: 6,
+      sick_leave: 7,
+      overtime_ratio: 1.2,
+      overtime_hrs: 1,
+      week_days_off: [1, 7],
+      allow_network_access: "All Net",
     },
     validationSchema: validationSchemas[activeStep],
     onSubmit: async (values, { resetForm }) => {

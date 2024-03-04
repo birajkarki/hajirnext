@@ -118,6 +118,7 @@ const Step1Component = ({ formik, validationErrors }) => {
 
           {/* Phone Number */}
           <TextField
+            label="Phone Number"
             variant="outlined"
             sx={{
               width: isScreenSM ? "255px" : isScreenSmall ? "305px" : "505px",

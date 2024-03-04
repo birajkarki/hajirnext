@@ -13,8 +13,6 @@ import BusinessIcon from "@mui/icons-material/Business";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import TestProfileCard from "../testprofile/TestProfileCard";
-import LogoutIcon from "@mui/icons-material/Logout";
-import { Button } from "@mui/material";
 import LogoutButton from "./LogoutButton";
 import { getRequest } from "@/services/ApiRequestService";
 
@@ -27,6 +25,7 @@ const MainSidebar = () => {
     { text: "Home", href: "/dashboard", icon: HomeIcon },
     { text: "Company", href: "/dashboard/company", icon: BusinessIcon },
     { text: "My Plans", href: "/dashboard/myplans", icon: SortIcon },
+    { text: "My Plans", href: "/dashboard/myplansbiraj", icon: SortIcon },
   ];
 
   const onLogoutClick = async (e) => {
@@ -42,7 +41,6 @@ const MainSidebar = () => {
     setSelectedItem(href);
     setHoveredItem(null); // Reset the hoveredItem state when an item is clicked
   };
-
 
   return (
     <Drawer
@@ -74,10 +72,10 @@ const MainSidebar = () => {
               onClick={() => handleItemClick(href)}
               onMouseEnter={() => setHoveredItem(href)}
               onMouseLeave={() => setHoveredItem(null)}
-              
               sx={{
                 "&:hover": {
-                  backgroundColor: hoveredItem === href ? "#22408B15" : "transparent",
+                  backgroundColor:
+                    hoveredItem === href ? "#22408B15" : "transparent",
                 },
                 ...(selectedItem === href || router.pathname === href
                   ? {
@@ -85,7 +83,6 @@ const MainSidebar = () => {
                     }
                   : {}),
               }}
-
             >
               <ListItemIcon>
                 <Icon />
