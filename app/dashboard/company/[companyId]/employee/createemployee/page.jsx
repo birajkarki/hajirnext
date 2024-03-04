@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
@@ -83,25 +82,25 @@ const HorizontalLinearStepper = () => {
       code: "", // required
       contact: "", // required
       designation: "", // required
-      marriage_status: "", //required enum['Married', 'Unmarried']
-      salary_type: "", // required - enum ['Weekly', 'Monthly']
+      marriage_status: "Unmarried", //required enum['Married', 'Unmarried']
+      salary_type: "Monthly", // required - enum ['Weekly', 'Monthly']
       salary: "", // required - enum ['Fixed', 'Breakdown']
       salary_amount: "", // required - double
       allowance_amount: "", // nullable - double
       joining_date: "", // required - date
-      working_hours: "", // required
-      duty_time: "", // required - time
+      working_hours: "8:00", // required
+      duty_time: "09:00", // required - time
       probation_period: "", // required - unsignedBigInt
-      break_duration: "", // required - min/hr to seconds - string
-      departments: "", // required - array - api:{{globalLiveUrl}}/employer/all-departments
-      allow_late_attendance: "", // nullable -time
+      break_duration: "300", // required - min/hr to seconds - string
+      departments: [], // required - array - api:{{globalLiveUrl}}/employer/all-departments
+      allow_late_attendance: "0:10", // nullable -time
       casual_leave: "", //required - unsignedInteger
       sick_leave: "", //required - unsignedInteger
       overtime_ratio: "", // double(2.2)
       overtime_hrs: "", // float(2.2)
-      week_days_off: [], // array
-      half_days: [], // array
-      allow_network_access: "", // required - enum['All Net', 'QR']
+      week_days_off: [1], // array
+      half_days: [1], // array
+      allow_network_access: "All Net", // required - enum['All Net', 'QR']
       confirmPhoneNumber: "",
       allow_late_attendance_checked: "",
       casual_leave_checked: "",
