@@ -32,6 +32,7 @@ const CompanySidebar = () => {
   const [openReport, setOpenReport] = useState(false); // Add this line
   const [activeLink, setActiveLink] = useState("");
   const { companyId } = useParams();
+  const router = useRouter();
 
   const onLogoutClick = async (e) => {
     const logout = await getRequest(`/employer/logout`);
@@ -225,7 +226,7 @@ const CompanySidebar = () => {
       </List>
       <Divider />
       <List>
-        <LogoutButton onClick={(e) => onLogoutClick(e)} />
+        <LogoutButton onClick={(e) => onLogoutClick(e)} sx={{ position: "absolute",bottom: 0, left: 0}} />
       </List>
     </Drawer>
   );

@@ -140,7 +140,7 @@ const EmployeeDetailsDialog = ({ isOpen, onClose, selectedRowCandidate }) => {
         <DialogActions>
           <Button
             onClick={onClose}
-            sx={{ marginTop: "-50px", marginLeft: "190px" }}
+            sx={{ marginTop: "-50px", position:"absolute", right:'10px', marginTop:'-38px'}}
           >
             <CloseOutlined style={{ color: "black" }} />
           </Button>

@@ -403,8 +403,8 @@ const CompanyTable = ({ companies, statusFilter }) => {
           </Button>
           <Button onClick={handleConfirmStatusUpdate}  style={{borderRadius: '20px 20px 20px 20px', color:'red', backgroundColor:'white', width:'100px', boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)'}}>
           {selectedCompany && selectedCompany.status === "Active"
-        ? <span>A<span style={{ textTransform: 'lowercase' }}>ctive</span></span>
-        : <span>I<span style={{ textTransform: 'lowercase' }}>nactive</span></span>
+        ? <span>I<span style={{ textTransform: 'lowercase' }}>nactive</span></span>
+        : <span>A<span style={{ textTransform: 'lowercase' }}>nactive</span></span>
     }
           </Button>
         </DialogActions>

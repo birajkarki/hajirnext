@@ -1,4 +1,4 @@
-
+'use client'
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
@@ -9,45 +9,23 @@ import { TabPanel } from '@mui/lab';
 import styled from 'styled-components';
 import SimplePaper from '../PlansPaper/PlansPaper';
 import Monthly from '../monthly/monthly';
-
-// Styled components for the custom styles
-const Top = styled.div`
-  height: 120px;
-`;
-
-const Content = styled.div`
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  font-size: 13px;
-  height: 340px;
-  gap: 5px;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  position: relative;
-`;
-
-// Styled component for the custom TabPanel
-const TabPanelStyled = styled.div`
-  display: ${({ value, index }) => (value === index ? 'block' : 'none')};
-`;
-
-// CustomTabPanel component with styled-components
 export function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
-
   return (
-    <TabPanelStyled value={value} index={index} {...other}>
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </TabPanelStyled>
+         <div
+      style={{
+        display: value === index ? 'block' : 'none'
+      }}
+      {...other}
+    >
+    {value === index && (
+      <Box sx={{ p: 3 }}>
+        <Typography>{children}</Typography>
+      </Box>
+    )}
+  </div>
   );
 }
-
 CustomTabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.number.isRequired,
@@ -60,8 +38,6 @@ function a11yProps(index) {
     'aria-controls': `simple-tabpanel-${index}`,
   };
 }
-
-// BasicTabs component with styled-components
 export default function BasicTabs() {
   const [value, setValue] = React.useState(0);
 
@@ -74,18 +50,22 @@ export default function BasicTabs() {
       <Box
         sx={{
           borderColor: 'divider',
-          alignItems: 'center',
+          display:'flex',
           justifyContent: 'center',
+          alignItems: 'center',
+   
           textAlign: 'center',
-          marginLeft: '250px',
+
+          maxWidth: '600px',
+          margin:'auto',
         }}
       >
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label="Monthly" {...a11yProps(0)} sx={{ width: '600px', borderColor: 'gray',  color: 'black' }} />
+        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" sx={{ width: '100%' , display:'flex', justifyContent:'center'}}>
+          <Tab label="Monthly" {...a11yProps(0)} sx={{ width: '50%', borderColor: 'gray',  color: 'black' }} />
           <Tab
             label="Yearly, Save 30%."
             {...a11yProps(1)}
-            sx={{ width: '600px', borderRadius: '5%', borderColor: 'gray', backgroundColor: 'white', color: 'black' }}
+            sx={{ width: '50%', borderRadius: '5%', borderColor: 'gray', backgroundColor: 'white', color: 'black' }}
           />
         </Tabs>
       </Box>
@@ -102,4 +82,3 @@ export default function BasicTabs() {
     </Box>
   );
 }
-

@@ -26,7 +26,7 @@ const MainSidebar = () => {
   const LINKS = [
     { text: "Home", href: "/dashboard", icon: HomeIcon },
     { text: "Company", href: "/dashboard/company", icon: BusinessIcon },
-    { text: "My Plans", href: "/dashboard/myplans", icon: SortIcon },
+    { text: "My Plans", href: "/dashboard/myplans", icon: '/myplans.svg' },
   ];
 
   const onLogoutClick = async (e) => {
@@ -88,7 +88,11 @@ const MainSidebar = () => {
 
             >
               <ListItemIcon>
-                <Icon />
+              {typeof Icon === "string" ? (
+                  <img src={Icon} alt={text}  />
+                ) : (
+                  <Icon />
+                )}
               </ListItemIcon>
               <ListItemText primary={text} />
             </ListItemButton>
@@ -96,8 +100,9 @@ const MainSidebar = () => {
         ))}
       </List>
 
-      <List style={{ marginTop: "220px" }}>
+      <List sx={{ position: "absolute",bottom: 0, left: 0, width:'231px'}}>
         <Divider />
+      
         <LogoutButton onClick={onLogoutClick} />
       </List>
     </Drawer>
