@@ -5,6 +5,9 @@ import DashboardDetailedbottom from "@/components/dashboard/DashboardDetailedBut
 import DashboardFirstComponent from "@/components/dashboard/MainDashboard/DashboardFirstComponent";
 
 export default function Dashboard() {
+  const token =
+    typeof window !== "undefined" && JSON.parse(localStorage.getItem("token"));
+  console.log(token);
   return (
     <>
       <Box

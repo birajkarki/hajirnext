@@ -2,7 +2,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { prepareDataForValidation } from "formik";
 
-const hardcodedToken =
+const token =
   typeof window !== "undefined"
     ? JSON.parse(localStorage.getItem("token"))
     : null;
@@ -14,7 +14,7 @@ export const api = createApi({
     // Include headers in each request
     prepareHeaders: (headers) => {
       const newHeaders = new Headers(headers);
-      newHeaders.set("Authorization", `Bearer ${hardcodedToken}`);
+      newHeaders.set("Authorization", `Bearer ${token}`);
       // newHeaders.set("Content-Type", "application/json");
       return newHeaders;
     },
