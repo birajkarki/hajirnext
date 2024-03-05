@@ -26,10 +26,14 @@ import {
   Menu,
   Tooltip,
 } from "@mui/material";
+import ReplayIcon from '@mui/icons-material/Replay';
+import ShareIcon from '@mui/icons-material/Share';
+
 import {
   BlockSharp,
   Check,
   CheckCircleOutline,
+  CloseOutlined,
   Delete,
   DeleteOutline,
   DoNotDisturbAlt,
@@ -43,6 +47,7 @@ import DoNotDisturbAltIcon from "@mui/icons-material/DoNotDisturbAlt";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import useImage from "../../../hooks/useImage";
+
 import {
   useDeleteCompanyMutation,
   useGetActiveCompanyQuery,
@@ -72,6 +77,7 @@ const CompanyTable = ({ companies, statusFilter }) => {
   const activeCompanies = activeCompaniesData.data?.companies || [];
   const [updateCompanyStatus] = useUpdateCompanyStatusMutation();
   const [deleteCompanyMutation] = useDeleteCompanyMutation();
+
   const [openQrCodeModal, setOpenQrCodeModal] = useState(false);
   const [qrCodeContent, setQrCodeContent] = useState("");
   const [companyIdForQrCode, setCompanyIdForQrCode] = useState(null);
@@ -172,15 +178,18 @@ const CompanyTable = ({ companies, statusFilter }) => {
     }
   };
 
+
   const handleQrCodeClick = (content) => {
     setQrCodeContent(content);
     setOpenQrCodeModal(true);
   };
-  // const generateQrCodeClick = (companyId) => {
-  //   setCompanyIdForQrCode(companyId); // Set the companyIdForQrCode
-  //   setOpenQrCodeModal(true); // Open the QR code modal
-  // };
 
+
+  const generateQrCodeClick = (companyId) => {
+    setCompanyIdForQrCode(companyId); 
+    setOpenQrCodeModal(true); 
+  };
+  
   const generateNewQrCode = async () => {
     console.log("Generating new QR code for company:", companyIdForQrCode);
 
@@ -203,6 +212,8 @@ const CompanyTable = ({ companies, statusFilter }) => {
   const handleRowClick = (companyId) => {
  
     setActiveCompanyId(companyId);
+    const company = companies.find((company) => company.id === companyId);
+    setSelectedCompany(company);
   };
   
   return (
@@ -272,18 +283,16 @@ const CompanyTable = ({ companies, statusFilter }) => {
                       {company.status}
                     </TableCell>
                     <TableCell>
-                      <Image
-                        src={company.qr_path}
-                        height={50}
-                        width={50}
-                        alt="QR Code"
-                      />
-                      <IconButton
-                        onClick={() => handleQrCodeClick(company.qr_path)}
-                      >
-                        {/* Render your button icon here */}
-                      </IconButton>
+                      {useImage({
+                        src: company.qr_path,
+                        height: 50,
+                        width: 50,
+                        style: {},
+                        alt: "QR Code",
+                        onClick: () => handleQrCodeClick(company.qr_path),
+                      })}
                     </TableCell>
+
                     <TableCell>
                       {company.status === "Active" ? (
                         <>
@@ -409,39 +418,69 @@ const CompanyTable = ({ companies, statusFilter }) => {
           </Button>
         </DialogActions>
       </Dialog>
-      <Dialog open={openQrCodeModal} onClose={() => setOpenQrCodeModal(false)}>
-        <DialogTitle>QR Code</DialogTitle>
-        <DialogContent>
-          <Button onClick={generateNewQrCode}>
-            <Typography
-              sx={{
-                fontSize: "24px",
-                fontStyle: "normal",
-                fontWeight: 500,
-              }}
-            >
-              Generate New QR Code
-            </Typography>
-          </Button>{" "}
-          {useImage({
-            src: qrCodeContent,
-            height: 250,
-            width: 250,
-            style: {
-              margin: "auto",
-            },
-            alt: "QR Code",
-          })}
-          {/* Display company name */}
-          <Typography variant="body2">Name:</Typography>
-          {/* Share button to download the QR code image as PDF */}
-          <Button onClick={() => downloadQrCodeAsPdf()}>
-            <Typography variant="body2">Share</Typography>
-          </Button>
+
+         <Dialog open={openQrCodeModal} onClose={() => setOpenQrCodeModal(false)}>
+    
+     <DialogContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop:'3px' }}>
+  {/* Generate New QR button */}
+
+  <div onClick={generateNewQrCode} sx={{ color: "black", marginBottom: '20px', width:'50%' }}>
+  <div style={{ display: 'flex', alignItems: 'center', justifyContent:'center' }}>
+    <ReplayIcon style={{cursor:'pointer'}}/>
+    <div style={{ marginLeft: '10px', marginRight:'160px' }}>
+      <Typography
+        sx={{
+          fontSize: "24px",
+          fontStyle: "normal",
+          fontWeight: 300,
+          textTransform: 'lowercase',
+          width:'280px',
+          cursor:'pointer'
+        }}
+      >
+        <span style={{textTransform:'capitalize'}}>G</span>enerate <span style={{textTransform:'capitalize'}}>N</span>ew <span style={{textTransform:'capitalize'}}>QR</span>
+      </Typography>
+    </div>
+  
+ </div>
+
+ </div> 
+ <IconButton 
+  onClick={() => setOpenQrCodeModal(false)} 
+  sx={{ position: 'absolute', right: 4, top: '9%', transform: 'translateY(-50%)', fontSize:'24px', color:'black' }}
+>
+  <CloseOutlined style={{ fontSize:'24px'}} />
+</IconButton>
+
+
+
+
+  {" "}
+ 
+
+  {/* QR code image */}
+  {useImage({
+    src: qrCodeContent,
+    height: 250,
+    width: 250,
+    style: {
+      marginBottom: '20px',
+      marginTop:'20px'
+    },
+    alt: "QR Code",
+  })}
+         
+<Typography variant="body2" sx={{fontWeight:500, fontSize:'22px'}}>{selectedCompany && selectedCompany.name}</Typography>
+
+
+        <Button onClick={() => downloadQrCodeAsPdf()} sx={{  overflow: 'hidden',marginLeft:'-70px' , marginTop:'10pX '}}>
+  <Typography variant="body2" sx={{ width: '50px', height: '50px',  borderRadius: '50%',backgroundColor: '#D9D9D940', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <ShareIcon /> 
+ 
+  </Typography>
+  <h1 style={{fontSize:'18px', fontWeight:'450', color:'gray', marginLeft:'40px'}}>S<span style={{textTransform:'lowercase'}}>hare</span> PDF</h1>
+</Button>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenQrCodeModal(false)}>Close</Button>
-        </DialogActions>
       </Dialog>
     </Box>
   );

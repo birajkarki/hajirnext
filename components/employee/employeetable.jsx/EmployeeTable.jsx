@@ -307,17 +307,18 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
                         PaperProps={{
                           style: {
                             height: "104px",
-                            width: "90px",
+                            width: "115px",
                             elevation: 0,
                             padding: "0px",
-                            marginLeft: "-89px",
+                       
+                            marginLeft: "-109px",
                             marginTop: "-80px",
                             boxShadow: "none",
                             border: "0.3px solid #eee",
                           },
                         }}
                       >
-                        <MenuItem
+                         <MenuItem
                           onClick={() => handleMenuItemClick("edit")}
                           dense
                       
@@ -383,6 +384,16 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
                             </>
                           )
                         )}
+{/* 
+                                             <MenuItem onClick={() => handleMenuItemClick("edit")} dense > <Edit /> <span style={{marginLeft:'-1px'}}>Edit</span></MenuItem>
+    <MenuItem onClick={() => handleMenuItemClick("inactive")} dense><DoNotDisturbAltIcon/><span style={{color:'black',marginLeft:'-1px'}}>Inactive</span></MenuItem>
+    <MenuItem onClick={() => handleMenuItemClick("invitation")} dense><ShareIcon /><span style={{marginLeft:'-1px'}}>invitation</span></MenuItem>
+   */}
+
+
+
+
+
                       </Menu>
                     </TableCell>
                   </TableRow>

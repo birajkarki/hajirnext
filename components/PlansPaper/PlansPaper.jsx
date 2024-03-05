@@ -5,14 +5,19 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import CheckIcon from '@mui/icons-material/Check';
 import Button from '@mui/material/Button';
-
+import { Grid, useMediaQuery } from '@mui/material';
 export default function SimplePaper() {
+  const isScreenSM = useMediaQuery("(max-width:1480px)");
+
+
   return (
     <>
-      <Box
+  
+      {/* <Box
         sx={{
           display: 'flex',
-          flexDirection: 'row',
+        flexDirection:'row',
+       
           marginLeft: '20px',
           marginTop: '10px',
           '& > :not(style)': {
@@ -22,14 +27,19 @@ export default function SimplePaper() {
             alignItems: 'center',
             justifyContent: 'center',
             textAlign: 'center',
-          }
+          },
+          '@media (max-width: 990px)': {
+            flexDirection: 'column',
+            '& > :not(style)': {
+              m: 1,
+              width: '90%', 
+              height: 'auto',
+             
+            },}
         }}
-      >
-        <Paper sx={{
-          height: '500px',
-          width: '250px',
-   
-        }} >
+      > */}
+  
+        <Paper >
           <div style={{
             backgroundColor: '#1E90FF',
             height: '80px',
@@ -65,13 +75,12 @@ export default function SimplePaper() {
               <ListItemWithCheck key={index} text={feature} />
             ))}
           </div>
-          <Button variant="outlined" style={{ borderColor: 'green' }}>Get Started</Button>
+          <Button variant="outlined" style={{ borderColor: 'green',marginTop: isScreenSM?"7px":"auto" , marginBottom: isScreenSM? "10px":""}}>Get Started</Button>
         </Paper>
 
-        {/* Standard Paper */}
         <Paper sx={{
           height: '400px',
-          width: '250px',
+          width:"250px"
         }} >
           <div style={{
             backgroundColor: '#1E90FF',
@@ -104,9 +113,12 @@ export default function SimplePaper() {
               <ListItemWithCheck key={index} text={feature} />
             ))}
           </div>
-          <Button variant="outlined" style={{ borderColor: 'green', marginTop: '120px' }}>Upgrade to Standard</Button>
-        </Paper>
 
+          <Button variant="outlined" style={{ borderColor: 'green', marginTop:'120px'   , marginBottom: isScreenSM? "15px":" "  }}>Upgrade to Standard</Button>
+         
+        </Paper>
+     
+        
         {/* Premium Paper */}
         <Paper sx={{
           height: '400px',
@@ -142,9 +154,10 @@ export default function SimplePaper() {
               <ListItemWithCheck key={index} text={feature} />
             ))}
           </div>
-          <Button variant="outlined" style={{ borderColor: 'green', marginTop: '120px' }}>Upgrade to Premium</Button>
+          <Button variant="outlined" style={{ borderColor: 'green', marginTop:'120px'   , marginBottom: isScreenSM? "15px":" "  }}>Upgrade to Premium</Button>
         </Paper>
-      </Box>
+      {/* </Box> */}
+  
     </>
   );
 }

@@ -4,9 +4,11 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import CheckIcon from '@mui/icons-material/Check';
 import Button from '@mui/material/Button';
-
+import { Grid, useMediaQuery } from '@mui/material';
 export default function Monthly() {
+  const isScreenSM = useMediaQuery("(max-width:990px)");
   return (
+ 
     <Box
       sx={{
         display: 'flex',
@@ -25,9 +27,8 @@ export default function Monthly() {
           flexDirection: 'column',
           '& > :not(style)': {
             m: 1,
-            width: '90%', // Adjust the width as needed
+            width: '90%', 
             height: 'auto',
-       
            
           },
         },
@@ -43,7 +44,7 @@ export default function Monthly() {
           <ListItemWithCheck text="Overtime setup" />
           <ListItemWithCheck text="Office timing setup" />
         </div>
-        <Button variant="outlined" style={{ borderColor: 'green' }}>Get Started</Button>
+        <Button variant="outlined" style={{ borderColor: 'green', marginTop: isScreenSM?"-40px":"auto" }}>Get Started</Button>
       </Paper>
 
       <Paper sx={{ height: '400px', width: '250px' }}>
@@ -53,10 +54,10 @@ export default function Monthly() {
         <div style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', fontSize: '13px', gap: '5px', alignItems: 'flex-start', flexWrap: 'wrap', height: '340px', position: 'relative', marginTop: '20px' }}>
           <ListItemWithCheck text="Everything from free plan" />
           <ListItemWithCheck text="Add 3 companies" />
-          {/* Add more list items here */}
+    
         </div>
         <div style={{display:'flex', justifyContent:'center'}}>
-        <Button variant="outlined" style={{ borderColor: 'green', position: 'absolute', marginTop: '-20px' }}>Upgrade to standard</Button>
+        <Button variant="outlined" style={{ borderColor: 'green', position: 'absolute',  marginTop: isScreenSM?"-50px":"-20px"  }}>Upgrade to standard</Button>
         </div>
       </Paper>
 
@@ -66,6 +67,7 @@ export default function Monthly() {
         </div>
         <div style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', fontSize: '13px', gap: '5px', alignItems: 'flex-start', flexWrap: 'wrap', height: '340px', position: 'relative', marginTop: '20px' }}>
           <ListItemWithCheck text="Everything from free plan+" />
+
           <ListItemWithCheck text="Add 9 companies" />
         
         </div>
@@ -74,10 +76,11 @@ export default function Monthly() {
         
       
 
-        marginTop: '-20px' }}>Upgrade to Premium</Button>
+        marginTop: isScreenSM?"-50px":"-20px"  }}>Upgrade to Premium</Button>
         </div>
       </Paper>
     </Box>
+
   );
 }
 
@@ -87,3 +90,4 @@ const ListItemWithCheck = ({ text }) => (
     {text}
   </div>
 );
+
