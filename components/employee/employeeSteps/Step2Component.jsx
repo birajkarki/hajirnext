@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import {
   Button,
@@ -17,9 +17,10 @@ import { Box } from "@mui/system";
 import { useMediaQuery } from "@mui/material";
 
 const Step2Component = ({ formik }) => {
+  const [ampm, setAmpm] = useState("");
   const handleSalaryTypeChange = (event) => {
     formik.handleChange(event);
-    formik.setFieldValue("ampm", "am");
+    // formik.setFieldValue("ampm", "am");
     // formik.setFieldValue("allowance_amount", "");
   };
 
@@ -40,14 +41,14 @@ const Step2Component = ({ formik }) => {
 
   const handlebreak_durationChange = (decrease) => {
     const break_duration = formik.values.break_duration;
-    if (!break_duration) return; // Null check
+    if (!break_duration) return;
 
     const [hours, minutes] = break_duration.split(":").map(Number);
 
-    // Convert hours and minutes to total minutes
+    // Calculate the total duration in minutes
     let totalMinutes = hours * 60 + minutes;
 
-    // Increase or decrease by 30 minutes
+    // Increase or decrease by 10 minutes
     totalMinutes = decrease ? totalMinutes + 10 : totalMinutes - 10;
 
     // Ensure totalMinutes remain in range [0, 1439] (24 hours)
@@ -61,12 +62,17 @@ const Step2Component = ({ formik }) => {
     const formattedHours = String(newHours).padStart(2, "0");
     const formattedMinutes = String(newMinutes).padStart(2, "0");
 
+    // Update the field value using Formik's setFieldValue method
     formik.setFieldValue(
       "break_duration",
       `${formattedHours}:${formattedMinutes}`
     );
+
+    // Update the field value with the total duration in minutes
+    formik.setFieldValue("break_duration_in_minutes", totalMinutes.toString());
   };
 
+  // Inside handleAmPmChange() function
   const handleAmPmChange = () => {
     const duty_time = formik.values.duty_time;
     if (!duty_time) return; // Null check
@@ -88,7 +94,10 @@ const Step2Component = ({ formik }) => {
     const formattedHours = String(newHours).padStart(2, "0");
     const formattedTime = `${formattedHours}:${formattedMinutes}`;
 
+    // Update Formik value for duty_time
     formik.setFieldValue("duty_time", formattedTime);
+
+    // Update Formik value for AM/PM selection
   };
 
   const isScreenSmall = useMediaQuery("(max-width:1209px)");
@@ -124,10 +133,7 @@ const Step2Component = ({ formik }) => {
               value={formik.values.salary_type}
               label="Salary Type"
               name="salaryType"
-              onChange={(e) => {
-                formik.handleChange(e);
-                handleSalaryTypeChange(e);
-              }}
+              onChange={formik.handleChange}
               id="salary_type"
             >
               <MenuItem value="Weekly">Weekly</MenuItem>
@@ -144,10 +150,7 @@ const Step2Component = ({ formik }) => {
               sx={{ width: "700px", marginTop: 1 }}
               name="salary"
               value={formik.values.salary}
-              onChange={(e) => {
-                formik.handleChange(e);
-                handleSalaryTypeChange(e);
-              }}
+              onChange={formik.handleChange}
             >
               <FormControlLabel
                 value="Fixed"
@@ -162,7 +165,7 @@ const Step2Component = ({ formik }) => {
             </RadioGroup>
           </FormControl>
 
-          {formik.values.salary === "Fixed" ? (
+          {formik.values.salary === "Fixed" && (
             <TextField
               label="Salary Amount"
               variant="outlined"
@@ -181,7 +184,8 @@ const Step2Component = ({ formik }) => {
                 formik.touched.salary_amount && formik.errors.salary_amount
               }
             />
-          ) : (
+          )}
+          {formik.values.salary !== "Fixed" && (
             <>
               <TextField
                 label="Basic Salary"
@@ -205,7 +209,7 @@ const Step2Component = ({ formik }) => {
                 }
               />
               <TextField
-                label="allowance_amount"
+                label="Allowance Amount"
                 variant="outlined"
                 sx={{
                   width: isScreenSm
@@ -230,7 +234,7 @@ const Step2Component = ({ formik }) => {
           )}
         </Box>
       </Grid>
-
+      {/* right part  */}
       <Grid item xs={6}>
         <Box
           sx={{
@@ -348,9 +352,7 @@ const Step2Component = ({ formik }) => {
             <Select
               value={formik.values.probation_period}
               label="Probation Period"
-              onChange={(e) => {
-                formik.handleChange(e);
-              }}
+              onChange={formik.handleChange}
               name="probation_period"
               id="probation_period"
             >

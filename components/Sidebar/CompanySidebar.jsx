@@ -129,15 +129,16 @@ const CompanySidebar = () => {
       variant="permanent"
       anchor="left"
       sx={{
-        width: 240,
-        flexShrink: 0,
-        "& .MuiDrawer-paper": {
-          width: 240,
-          boxSizing: "border-box",
-          top: ["40px", "56px", "64px"],
-          height: "auto",
-          bottom: 0,
-        },
+        width: 250,
+        // flexShrink: 0,
+        // "& .MuiDrawer-paper": {
+        //   width: 240,
+        //   boxSizing: "border-box",
+        //   top: ["48px", "56px", "64px"],
+        //   height: "auto",
+        //   bottom: 0,
+        //   backgroundColor: "#E7E7E7",
+        // },
       }}
     >
       <Divider />

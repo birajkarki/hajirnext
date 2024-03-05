@@ -41,8 +41,20 @@ const validationSchemaStep1 = Yup.object({
 });
 
 const validationSchemaStep2 = Yup.object({
-  allowance_amount: Yup.string().required("Allowance is required"),
-  salary_amount: Yup.string().required("Salary Amount is required"),
+  salary_amount: Yup.string().when("salary", {
+    is: (val) => val === "Fixed",
+    then: Yup.string().required("Salary Amount is required"),
+    otherwise: Yup.string(),
+  }),
+  allowance_amount: Yup.string().when("salary", {
+    is: (val) => val === "Fixed",
+    then: Yup.string(),
+    otherwise: Yup.string().required("Allowance is required"),
+  }),
+  working_hours: Yup.string().required("Working Hours is required"),
+  duty_time: Yup.string().required("duty_time Hours is required"),
+  break_duration: Yup.string().required("break_duration  is required"),
+  probation_period: Yup.string().required("probation_period  is required"),
 });
 
 const validationSchemaStep3 = Yup.object({
@@ -90,7 +102,7 @@ const HorizontalLinearStepper = () => {
       working_hours: "8:00", // required
       duty_time: "9:00", // required - time
       probation_period: "1", // required - unsignedBigInt
-      break_duration: "30", // required - min/hr to seconds - string
+      break_duration: "1:00", // required - min/hr to seconds - string
       departments: "", // required - array - api:{{globalLiveUrl}}/employer/all-departments
       allow_late_attendance: "", // nullable -time
       casual_leave: "", //required - unsignedInteger
@@ -129,19 +141,23 @@ const HorizontalLinearStepper = () => {
   });
 
   const handleNext = async () => {
-    const isLastStep = activeStep === steps.length - 1;
-    console.log("Step 1 Form Values:", formik.values);
+    try {
+      const isLastStep = activeStep === steps.length - 1;
+      console.log("Step 1 Form Values:", formik.values);
 
-    const errors = await formik.validateForm();
+      const errors = await formik.validateForm();
 
-    if (Object.keys(errors).length === 0) {
-      if (isLastStep) {
-        formik.handleSubmit();
+      if (Object.keys(errors).length === 0) {
+        if (isLastStep) {
+          formik.handleSubmit();
+        } else {
+          setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        }
       } else {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        console.log("Form validation errors:", errors);
       }
-    } else {
-      console.log("Form validation errors:", errors);
+    } catch (error) {
+      console.error("Error during form validation:", error);
     }
   };
 

@@ -73,7 +73,11 @@ const EmployeeTable = ({ candidates, statusFilter }) => {
     setSelectedTab(newValue);
     filterData(searchText, newValue);
   };
-
+  const handleDepartmentChange = (event) => {
+    const department = event.target.value;
+    setSelectedDepartment(department);
+    filterData(searchText, department);
+  };
   const filterData = (searchText, department) => {
     // if (
     //   !attendanceData ||
@@ -188,17 +192,16 @@ const EmployeeTable = ({ candidates, statusFilter }) => {
           <Select
             label="Department"
             autoWidth={false}
-            // value={selectedDepartment}
-            // onChange={handleDepartmentChange}
+            value={selectedDepartment}
+            onChange={handleDepartmentChange}
           >
-            <MenuItem value="">All Departments</MenuItem>
-            {/* {attendanceData &&
-              attendanceData.data &&
-              attendanceData.data.departments.map((dept) => (
+            {candidates &&
+              candidates.data &&
+              candidates.data.data.candidates.map((dept) => (
                 <MenuItem key={dept.id} value={dept.name}>
                   {dept.name}
                 </MenuItem>
-              ))} */}
+              ))}
           </Select>
         </FormControl>
         <br />
