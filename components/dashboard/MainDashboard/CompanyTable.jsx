@@ -210,12 +210,11 @@ const CompanyTable = ({ companies, statusFilter }) => {
   const [activeCompanyId, setActiveCompanyId] = useState(null);
 
   const handleRowClick = (companyId) => {
- 
     setActiveCompanyId(companyId);
     const company = companies.find((company) => company.id === companyId);
     setSelectedCompany(company);
   };
-  
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", height: 1000, mt: 3 }}>
       <Box sx={{ mb: 2 }}>
@@ -250,14 +249,19 @@ const CompanyTable = ({ companies, statusFilter }) => {
                 .map((company, index) => (
                   <TableRow
                     key={company.id}
-                    sx={{ borderBottom: "0.7px dotted #ccc",backgroundColor: activeCompanyId === company.id ? "#f1f1f1" : "",
-                  }}
-                  onClick={() => handleRowClick(company.id)} // Handle row clicks
+                    sx={{
+                      borderBottom: "0.7px dotted #ccc",
+                      backgroundColor:
+                        activeCompanyId === company.id ? "#f1f1f1" : "",
+                    }}
+                    onClick={() => handleRowClick(company.id)} // Handle row clicks
                   >
-                      <TableCell>{company.id}</TableCell>
+                    <TableCell>{company.id}</TableCell>
                     <TableCell>
                       <Link href={`/dashboard/company/${company.id}`} passHref>
-                        <Button sx={{color:'#555555', fontWeight:'440'}}>{company.name}</Button>
+                        <Button sx={{ color: "#555555", fontWeight: "440" }}>
+                          {company.name}
+                        </Button>
                       </Link>
                     </TableCell>
                     <TableCell>{company.employee_count}</TableCell>
@@ -343,23 +347,41 @@ const CompanyTable = ({ companies, statusFilter }) => {
         open={isDeleteConfirmationDialogOpen}
         onClose={handleCloseConfirmationDialog}
       >
-        <DialogTitle sx={{display:'flex', justifyContent:'center'}}>Delete Company</DialogTitle>
+        <DialogTitle sx={{ display: "flex", justifyContent: "center" }}>
+          Delete Company
+        </DialogTitle>
         <DialogContent>
           <DialogContentText>
             Are you sure you want to delete this company?
           </DialogContentText>
         </DialogContent>
-        <DialogActions sx={{justifyContent:'space-evenly', marginTop:'-10px', marginBottom:'20px'}}>
-          <Button onClick={handleCloseConfirmationDialog} variant="contained"
-           style={{ borderRadius: '20px 20px 20px 20px', width:'100px'}}
+        <DialogActions
+          sx={{
+            justifyContent: "space-evenly",
+            marginTop: "-10px",
+            marginBottom: "20px",
+          }}
+        >
+          <Button
+            onClick={handleCloseConfirmationDialog}
+            variant="contained"
+            style={{ borderRadius: "20px 20px 20px 20px", width: "100px" }}
           >
-            C<span style={{textTransform:'lowercase'}}>ancel</span>
-   
+            C<span style={{ textTransform: "lowercase" }}>ancel</span>
           </Button>
-          <Button onClick={handleConfirmDelete}     style={{ width:'100px',  color:'red',borderRadius: '20px 20px 20px 20px', boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)' }}>
-            D<span style={{color:'red', textTransform:'lowercase'}}>
-          elete
-          </span>
+          <Button
+            onClick={handleConfirmDelete}
+            style={{
+              width: "100px",
+              color: "red",
+              borderRadius: "20px 20px 20px 20px",
+              boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
+            }}
+          >
+            D
+            <span style={{ color: "red", textTransform: "lowercase" }}>
+              elete
+            </span>
           </Button>
         </DialogActions>
       </Dialog>
@@ -375,15 +397,33 @@ const CompanyTable = ({ companies, statusFilter }) => {
             company?
           </DialogContentText>
         </DialogContent>
-        <DialogActions style={{display:'flex', justifyContent:'space-evenly', marginBottom:'10px'}}>
-          <Button onClick={handleCloseConfirmationDialog} color="primary" variant="contained"
-          style={{ borderRadius: '20px 20px 20px 20px', width:'100px'}}>
-            C <span style={{textTransform:'lowercase'}}>ancel</span>
+        <DialogActions
+          style={{
+            display: "flex",
+            justifyContent: "space-evenly",
+            marginBottom: "10px",
+          }}
+        >
+          <Button
+            onClick={handleCloseConfirmationDialog}
+            color="primary"
+            variant="contained"
+            style={{ borderRadius: "20px 20px 20px 20px", width: "100px" }}
+          >
+            C <span style={{ textTransform: "lowercase" }}>ancel</span>
           </Button>
-          <Button onClick={handleUpdate} variant="contained"   style={{ color:'black', borderRadius: '20px 20px 20px 20px', backgroundColor:'white', width:'100px', boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)'}}>
-          U<span style={{ textTransform:'lowercase'}}>
-          pdate
-          </span>
+          <Button
+            onClick={handleUpdate}
+            variant="contained"
+            style={{
+              color: "black",
+              borderRadius: "20px 20px 20px 20px",
+              backgroundColor: "white",
+              width: "100px",
+              boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
+            }}
+          >
+            U<span style={{ textTransform: "lowercase" }}>pdate</span>
           </Button>
         </DialogActions>
       </Dialog>
@@ -391,30 +431,59 @@ const CompanyTable = ({ companies, statusFilter }) => {
         open={isStatusUpdateConfirmationDialogOpen}
         onClose={handleCloseConfirmationDialog}
       >
-        <DialogTitle sx={{ display:'flex',justifyContent:'center'}}>    {selectedCompany && selectedCompany.status === "Active"
-              ? "Inactive"
-              : "Active"} Company</DialogTitle>
+        <DialogTitle sx={{ display: "flex", justifyContent: "center" }}>
+          {" "}
+          {selectedCompany && selectedCompany.status === "Active"
+            ? "Inactive"
+            : "Active"}{" "}
+          Company
+        </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure  to {" "}
+            Are you sure to{" "}
             {selectedCompany && selectedCompany.status === "Active"
               ? "Inactive"
-              : "Active"}  
-
-         <span>  company?</span> 
+              : "Active"}
+            <span> company?</span>
           </DialogContentText>
         </DialogContent>
-        <DialogActions sx={{justifyContent:'space-evenly', marginTop:'-10px', marginBottom:'20px'}}>
-          <Button onClick={handleCloseConfirmationDialog} color="primary" variant="contained" sx={{
-         borderRadius: '20px 20px 20px 20px', width:'100px'
-          }}>
-            C<span style={{textTransform:'lowercase'}}>ancel</span>
+        <DialogActions
+          sx={{
+            justifyContent: "space-evenly",
+            marginTop: "-10px",
+            marginBottom: "20px",
+          }}
+        >
+          <Button
+            onClick={handleCloseConfirmationDialog}
+            color="primary"
+            variant="contained"
+            sx={{
+              borderRadius: "20px 20px 20px 20px",
+              width: "100px",
+            }}
+          >
+            C<span style={{ textTransform: "lowercase" }}>ancel</span>
           </Button>
-          <Button onClick={handleConfirmStatusUpdate}  style={{borderRadius: '20px 20px 20px 20px', color:'red', backgroundColor:'white', width:'100px', boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)'}}>
-          {selectedCompany && selectedCompany.status === "Active"
-        ? <span>I<span style={{ textTransform: 'lowercase' }}>nactive</span></span>
-        : <span>A<span style={{ textTransform: 'lowercase' }}>nactive</span></span>
-    }
+          <Button
+            onClick={handleConfirmStatusUpdate}
+            style={{
+              borderRadius: "20px 20px 20px 20px",
+              color: "red",
+              backgroundColor: "white",
+              width: "100px",
+              boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
+            }}
+          >
+            {selectedCompany && selectedCompany.status === "Active" ? (
+              <span>
+                A<span style={{ textTransform: "lowercase" }}>ctive</span>
+              </span>
+            ) : (
+              <span>
+                I<span style={{ textTransform: "lowercase" }}>nactive</span>
+              </span>
+            )}
           </Button>
         </DialogActions>
       </Dialog>

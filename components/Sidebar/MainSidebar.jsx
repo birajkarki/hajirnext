@@ -13,8 +13,6 @@ import BusinessIcon from "@mui/icons-material/Business";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import TestProfileCard from "../testprofile/TestProfileCard";
-import LogoutIcon from "@mui/icons-material/Logout";
-import { Button } from "@mui/material";
 import LogoutButton from "./LogoutButton";
 import { getRequest } from "@/services/ApiRequestService";
 
@@ -26,7 +24,8 @@ const MainSidebar = () => {
   const LINKS = [
     { text: "Home", href: "/dashboard", icon: HomeIcon },
     { text: "Company", href: "/dashboard/company", icon: BusinessIcon },
-    { text: "My Plans", href: "/dashboard/myplans", icon: '/myplans.svg' },
+    { text: "My Plans", href: "/dashboard/myplans", icon: SortIcon },
+    { text: "My Plans", href: "/dashboard/myplansbiraj", icon: SortIcon },
   ];
 
   const onLogoutClick = async (e) => {
@@ -40,9 +39,8 @@ const MainSidebar = () => {
   };
   const handleItemClick = (href) => {
     setSelectedItem(href);
-    setHoveredItem(null); // Reset the hoveredItem state when an item is clicked
+    setHoveredItem(null);
   };
-
 
   return (
     <Drawer
@@ -50,15 +48,15 @@ const MainSidebar = () => {
       anchor="left"
       sx={{
         width: 250,
-        flexShrink: 0,
-        "& .MuiDrawer-paper": {
-          width: 240,
-          boxSizing: "border-box",
-          top: ["48px", "56px", "64px"],
-          height: "auto",
-          bottom: 0,
-          backgroundColor: "#E7E7E7",
-        },
+        // flexShrink: 0,
+        // "& .MuiDrawer-paper": {
+        //   width: 240,
+        //   boxSizing: "border-box",
+        //   top: ["48px", "56px", "64px"],
+        //   height: "auto",
+        //   bottom: 0,
+        //   backgroundColor: "#E7E7E7",
+        // },
       }}
     >
       <div style={{ marginLeft: "4px" }}>
@@ -74,10 +72,10 @@ const MainSidebar = () => {
               onClick={() => handleItemClick(href)}
               onMouseEnter={() => setHoveredItem(href)}
               onMouseLeave={() => setHoveredItem(null)}
-              
               sx={{
                 "&:hover": {
-                  backgroundColor: hoveredItem === href ? "#22408B15" : "transparent",
+                  backgroundColor:
+                    hoveredItem === href ? "#22408B15" : "transparent",
                 },
                 ...(selectedItem === href || router.pathname === href
                   ? {
@@ -85,7 +83,6 @@ const MainSidebar = () => {
                     }
                   : {}),
               }}
-
             >
               <ListItemIcon>
               {typeof Icon === "string" ? (

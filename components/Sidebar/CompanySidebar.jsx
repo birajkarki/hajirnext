@@ -28,6 +28,7 @@ import SsidChartIcon from "@mui/icons-material/SsidChart";
 import { useRouter } from "next/navigation";
 
 const CompanySidebar = () => {
+  const router = useRouter();
   const [openSettings, setOpenSettings] = useState(false);
   const [openReport, setOpenReport] = useState(false); // Add this line
   const [activeLink, setActiveLink] = useState("");
@@ -59,7 +60,6 @@ const CompanySidebar = () => {
     {
       text: "Attendance",
       href: `/dashboard/company/${companyId}/attendance/`,
-
       icon: "/attendance.svg",
     },
     {
@@ -130,15 +130,16 @@ const CompanySidebar = () => {
       variant="permanent"
       anchor="left"
       sx={{
-        width: 240,
-        flexShrink: 0,
-        "& .MuiDrawer-paper": {
-          width: 240,
-          boxSizing: "border-box",
-          top: ["40px", "56px", "64px"],
-          height: "auto",
-          bottom: 0,
-        },
+        width: 250,
+        // flexShrink: 0,
+        // "& .MuiDrawer-paper": {
+        //   width: 240,
+        //   boxSizing: "border-box",
+        //   top: ["48px", "56px", "64px"],
+        //   height: "auto",
+        //   bottom: 0,
+        //   backgroundColor: "#E7E7E7",
+        // },
       }}
     >
       <Divider />

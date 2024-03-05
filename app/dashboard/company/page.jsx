@@ -11,8 +11,7 @@ export default function MainDashboard() {
     refetch,
   } = useGetEmployerCompaniesQuery();
   console.log(companiesData, isLoading);
-  // dispatch(setCompanies(companiesData));
-
+  console.log(companiesData, "companiesData");
   // Check if the user has any companies
   const hasCompanies =
     (companiesData?.data?.active_companies?.length || 0) +
