@@ -17,89 +17,6 @@ import { Box } from "@mui/system";
 import { useMediaQuery } from "@mui/material";
 
 const Step2Component = ({ formik }) => {
-  const [ampm, setAmpm] = useState("");
-  const handleSalaryTypeChange = (event) => {
-    formik.handleChange(event);
-    // formik.setFieldValue("ampm", "am");
-    // formik.setFieldValue("allowance_amount", "");
-  };
-
-  const handleworking_hoursChange = (decrease) => {
-    const [hours, minutes] = formik.values.working_hours.split(":").map(Number);
-    let totalMinutes = hours * 60 + minutes;
-    totalMinutes = decrease ? totalMinutes + 10 : totalMinutes - 10;
-    totalMinutes = (totalMinutes + 1440) % 1440;
-    const newHours = Math.floor(totalMinutes / 60);
-    const newMinutes = totalMinutes % 60;
-    const formattedHours = String(newHours).padStart(2, "0");
-    const formattedMinutes = String(newMinutes).padStart(2, "0");
-    formik.setFieldValue(
-      "working_hours",
-      `${formattedHours}:${formattedMinutes}`
-    );
-  };
-
-  const handlebreak_durationChange = (decrease) => {
-    const break_duration = formik.values.break_duration;
-    if (!break_duration) return;
-
-    const [hours, minutes] = break_duration.split(":").map(Number);
-
-    // Calculate the total duration in minutes
-    let totalMinutes = hours * 60 + minutes;
-
-    // Increase or decrease by 10 minutes
-    totalMinutes = decrease ? totalMinutes + 10 : totalMinutes - 10;
-
-    // Ensure totalMinutes remain in range [0, 1439] (24 hours)
-    totalMinutes = (totalMinutes + 1440) % 1440;
-
-    // Calculate new hours and minutes
-    const newHours = Math.floor(totalMinutes / 60);
-    const newMinutes = totalMinutes % 60;
-
-    // Format the new time
-    const formattedHours = String(newHours).padStart(2, "0");
-    const formattedMinutes = String(newMinutes).padStart(2, "0");
-
-    // Update the field value using Formik's setFieldValue method
-    formik.setFieldValue(
-      "break_duration",
-      `${formattedHours}:${formattedMinutes}`
-    );
-
-    // Update the field value with the total duration in minutes
-    formik.setFieldValue("break_duration_in_minutes", totalMinutes.toString());
-  };
-
-  // Inside handleAmPmChange() function
-  const handleAmPmChange = () => {
-    const duty_time = formik.values.duty_time;
-    if (!duty_time) return; // Null check
-
-    const [time, period] = duty_time.split(" ");
-    const [hours, minutes] = time.split(":").map(Number);
-
-    let newHours = hours;
-    if (period === "pm" && hours !== 12) {
-      newHours += 12;
-    } else if (period === "am" && hours === 12) {
-      newHours = 0;
-    }
-
-    // Ensure minutes are formatted with leading zeros
-    const formattedMinutes = String(minutes).padStart(2, "0");
-
-    // Format the new time with leading zeros for hours and minutes
-    const formattedHours = String(newHours).padStart(2, "0");
-    const formattedTime = `${formattedHours}:${formattedMinutes}`;
-
-    // Update Formik value for duty_time
-    formik.setFieldValue("duty_time", formattedTime);
-
-    // Update Formik value for AM/PM selection
-  };
-
   const isScreenSmall = useMediaQuery("(max-width:1209px)");
   const isScreenSm = useMediaQuery("(max-width:1000px)");
   return (
@@ -250,7 +167,6 @@ const Step2Component = ({ formik }) => {
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <Button
               variant="outlined"
-              onClick={() => handleworking_hoursChange(false)}
               sx={{ height: "55px", marginRight: -1.25, marginTop: 0.9 }}
             >
               -
@@ -264,12 +180,9 @@ const Step2Component = ({ formik }) => {
               }}
               margin="normal"
               name="working_hours"
-              inputProps={{ style: { textAlign: "center" } }}
-              {...formik.getFieldProps("working_hours")}
             />
             <Button
               variant="outlined"
-              onClick={() => handleworking_hoursChange(true)}
               sx={{ height: "55px", marginLeft: -1.2, marginTop: 0.9 }}
             >
               +
@@ -284,8 +197,6 @@ const Step2Component = ({ formik }) => {
               label="Duty Time"
               variant="outlined"
               margin="normal"
-              name="duty_time"
-              {...formik.getFieldProps("duty_time")}
               sx={{
                 width: isScreenSm ? "160px" : isScreenSmall ? "270px" : "395px",
                 textAlign: "center",
@@ -293,16 +204,7 @@ const Step2Component = ({ formik }) => {
             />
             <FormControl sx={{ width: "53px", marginTop: 1 }}>
               <InputLabel htmlFor="am">AM/PM</InputLabel>
-              <Select
-                value={formik.values.ampm}
-                label="AM/PM"
-                onChange={(e) => {
-                  formik.handleChange(e);
-                  handleAmPmChange();
-                }}
-                name="ampm"
-                sx={{ marginLeft: -1.3 }}
-              >
+              <Select label="AM/PM" sx={{ marginLeft: -1.3 }}>
                 <MenuItem value="am">AM</MenuItem>
                 <MenuItem value="pm">PM</MenuItem>
               </Select>
