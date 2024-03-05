@@ -46,13 +46,7 @@ const Step2Component = ({ formik }) => {
             >
               Salary Type
             </InputLabel>
-            <Select
-              value={formik.values.salary_type}
-              label="Salary Type"
-              name="salaryType"
-              onChange={formik.handleChange}
-              id="salary_type"
-            >
+            <Select label="Salary Type">
               <MenuItem value="Weekly">Weekly</MenuItem>
               <MenuItem value="Monthly">Monthly</MenuItem>
             </Select>
@@ -65,9 +59,6 @@ const Step2Component = ({ formik }) => {
               row
               aria-label="salary_type"
               sx={{ width: "700px", marginTop: 1 }}
-              name="salary"
-              value={formik.values.salary}
-              onChange={formik.handleChange}
             >
               <FormControlLabel
                 value="Fixed"
@@ -81,7 +72,6 @@ const Step2Component = ({ formik }) => {
               />
             </RadioGroup>
           </FormControl>
-
           {formik.values.salary === "Fixed" && (
             <TextField
               label="Salary Amount"
@@ -91,63 +81,26 @@ const Step2Component = ({ formik }) => {
                 width: isScreenSm ? "200px" : isScreenSmall ? "350px" : "450px",
                 marginTop: 8,
               }}
-              name="salary_amount"
-              {...formik.getFieldProps("salary_amount")}
-              error={
-                formik.touched.salary_amount &&
-                Boolean(formik.errors.salary_amount)
-              }
-              helperText={
-                formik.touched.salary_amount && formik.errors.salary_amount
-              }
             />
           )}
-          {formik.values.salary !== "Fixed" && (
-            <>
-              <TextField
-                label="Basic Salary"
-                variant="outlined"
-                sx={{
-                  width: isScreenSm
-                    ? "200px"
-                    : isScreenSmall
-                    ? "350px"
-                    : "450px",
-                }}
-                margin="normal"
-                name="salary_amount"
-                {...formik.getFieldProps("salary_amount")}
-                error={
-                  formik.touched.salary_amount &&
-                  Boolean(formik.errors.salary_amount)
-                }
-                helperText={
-                  formik.touched.salary_amount && formik.errors.salary_amount
-                }
-              />
-              <TextField
-                label="Allowance Amount"
-                variant="outlined"
-                sx={{
-                  width: isScreenSm
-                    ? "200px"
-                    : isScreenSmall
-                    ? "350px"
-                    : "450px",
-                }}
-                margin="normal"
-                name="allowance_amount"
-                {...formik.getFieldProps("allowance_amount")}
-                error={
-                  formik.touched.allowance_amount &&
-                  Boolean(formik.errors.allowance_amount)
-                }
-                helperText={
-                  formik.touched.allowance_amount &&
-                  formik.errors.allowance_amount
-                }
-              />
-            </>
+          <>
+            <TextField
+              label="Basic Salary"
+              variant="outlined"
+              sx={{
+                width: isScreenSm ? "200px" : isScreenSmall ? "350px" : "450px",
+              }}
+              margin="normal"
+            />
+            <TextField
+              label="Allowance Amount"
+              variant="outlined"
+              sx={{
+                width: isScreenSm ? "200px" : isScreenSmall ? "350px" : "450px",
+              }}
+              margin="normal"
+            />
+          </>
           )}
         </Box>
       </Grid>
@@ -205,8 +158,8 @@ const Step2Component = ({ formik }) => {
             <FormControl sx={{ width: "53px", marginTop: 1 }}>
               <InputLabel htmlFor="am">AM/PM</InputLabel>
               <Select label="AM/PM" sx={{ marginLeft: -1.3 }}>
-                <MenuItem value="am">AM</MenuItem>
-                <MenuItem value="pm">PM</MenuItem>
+                <MenuItem value="">AM</MenuItem>
+                <MenuItem value="">PM</MenuItem>
               </Select>
             </FormControl>
           </Box>
@@ -217,7 +170,6 @@ const Step2Component = ({ formik }) => {
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <Button
               variant="outlined"
-              onClick={() => handlebreak_durationChange(false)}
               sx={{ height: "55px", marginRight: -1.25, marginTop: 0.9 }}
             >
               -
@@ -232,11 +184,9 @@ const Step2Component = ({ formik }) => {
               margin="normal"
               name="break_duration"
               inputProps={{ style: { textAlign: "center" } }}
-              {...formik.getFieldProps("break_duration")}
             />
             <Button
               variant="outlined"
-              onClick={() => handlebreak_durationChange(true)}
               sx={{ height: "55px", marginLeft: -1.2, marginTop: 0.9 }}
             >
               +
@@ -251,17 +201,11 @@ const Step2Component = ({ formik }) => {
               width: isScreenSm ? "230px" : isScreenSmall ? "330px" : "462px",
             }}
           >
-            <Select
-              value={formik.values.probation_period}
-              label="Probation Period"
-              onChange={formik.handleChange}
-              name="probation_period"
-              id="probation_period"
-            >
+            <Select label="Probation Period">
               <MenuItem value="1">1 month</MenuItem>
-              <MenuItem value="3 months">3 months</MenuItem>
-              <MenuItem value="6 months">6 months</MenuItem>
-              <MenuItem value="12 months">12 months</MenuItem>
+              <MenuItem value="3 ">3 months</MenuItem>
+              <MenuItem value="6 ">6 months</MenuItem>
+              <MenuItem value="12 ">12 months</MenuItem>
             </Select>
           </FormControl>
         </Box>
