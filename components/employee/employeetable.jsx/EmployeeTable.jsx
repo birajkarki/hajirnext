@@ -25,23 +25,17 @@ import {
   InputLabel,
   Avatar,
 } from "@mui/material";
-import ShareIcon from "@mui/icons-material/Share";
-import InsertInvitationIcon from "@mui/icons-material/InsertInvitation";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import StatusChangeIcon from "@mui/icons-material/TrackChanges";
 import {
   useDeleteCandidateQuery,
   useInviteCandidateMutation,
 } from "@/services/api";
-import { useParams } from "next/navigation";
-import { useRouter } from "next/navigation";
-import { CloseOutlined, Edit, MoreVert } from "@mui/icons-material";
-import DoNotDisturbAltIcon from "@mui/icons-material/DoNotDisturbAlt";
+import { useParams, useRouter } from "next/navigation";
+import { Delete, Edit, Update } from "@mui/icons-material";
 import { useMediaQuery } from "@mui/material";
 import EmployeeDetailsDialog from "./EmployeeDetailsDialog";
 
-const EmployeeTable = ({ candidateData, statusFilter }) => {
-  const router = useRouter();
+const EmployeeTable = ({ candidates, statusFilter }) => {
+  console.log(candidates, "coming from active inactive filet");
   const { companyId } = useParams();
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedCandidate, setSelectedCandidate] = useState(null);
@@ -55,8 +49,9 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
     setSelectedCandidate(candidate);
     setOpenDialog(true);
   };
-  const [filteredData, setFilteredData] = useState(candidateData);
-  console.log("candidateData", candidateData);
+  const [filteredData, setFilteredData] = useState(candidates);
+  const [selectedDepartment, setSelectedDepartment] = useState("");
+
   const [searchText, setSearchText] = useState("");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -64,38 +59,9 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
   const [inviteCandidate] = useInviteCandidateMutation();
   const deleteCandidate = useDeleteCandidateQuery();
 
-  const [anchorEl, setAnchorEl] = useState(null);
   const [selectedCandidateId, setSelectedCandidateId] = useState(null);
   const [isRowDialogOpen, setIsRowDialogOpen] = useState(false);
   const [selectedRowCandidate, setSelectedRowCandidate] = useState(null);
-
-  const handleClickMenu = (event, candidate_id) => {
-    setAnchorEl(event.currentTarget);
-    setSelectedCandidateId(candidate_id);
-  };
-
-  const handleCloseMenu = () => {
-    setAnchorEl(null);
-  };
-
-  const handleMenuItemClick = (action) => {
-    handleCloseMenu();
-
-    switch (action) {
-      case "edit":
-        setIsUpdateDialogOpen(true);
-
-        break;
-      case "inactive":
-        setIsStatusChangeDialogOpen(true);
-        break;
-      case "invitation":
-        openInviteDialog(selectedCandidate);
-        break;
-      default:
-        break;
-    }
-  };
 
   const handleSearchTextChange = (event) => {
     const text = event.target.value.toLowerCase();
@@ -108,10 +74,26 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
     filterData(searchText, newValue);
   };
 
-  const filterData = (searchText) => {
-    const filtered = companies.filter((candidates) =>
-      candidates.name.toLowerCase().includes(searchText)
-    );
+  const filterData = (searchText, department) => {
+    // if (
+    //   !attendanceData ||
+    //   !attendanceData.data ||
+    //   !attendanceData.data.candidates
+    // )
+    //   return;
+
+    let filtered = candidates;
+    if (searchText) {
+      filtered = filtered.filter((candidate) =>
+        candidate.name.toLowerCase().includes(searchText)
+      );
+    }
+    if (department) {
+      filtered = filtered.filter((candidate) =>
+        candidate.departments.some((dept) => dept.name === department)
+      );
+    }
+
     setFilteredData(filtered);
   };
 
@@ -203,8 +185,20 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
 
         <FormControl variant="outlined" size="small" sx={{ ml: 2, width: 200 }}>
           <InputLabel>Department</InputLabel>
-          <Select label="Department" autoWidth={false}>
-            <MenuItem>All Departments</MenuItem>
+          <Select
+            label="Department"
+            autoWidth={false}
+            // value={selectedDepartment}
+            // onChange={handleDepartmentChange}
+          >
+            <MenuItem value="">All Departments</MenuItem>
+            {/* {attendanceData &&
+              attendanceData.data &&
+              attendanceData.data.departments.map((dept) => (
+                <MenuItem key={dept.id} value={dept.name}>
+                  {dept.name}
+                </MenuItem>
+              ))} */}
           </Select>
         </FormControl>
         <br />
@@ -280,11 +274,13 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
                       <span
                         style={{
                           backgroundColor:
-                            candidate.status === "Active"
-                              ? "#00800033"
-                              : "#FF505033",
+                            candidate.status === "Not-Verified"
+                              ? "#FF505033"
+                              : "#00800033",
                           color:
-                            candidate.status === "Active" ? "green" : "red",
+                            candidate.status === "Not-Verified"
+                              ? "red"
+                              : "green",
                           padding: "7px",
                           borderRadius: "4px",
                         }}
@@ -296,105 +292,35 @@ const EmployeeTable = ({ candidateData, statusFilter }) => {
                     <TableCell>{candidate.phone}</TableCell>
 
                     <TableCell>
-                      <IconButton
-                        aria-label="update"
-                        onClick={() => setIsUpdateDialogOpen(true)}
-                      >
-                        <Edit />
-                      </IconButton>
-
-                      <IconButton
-                        aria-label="menu"
-                        onClick={(event) =>
-                          handleClickMenu(event, candidate.id)
-                        }
-                      >
-                        <MoreVert />
-                      </IconButton>
-                      <Menu
-                        id="candidate-menu"
-                        anchorEl={anchorEl}
-                        open={Boolean(anchorEl)}
-                        onClose={handleCloseMenu}
-                        PaperProps={{
-                          style: {
-                            height: "104px",
-                            width: "90px",
-                            elevation: 0,
-                            padding: "0px",
-                            marginLeft: "-89px",
-                            marginTop: "-80px",
-                            boxShadow: "none",
-                            border: "0.3px solid #eee",
-                          },
-                        }}
-                      >
-                        <MenuItem
-                          onClick={() => handleMenuItemClick("edit")}
-                          dense
-                        >
-                          <Edit /> Edit
-                        </MenuItem>
-                        {selectedCandidate &&
-                        selectedCandidate.status === "Active" ? (
-                          <>
-                            <MenuItem
-                              onClick={() => handleMenuItemClick("inactive")}
-                              dense
-                            >
-                              <DoNotDisturbAltIcon />
-                              <span
-                                style={{ color: "black", marginLeft: "6px" }}
-                              >
-                                Inactive
-                              </span>
-                            </MenuItem>
-                            <MenuItem
-                              onClick={() => handleMenuItemClick("invitation")}
-                              dense
-                            >
-                              <ShareIcon />
-                              <span style={{ marginLeft: "6px" }}>
-                                Invitation
-                              </span>
-                            </MenuItem>
-                          </>
-                        ) : (
-                          selectedCandidate && (
-                            <>
-                              <MenuItem
-                                onClick={() => handleMenuItemClick("active")}
-                                dense
-                              >
-                                <StatusChangeIcon />
-                                <span style={{ marginLeft: "6px" }}>
-                                  Activate
-                                </span>
-                              </MenuItem>
-                              <MenuItem
-                                onClick={() => handleMenuItemClick("delete")}
-                                dense
-                              >
-                                <DeleteOutlineIcon />
-                                <span style={{ marginLeft: "6px" }}>
-                                  Delete
-                                </span>
-                              </MenuItem>
-                              <MenuItem
-                                onClick={() =>
-                                  handleMenuItemClick("invitation")
-                                }
-                                dense
-                              >
-                                <InsertInvitationIcon />
-                                <span style={{ marginLeft: "6px" }}>
-                                  Invitation
-                                </span>
-                              </MenuItem>
-                            </>
-                          )
-                        )}
-                      </Menu>
+                      {candidate.status === "Active" ? (
+                        <>
+                          <IconButton
+                            onClick={() => handleUpdateClick(company.id)}
+                          >
+                            <Update />
+                          </IconButton>
+                          <IconButton
+                            onClick={() => handleUpdateStatusClick(company.id)}
+                          >
+                            <Update />
+                          </IconButton>
+                        </>
+                      ) : (
+                        <>
+                          <IconButton
+                            onClick={() => {
+                              handleDeleteClick(company.id);
+                            }}
+                          >
+                            <Update />
+                          </IconButton>
+                          <IconButton
+                            onClick={() => handleUpdateStatusClick(company.id)}
+                          >
+                            <Update />
+                          </IconButton>
+                        </>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}

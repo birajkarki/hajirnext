@@ -1,6 +1,5 @@
 // api.js
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { prepareDataForValidation } from "formik";
 
 const hardcodedToken =
   typeof window !== "undefined"
@@ -11,19 +10,13 @@ export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_API_URL,
-    // Include headers in each request
     prepareHeaders: (headers) => {
       const newHeaders = new Headers(headers);
       newHeaders.set("Authorization", `Bearer ${hardcodedToken}`);
-      // newHeaders.set("Content-Type", "application/json");
       return newHeaders;
     },
   }),
   endpoints: (builder) => ({
-    // getData: builder.query({
-    //   query: () => "data",
-    // }),
-
     //******************AUTH ***********************
 
     // Employee Registration
@@ -159,6 +152,14 @@ export const api = createApi({
     deleteCandidate: builder.query({
       query: ({ companyId, candidate_id }) => ({
         url: `/employer/candidate/destroy/${companyId}/${candidate_id}`,
+        method: "GET",
+      }),
+    }),
+
+    // unique candidate code if company code is auto
+    getCandidateCode: builder.query({
+      query: ({ company_id }) => ({
+        url: `/employer/company/candidate-code/${company_id}`,
         method: "GET",
       }),
     }),
@@ -314,6 +315,7 @@ export const {
   useInviteCandidateMutation,
   useCreateCandidateMutation,
   useUpdateCompanyStatusMutation,
+  useGetCandidateCodeQuery,
   useGetActiveCompanyQuery,
   useGetInactiveCompanyQuery,
   useGetEmployerCompaniesQuery,

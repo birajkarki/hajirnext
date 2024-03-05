@@ -14,31 +14,31 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import * as yup from "yup";
-import { useFormik } from "formik";
 import { useMediaQuery } from "@mui/material";
-
 
 const Step2Component = ({ formik }) => {
   const handleSalaryTypeChange = (event) => {
     formik.handleChange(event);
-    // formik.setFieldValue("basicSalary", "");
-    formik.setFieldValue("allowance_amount", "");
+    formik.setFieldValue("ampm", "am");
+    // formik.setFieldValue("allowance_amount", "");
   };
 
   const handleworking_hoursChange = (decrease) => {
     const [hours, minutes] = formik.values.working_hours.split(":").map(Number);
     let totalMinutes = hours * 60 + minutes;
-    totalMinutes = decrease ? totalMinutes + 10 : totalMinutes -10;
+    totalMinutes = decrease ? totalMinutes + 10 : totalMinutes - 10;
     totalMinutes = (totalMinutes + 1440) % 1440;
     const newHours = Math.floor(totalMinutes / 60);
     const newMinutes = totalMinutes % 60;
     const formattedHours = String(newHours).padStart(2, "0");
     const formattedMinutes = String(newMinutes).padStart(2, "0");
-formik.setFieldValue("working_hours", `${formattedHours}:${formattedMinutes}`);
-};
+    formik.setFieldValue(
+      "working_hours",
+      `${formattedHours}:${formattedMinutes}`
+    );
+  };
 
-const handlebreak_durationChange = (decrease) => {
+  const handlebreak_durationChange = (decrease) => {
     const break_duration = formik.values.break_duration;
     if (!break_duration) return; // Null check
 
@@ -48,7 +48,7 @@ const handlebreak_durationChange = (decrease) => {
     let totalMinutes = hours * 60 + minutes;
 
     // Increase or decrease by 30 minutes
-    totalMinutes = decrease ? totalMinutes + 10 : totalMinutes -10;
+    totalMinutes = decrease ? totalMinutes + 10 : totalMinutes - 10;
 
     // Ensure totalMinutes remain in range [0, 1439] (24 hours)
     totalMinutes = (totalMinutes + 1440) % 1440;
@@ -61,8 +61,11 @@ const handlebreak_durationChange = (decrease) => {
     const formattedHours = String(newHours).padStart(2, "0");
     const formattedMinutes = String(newMinutes).padStart(2, "0");
 
-    formik.setFieldValue("break_duration", `${formattedHours}:${formattedMinutes}`);
-};
+    formik.setFieldValue(
+      "break_duration",
+      `${formattedHours}:${formattedMinutes}`
+    );
+  };
 
   const handleAmPmChange = () => {
     const duty_time = formik.values.duty_time;
@@ -73,9 +76,9 @@ const handlebreak_durationChange = (decrease) => {
 
     let newHours = hours;
     if (period === "pm" && hours !== 12) {
-        newHours += 12;
+      newHours += 12;
     } else if (period === "am" && hours === 12) {
-        newHours = 0;
+      newHours = 0;
     }
 
     // Ensure minutes are formatted with leading zeros
@@ -86,10 +89,10 @@ const handlebreak_durationChange = (decrease) => {
     const formattedTime = `${formattedHours}:${formattedMinutes}`;
 
     formik.setFieldValue("duty_time", formattedTime);
-};
+  };
 
-const isScreenSmall = useMediaQuery("(max-width:1209px)");
-const isScreenSm = useMediaQuery("(max-width:1000px)");
+  const isScreenSmall = useMediaQuery("(max-width:1209px)");
+  const isScreenSm = useMediaQuery("(max-width:1000px)");
   return (
     <Grid container spacing={2}>
       {/* Left Column */}
@@ -101,11 +104,16 @@ const isScreenSm = useMediaQuery("(max-width:1000px)");
             alignItems: "start",
             mt: 1,
           }}
-        > 
-         <Typography  variant="body1">
+        >
+          <Typography variant="body1">
             Salary Type <span style={{ color: "red" }}> *</span>
           </Typography>
-          <FormControl sx={{ width:isScreenSm?"200px": isScreenSmall?"350px" :"450px", marginTop: 2 }}>
+          <FormControl
+            sx={{
+              width: isScreenSm ? "200px" : isScreenSmall ? "350px" : "450px",
+              marginTop: 2,
+            }}
+          >
             <InputLabel
               htmlFor="salary_type"
               sx={{ color: "black", marginBottom: 0 }}
@@ -113,7 +121,7 @@ const isScreenSm = useMediaQuery("(max-width:1000px)");
               Salary Type
             </InputLabel>
             <Select
-              value={formik.values.salaryType}
+              value={formik.values.salary_type}
               label="Salary Type"
               name="salaryType"
               onChange={(e) => {
@@ -122,10 +130,8 @@ const isScreenSm = useMediaQuery("(max-width:1000px)");
               }}
               id="salary_type"
             >
-              <MenuItem value="Daily">Daily</MenuItem>
               <MenuItem value="Weekly">Weekly</MenuItem>
               <MenuItem value="Monthly">Monthly</MenuItem>
-              <MenuItem value="Yearly">Yearly</MenuItem>
             </Select>
           </FormControl>
           <Typography sx={{ marginTop: 2 }} variant="body1">
@@ -161,7 +167,10 @@ const isScreenSm = useMediaQuery("(max-width:1000px)");
               label="Salary Amount"
               variant="outlined"
               margin="normal"
-              sx={{ width: isScreenSm?"200px":isScreenSmall?"350px" :"450px" , marginTop:8}}
+              sx={{
+                width: isScreenSm ? "200px" : isScreenSmall ? "350px" : "450px",
+                marginTop: 8,
+              }}
               name="salary_amount"
               {...formik.getFieldProps("salary_amount")}
               error={
@@ -177,7 +186,13 @@ const isScreenSm = useMediaQuery("(max-width:1000px)");
               <TextField
                 label="Basic Salary"
                 variant="outlined"
-                sx={{  width: isScreenSm?"200px":isScreenSmall?"350px" :"450px" }}
+                sx={{
+                  width: isScreenSm
+                    ? "200px"
+                    : isScreenSmall
+                    ? "350px"
+                    : "450px",
+                }}
                 margin="normal"
                 name="salary_amount"
                 {...formik.getFieldProps("salary_amount")}
@@ -192,7 +207,13 @@ const isScreenSm = useMediaQuery("(max-width:1000px)");
               <TextField
                 label="allowance_amount"
                 variant="outlined"
-                sx={{  width: isScreenSm?"200px":isScreenSmall?"350px" :"450px" }}
+                sx={{
+                  width: isScreenSm
+                    ? "200px"
+                    : isScreenSmall
+                    ? "350px"
+                    : "450px",
+                }}
                 margin="normal"
                 name="allowance_amount"
                 {...formik.getFieldProps("allowance_amount")}
@@ -233,7 +254,10 @@ const isScreenSm = useMediaQuery("(max-width:1000px)");
             <TextField
               label="Working Hours"
               variant="outlined"
-              sx={{ width: isScreenSm?"100px":isScreenSmall?"200px": "333px", textAlign: "center" }}
+              sx={{
+                width: isScreenSm ? "100px" : isScreenSmall ? "200px" : "333px",
+                textAlign: "center",
+              }}
               margin="normal"
               name="working_hours"
               inputProps={{ style: { textAlign: "center" } }}
@@ -258,7 +282,10 @@ const isScreenSm = useMediaQuery("(max-width:1000px)");
               margin="normal"
               name="duty_time"
               {...formik.getFieldProps("duty_time")}
-              sx={{ width:isScreenSm?"160px": isScreenSmall?"270px":"395px", textAlign: "center" }}
+              sx={{
+                width: isScreenSm ? "160px" : isScreenSmall ? "270px" : "395px",
+                textAlign: "center",
+              }}
             />
             <FormControl sx={{ width: "53px", marginTop: 1 }}>
               <InputLabel htmlFor="am">AM/PM</InputLabel>
@@ -270,7 +297,7 @@ const isScreenSm = useMediaQuery("(max-width:1000px)");
                   handleAmPmChange();
                 }}
                 name="ampm"
-                sx={{marginLeft:-1.3}}
+                sx={{ marginLeft: -1.3 }}
               >
                 <MenuItem value="am">AM</MenuItem>
                 <MenuItem value="pm">PM</MenuItem>
@@ -292,7 +319,10 @@ const isScreenSm = useMediaQuery("(max-width:1000px)");
             <TextField
               label="Break Time"
               variant="outlined"
-              sx={{ width: isScreenSm?"100px":isScreenSmall?"200px":"333px", textAlign: "center" }}
+              sx={{
+                width: isScreenSm ? "100px" : isScreenSmall ? "200px" : "333px",
+                textAlign: "center",
+              }}
               margin="normal"
               name="break_duration"
               inputProps={{ style: { textAlign: "center" } }}
@@ -310,7 +340,11 @@ const isScreenSm = useMediaQuery("(max-width:1000px)");
           <Typography variant="body1">
             Probation Period <span style={{ color: "red" }}> *</span>
           </Typography>
-          <FormControl sx={{ width: isScreenSm?"230px":isScreenSmall?"330px": "462px" }}>
+          <FormControl
+            sx={{
+              width: isScreenSm ? "230px" : isScreenSmall ? "330px" : "462px",
+            }}
+          >
             <Select
               value={formik.values.probation_period}
               label="Probation Period"

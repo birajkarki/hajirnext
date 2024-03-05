@@ -7,7 +7,7 @@ import { api } from "@/services/api";
 export const store = configureStore({
   reducer: {
     [api.reducerPath]: api.reducer,
-    root: rootReducer, // assuming rootReducer is the combined reducer from rootReducer.js
+    root: rootReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(api.middleware),

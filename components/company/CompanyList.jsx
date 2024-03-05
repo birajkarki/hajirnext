@@ -25,9 +25,18 @@ const CompanyList = () => {
     setSelectedTab(newValue);
   };
 
-  const activeCompanies = companiesData?.data?.active_companies || [];
-  const inactiveCompanies = companiesData?.data?.inactive_companies || [];
+  const activeCompany = companiesData?.data?.active_companies || [];
+  const inactiveCompanies = activeCompany.filter(
+    (company) => company.status === "Suspended"
+  );
+
+  const activeCompanies = activeCompany.filter(
+    (company) => company.status === "Active"
+  );
   const allCompanies = [...activeCompanies, ...inactiveCompanies];
+
+  console.log("Active Companies:", activeCompanies);
+  console.log("Active Companies:", inactiveCompanies);
 
   const totalCount = allCompanies.length;
   const activeCount = activeCompanies.length;

@@ -15,10 +15,17 @@ const Header = ({ onMenuIconClick }) => (
     // elevation={1}
     color="inherit"
     // height="513px"
-    sx={{ backgroundColor: "#E7E7E7" }}
+    sx={{ backgroundColor: "white" }}
   >
     <Toolbar>
-      <div style={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          flexGrow: 1,
+          marginLeft: "200px",
+        }}
+      >
         <Image src="/hajir-logo.png" width={150} height={50} alt="Hajir Logo" />
       </div>
 

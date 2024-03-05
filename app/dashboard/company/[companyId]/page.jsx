@@ -14,7 +14,7 @@ export default function CompanyDashboard() {
     isLoading,
     refetch,
   } = useGetCandidatesQuery(companyId); // Pass companyId to the query
-  // console.log("use client", candidateData, isLoading);
+  // console.log("use client", candidateData);
   // console.log(candidateData?.data?.active_candidates, "active_candidates");
   // console.log(candidateData?.data?.inactive_candidates, "inactive_candidates");
 
