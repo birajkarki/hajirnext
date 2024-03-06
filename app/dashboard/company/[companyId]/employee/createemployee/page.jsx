@@ -41,20 +41,26 @@ const validationSchemaStep1 = Yup.object({
 });
 
 const validationSchemaStep2 = Yup.object({
-  salary_amount: Yup.string().when("salary", {
-    is: (val) => val === "Fixed",
-    then: Yup.string().required("Salary Amount is required"),
-    otherwise: Yup.string(),
-  }),
-  allowance_amount: Yup.string().when("salary", {
-    is: (val) => val === "Fixed",
-    then: Yup.string(),
-    otherwise: Yup.string().required("Allowance is required"),
-  }),
+  salary: Yup.string()
+    .required("Salary Type is required")
+    .oneOf(["Fixed", "Breakdown"], "Invalid Salary Type"),
+  // Temporarily removing salary_amount and allowance_amount from validation
+  // salary_amount: Yup.number().when("salary", {
+  //   is: "Fixed",
+  //   then: Yup.number().required("Salary Amount is required").positive("Salary amount must be positive").nullable(),
+  //   otherwise: Yup.number().required("Salary Amount is required").positive("Salary amount must be positive")
+  // }),
+  // allowance_amount: Yup.number().when("salary", {
+  //   is: "Breakdown",
+  //   then: Yup.number().nullable(),
+  //   otherwise: Yup.number().required("Allowance is required").positive("Allowance amount must be positive")
+  // }),
   working_hours: Yup.string().required("Working Hours is required"),
-  duty_time: Yup.string().required("duty_time Hours is required"),
-  break_duration: Yup.string().required("break_duration  is required"),
-  probation_period: Yup.string().required("probation_period  is required"),
+  duty_time: Yup.string().required("Duty Time is required"),
+  probation_period: Yup.number()
+    .required("Probation Period is required")
+    .positive("Probation period must be positive")
+    .integer("Probation period must be an integer"),
 });
 
 const validationSchemaStep3 = Yup.object({
@@ -89,21 +95,21 @@ const HorizontalLinearStepper = () => {
   const formik = useFormik({
     initialValues: {
       name_holder: "Mr", //required string
-      name: "", // required
-      code: "", // required
-      contact: "", // required
-      designation: "", // required
+      name: "biraj", // required
+      code: "sasa", // required
+      contact: "9808426215", // required
+      designation: "coder", // required
       marriage_status: "Unmarried", //required enum['Married', 'Unmarried']
       salary_type: "Monthly", // required - enum ['Weekly', 'Monthly']
       salary: "Fixed", // required - enum ['Fixed', 'Breakdown']
-      salary_amount: "", // required - double
-      allowance_amount: "", // nullable - double
-      joining_date: "", // required - date
-      working_hours: "8:00", // required
+      salary_amount: 2000.0, // required - double
+      allowance_amount: 0, // nullable - double
+      joining_date: "", // req  uired - date
+      working_hours: "08:00", // required
       duty_time: "9:00", // required - time
       probation_period: "1", // required - unsignedBigInt
       break_duration: "1:00", // required - min/hr to seconds - string
-      departments: "", // required - array - api:{{globalLiveUrl}}/employer/all-departments
+      departments: "1", // required - array - api:{{globalLiveUrl}}/employer/all-departments
       allow_late_attendance: "", // nullable -time
       casual_leave: "", //required - unsignedInteger
       sick_leave: "", //required - unsignedInteger
@@ -112,7 +118,7 @@ const HorizontalLinearStepper = () => {
       week_days_off: [1, 7], // array
       half_days: [], // array
       allow_network_access: "All Net", // required - enum['All Net', 'QR']
-      confirmPhoneNumber: "",
+      confirmPhoneNumber: "9808426215",
       allow_late_attendance_checked: "",
       casual_leave_checked: "",
       overtime_checked: "",

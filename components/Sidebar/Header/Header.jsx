@@ -23,7 +23,7 @@ const Header = ({ onMenuIconClick }) => (
           display: "flex",
           alignItems: "center",
           flexGrow: 1,
-          marginLeft: "200px",
+          marginLeft: "240px",
         }}
       >
         <Image src="/hajir-logo.png" width={150} height={50} alt="Hajir Logo" />

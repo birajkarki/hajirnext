@@ -7,8 +7,7 @@ import { useMediaQuery } from "@mui/material";
 import { useRouter } from "next/navigation";
 
 export default function BasicGrid() {
-  const router = useRouter(); // Define the router object using the useRouter hook
-
+  const router = useRouter();
   useEffect(() => {
     const token =
       typeof window !== "undefined" &&
@@ -31,9 +30,11 @@ export default function BasicGrid() {
       alt: "First Image",
       content: (
         <>
-          <p>Hajir will help you to manage your <br/>
-          staffs attendance, payroll,
-          and personal <br/>reports of your company.</p>
+          <p>
+            Hajir will help you to manage your <br />
+            staffs attendance, payroll, and personal <br />
+            reports of your company.
+          </p>
         </>
       ),
       marginTop: "30px",
@@ -45,9 +46,11 @@ export default function BasicGrid() {
       alt: "Second Image",
       content: (
         <>
-          <p>Candidate can login and logout <br/>
-           on official hours
-          and employer can notice <br/>staffs activities and generate reports.</p>
+          <p>
+            Candidate can login and logout <br />
+            on official hours and employer can notice <br />
+            staffs activities and generate reports.
+          </p>
         </>
       ),
       marginTop: "30px",
@@ -59,8 +62,10 @@ export default function BasicGrid() {
       alt: "Third Image",
       content: (
         <>
-          <p>Salary calculation made easy, track your  <br/> staffs overtime,
-          leave day, late day <br/> and live daily wages interactive reports.</p>
+          <p>
+            Salary calculation made easy, track your <br /> staffs overtime,
+            leave day, late day <br /> and live daily wages interactive reports.
+          </p>
         </>
       ),
       marginTop: "30px",
@@ -95,7 +100,6 @@ export default function BasicGrid() {
             <Image
               src="/auth/login-image-default.png"
               alt="login image"
-              // layout="responsive"
               width={isMobile ? 300 : 900}
               height={900}
               style={{ display: "block", maxWidth: "100%", height: "auto" }}
@@ -120,9 +124,8 @@ export default function BasicGrid() {
               background: "transparent",
             }}
           >
-         
-            <div style={{marginTop:'50px', marginBottom:'0px'}}>
-              <Image src="/hajir-logo.png" width={140} height={50} alt="Logo"/>
+            <div style={{ marginTop: "50px", marginBottom: "0px" }}>
+              <Image src="/hajir-logo.png" width={140} height={50} alt="Logo" />
             </div>
             <div>
               <h1
