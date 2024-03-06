@@ -27,6 +27,9 @@ const FirstPageEmployee = () => {
   const activeEmployee = candidateData?.data?.active_candidates || [];
   const inactiveEmployee = candidateData?.data?.inactive_candidates || [];
   const allEmployee = [...activeEmployee, ...inactiveEmployee];
+  console.log("Active employee:", activeEmployee);
+  console.log("InActive employee:", inactiveEmployee);
+  console.log("allEmployee:", allEmployee);
 
   const totalCountEmployee = allEmployee.length;
   const activeCountEmployee = activeEmployee.length;
@@ -84,7 +87,7 @@ const FirstPageEmployee = () => {
                   height: "100%",
                 }}
               >
-                <EmployeeTable candidateData={allEmployee} statusFilter="all" />
+                <EmployeeTable candidates={allEmployee} statusFilter="all" />
               </Box>
               <Box
                 sx={{
@@ -93,7 +96,7 @@ const FirstPageEmployee = () => {
                 }}
               >
                 <EmployeeTable
-                  candidateData={activeEmployee}
+                  candidates={activeEmployee}
                   statusFilter="active"
                 />
               </Box>
@@ -104,7 +107,7 @@ const FirstPageEmployee = () => {
                 }}
               >
                 <EmployeeTable
-                  candidateData={inactiveEmployee}
+                  candidates={inactiveEmployee}
                   statusFilter="inactive"
                 />
               </Box>

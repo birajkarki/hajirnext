@@ -1,4 +1,3 @@
-// import theme from '@/GlobalThemeSettings';
 import ThemeRegistry from "@/components/ThemeRegistry/ThemeRegistry";
 import AuthProvider from "@/context/AuthContext";
 import { Providers } from "@/redux/providers";

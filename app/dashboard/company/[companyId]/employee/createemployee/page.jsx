@@ -41,8 +41,26 @@ const validationSchemaStep1 = Yup.object({
 });
 
 const validationSchemaStep2 = Yup.object({
-  allowance_amount: Yup.string().required("Allowance is required"),
-  salary_amount: Yup.string().required("Salary Amount is required"),
+  salary: Yup.string()
+    .required("Salary Type is required")
+    .oneOf(["Fixed", "Breakdown"], "Invalid Salary Type"),
+  // Temporarily removing salary_amount and allowance_amount from validation
+  // salary_amount: Yup.number().when("salary", {
+  //   is: "Fixed",
+  //   then: Yup.number().required("Salary Amount is required").positive("Salary amount must be positive").nullable(),
+  //   otherwise: Yup.number().required("Salary Amount is required").positive("Salary amount must be positive")
+  // }),
+  // allowance_amount: Yup.number().when("salary", {
+  //   is: "Breakdown",
+  //   then: Yup.number().nullable(),
+  //   otherwise: Yup.number().required("Allowance is required").positive("Allowance amount must be positive")
+  // }),
+  working_hours: Yup.string().required("Working Hours is required"),
+  duty_time: Yup.string().required("Duty Time is required"),
+  probation_period: Yup.number()
+    .required("Probation Period is required")
+    .positive("Probation period must be positive")
+    .integer("Probation period must be an integer"),
 });
 
 const validationSchemaStep3 = Yup.object({
@@ -74,34 +92,37 @@ const HorizontalLinearStepper = () => {
     validationSchemaStep3,
     validationSchemaStep4,
   ];
-
   const formik = useFormik({
     initialValues: {
-      name_holder: "Mr",
-      confirmPhoneNumber: "9861389660",
-
-      name: "Roshan Pokharel",
-      code: "sasa",
-      contact: "9861389660",
-      designation: "QA",
-      marriage_status: "Unmarried",
-      salary_type: "Weekly",
-      salary: "Fixed",
-      salary_amount: 20000.0,
-      allowance_amount: 2000.0,
-      joining_date: "2024-02-22",
-      working_hours: "8:00",
-      duty_time: "08:00",
-      probation_period: 1,
-      break_duration: "30",
-      departments: [1, 2, 3],
-      allow_late_attendance: "30",
-      casual_leave: 6,
-      sick_leave: 7,
-      overtime_ratio: 1.2,
-      overtime_hrs: 1,
-      week_days_off: [1, 7],
-      allow_network_access: "All Net",
+      name_holder: "Mr", //required string
+      name: "biraj", // required
+      code: "sasa", // required
+      contact: "9808426215", // required
+      designation: "coder", // required
+      marriage_status: "Unmarried", //required enum['Married', 'Unmarried']
+      salary_type: "Monthly", // required - enum ['Weekly', 'Monthly']
+      salary: "Fixed", // required - enum ['Fixed', 'Breakdown']
+      salary_amount: 2000.0, // required - double
+      allowance_amount: 0, // nullable - double
+      joining_date: "", // req  uired - date
+      working_hours: "08:00", // required
+      duty_time: "9:00", // required - time
+      probation_period: "1", // required - unsignedBigInt
+      break_duration: "1:00", // required - min/hr to seconds - string
+      departments: "1", // required - array - api:{{globalLiveUrl}}/employer/all-departments
+      allow_late_attendance: "", // nullable -time
+      casual_leave: "", //required - unsignedInteger
+      sick_leave: "", //required - unsignedInteger
+      overtime_ratio: "", // double(2.2)
+      overtime_hrs: "", // float(2.2)
+      week_days_off: [1, 7], // array
+      half_days: [], // array
+      allow_network_access: "All Net", // required - enum['All Net', 'QR']
+      confirmPhoneNumber: "9808426215",
+      allow_late_attendance_checked: "",
+      casual_leave_checked: "",
+      overtime_checked: "",
+      sick_leave_checked: "",
     },
     validationSchema: validationSchemas[activeStep],
     onSubmit: async (values, { resetForm }) => {
@@ -126,19 +147,23 @@ const HorizontalLinearStepper = () => {
   });
 
   const handleNext = async () => {
-    const isLastStep = activeStep === steps.length - 1;
-    console.log("Step 1 Form Values:", formik.values);
+    try {
+      const isLastStep = activeStep === steps.length - 1;
+      console.log("Step 1 Form Values:", formik.values);
 
-    const errors = await formik.validateForm();
+      const errors = await formik.validateForm();
 
-    if (Object.keys(errors).length === 0) {
-      if (isLastStep) {
-        formik.handleSubmit();
+      if (Object.keys(errors).length === 0) {
+        if (isLastStep) {
+          formik.handleSubmit();
+        } else {
+          setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        }
       } else {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        console.log("Form validation errors:", errors);
       }
-    } else {
-      console.log("Form validation errors:", errors);
+    } catch (error) {
+      console.error("Error during form validation:", error);
     }
   };
 
@@ -202,7 +227,7 @@ const HorizontalLinearStepper = () => {
             <Box sx={{ mt: 2, mb: 2, flex: 1 }}>
               {React.cloneElement(stepComponents[activeStep], {
                 formik: formik,
-                validationErrors: formik.errors, // Pass formik errors to Step1Component
+                validationErrors: formik.errors,
               })}
             </Box>
           </div>

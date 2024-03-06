@@ -4,19 +4,33 @@ import React from "react";
 import TextField from "@mui/material/TextField";
 import { FormControl, Grid, InputLabel, MenuItem, Select } from "@mui/material";
 import { Box } from "@mui/system";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown"; // Import the icon you want to use
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { useMediaQuery } from "@mui/material";
+import {
+  useGetCandidateCodeQuery,
+  useGetDepartmentQuery,
+} from "@/services/api";
+import { useParams } from "next/navigation";
 
 const Step1Component = ({ formik, validationErrors }) => {
+  const { companyId } = useParams();
+
   const isFormIncomplete =
     Object.keys(validationErrors).length > 0 && formik.submitCount > 0;
   // Log form values when moving to Step 2
-  // const moveToStep2 = () => {
-  //   console.log("Step 1 Form Values:", formik.values);
-  //   // Proceed to Step 2 logic...
-  // };
+  const moveToStep2 = () => {
+    console.log("Step 1 Form Values:", formik.values);
+  };
   const isScreenSmall = useMediaQuery("(max-width:1390px)");
   const isScreenSM = useMediaQuery("(max-width:978px)");
+  const departmentList = useGetDepartmentQuery(companyId);
+  const candidateCode = useGetCandidateCodeQuery({
+    company_id: companyId,
+  });
+  // console.log("department list", departmentList);
+  console.log("department list", departmentList);
+  console.log("isFormIncomplete:", isFormIncomplete);
+  console.log("candidate code is coming:", candidateCode);
   return (
     <Grid container spacing={2}>
       <Grid item xs={6}>
@@ -278,9 +292,15 @@ const Step1Component = ({ formik, validationErrors }) => {
               IconComponent={ArrowDropDownIcon} // Use ArrowDropDownIcon as the icon component
               sx={{ "& .MuiSvgIcon-root": { color: "darkblue" } }}
             >
-              <MenuItem value="1">IT departments</MenuItem>
-              <MenuItem value="2">Finance departments</MenuItem>
-              <MenuItem value="3">Customer Support departments</MenuItem>
+              <MenuItem value="">All Departments</MenuItem>
+              {/* Add options dynamically based on backend response */}
+              {departmentList &&
+                departmentList.data &&
+                departmentList.data.data.departments.map((dept) => (
+                  <MenuItem key={dept.id} value={dept.id}>
+                    {dept.name}
+                  </MenuItem>
+                ))}
             </Select>
           </FormControl>
         </Box>
