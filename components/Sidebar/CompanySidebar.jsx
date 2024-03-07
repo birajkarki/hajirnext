@@ -37,8 +37,9 @@ const CompanySidebar = () => {
   const onLogoutClick = async (e) => {
     const logout = await getRequest(`/employer/logout`);
     if (logout) {
-      localStorage.setItem("token", null);
-      localStorage.setItem("user", null);
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+
       return router.push("/login");
     }
   };
@@ -130,15 +131,8 @@ const CompanySidebar = () => {
       anchor="left"
       sx={{
         width: 250,
-        // flexShrink: 0,
-        // "& .MuiDrawer-paper": {
-        //   width: 240,
-        //   boxSizing: "border-box",
-        //   top: ["48px", "56px", "64px"],
-        //   height: "auto",
-        //   bottom: 0,
-        //   backgroundColor: "#E7E7E7",
-        // },
+        display: "flex",
+        flexDirection: "column",
       }}
     >
       <Divider />
@@ -225,6 +219,7 @@ const CompanySidebar = () => {
         ))}
       </List>
       <Divider />
+
       <List>
         <LogoutButton onClick={(e) => onLogoutClick(e)} />
       </List>

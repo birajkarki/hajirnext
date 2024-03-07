@@ -297,6 +297,17 @@ export const api = createApi({
         body: MissingLeaveData,
       }),
     }),
+
+    // api performace report
+    // <<v2>>/employer/report/daily-report/95/31
+    // i want to pass parameters also today_date
+    // <<v2>>/employer/report/daily-report/95/31?today_date=2022-10-10
+
+    getDailyCompanyCandidatePerformaceReport: builder.query({
+      query: ({ company_id, candidate_id }) => ({
+        url: `/employer/report/daily-report/${company_id}/${candidate_id}`,
+      }),
+    }),
   }),
 });
 
@@ -340,4 +351,5 @@ export const {
   useGetAllLeaveTypesQuery,
   useChangePhoneNumberMutation,
   useGetCandidateDetailQuery,
+  useGetDailyCompanyCandidatePerformaceReportQuery,
 } = api;

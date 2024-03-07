@@ -141,7 +141,7 @@ const AttendanceTable = () => {
                 <TableRow key={candidate.id}>
                   <TableCell>{candidate.candidate_id}</TableCell>
                   <Link
-                    href={`/dashboard/company/${companyId}/attendance/${candidate.id}`}
+                    href={`/dashboard/company/${companyId}/attendance/${candidate.candidate_id}`}
                   >
                     <TableCell>{candidate.name}</TableCell>
                   </Link>
