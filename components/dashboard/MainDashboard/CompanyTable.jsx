@@ -477,11 +477,11 @@ const CompanyTable = ({ companies, statusFilter }) => {
           >
             {selectedCompany && selectedCompany.status === "Active" ? (
               <span>
-                A<span style={{ textTransform: "lowercase" }}>ctive</span>
+                I<span style={{ textTransform: "lowercase" }}>nactive</span>
               </span>
             ) : (
               <span>
-                I<span style={{ textTransform: "lowercase" }}>nactive</span>
+                A<span style={{ textTransform: "lowercase" }}>ctive</span>
               </span>
             )}
           </Button>
