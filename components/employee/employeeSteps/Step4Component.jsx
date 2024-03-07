@@ -42,8 +42,6 @@ const Step4Component = ({ formik }) => {
   };
 
   const handleDateSelect = (selectedDate) => {
-
-
     const parsedDate = new Date(selectedDate); // Parse the selectedDate string into a Date object
     const year = parsedDate.getFullYear();
     const month = String(parsedDate.getMonth() + 1).padStart(2, "0"); // Add leading zero if necessary
@@ -52,32 +50,30 @@ const Step4Component = ({ formik }) => {
     formik.setFieldValue("joining_date", formattedDate);
   };
   const isScreenSmall = useMediaQuery("(max-width:1214px)");
-const isScreenSm = useMediaQuery("(max-width:910px)");
+  const isScreenSm = useMediaQuery("(max-width:910px)");
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={6} >
+      <Grid item xs={6}>
         <Box
           sx={{
             display: "flex",
             flexDirection: "column",
             alignItems: "start",
             mt: 1,
-            width:'300px'
+            width: "300px",
           }}
         >
           <Typography variant="body1">
-
-            Joining Date <span sx={{ width:'150px',color: "red" }}> *</span>
+            Joining Date <span sx={{ width: "150px", color: "red" }}> *</span>
           </Typography>
 
-            <div style={{ width: '50px' }}>
-      <DatePick
-        style={{ marginLeft: '23px' }}
-        onSelect={handleDateSelect}
-      />
-    </div>
-   
+          <div style={{ width: "50px" }}>
+            <DatePick
+              style={{ marginLeft: "23px" }}
+              onSelect={handleDateSelect}
+            />
+          </div>
 
           <Typography sx={{ marginTop: 2 }} variant="body1">
             Overtime Hours <span sx={{ color: "red" }}>(Optional)</span>
@@ -97,7 +93,10 @@ const isScreenSm = useMediaQuery("(max-width:910px)");
               name="overtime_checked"
             />
             <TextField
-              sx={{ width: isScreenSm? "140px": isScreenSmall ? "240px": "445px", ml: 2 }}
+              sx={{
+                width: isScreenSm ? "140px" : isScreenSmall ? "240px" : "445px",
+                ml: 2,
+              }}
               label="eg : 2 ,4 ,5 , 6"
               disabled={!formik.values.overtime_checked}
               {...formik.getFieldProps("overtime_hrs")}
@@ -134,21 +133,36 @@ const isScreenSm = useMediaQuery("(max-width:910px)");
                         )
                       }
                       name="sick_leave_checked"
-                      sx={{ml:'9px'}}
+                      sx={{ ml: "9px" }}
                     />
                   }
                 />
                 <TextField
-              
                   label="eg : 2 ,4 ,5 , 6"
-                  sx={{ width: isScreenSm?"60px": isScreenSmall? '110px':'auto',ml: isScreenSmall? -2: 2 }}
+                  sx={{
+                    width: isScreenSm
+                      ? "60px"
+                      : isScreenSmall
+                      ? "110px"
+                      : "auto",
+                    ml: isScreenSmall ? -2 : 2,
+                  }}
                   {...formik.getFieldProps("sick_leave")}
                   disabled={!formik.values.sick_leave_checked}
                 />
               </Box>
             </Box>
             <Box sx={{ width: "42%", ml: 2 }}>
-              <Typography variant="body1" style={{ marginLeft:isScreenSm?"-140px": isScreenSmall?"-80px":"30px" }}>
+              <Typography
+                variant="body1"
+                style={{
+                  marginLeft: isScreenSm
+                    ? "-140px"
+                    : isScreenSmall
+                    ? "-80px"
+                    : "30px",
+                }}
+              >
                 Casual Leave <span style={{ color: "red" }}>*</span>
               </Typography>
               <Box
@@ -169,14 +183,27 @@ const isScreenSm = useMediaQuery("(max-width:910px)");
                         )
                       }
                       name="casual_leave_checked"
-                      style={{ marginLeft: isScreenSm?"-140px": isScreenSmall? -101: "30px", marginRight: "-5px" }}
+                      style={{
+                        marginLeft: isScreenSm
+                          ? "-140px"
+                          : isScreenSmall
+                          ? -101
+                          : "30px",
+                        marginRight: "-5px",
+                      }}
                     />
                   }
                 />
                 <TextField
-               
                   label="eg : 2 ,4 ,5 , 6"
-                  sx={{ width: isScreenSm?"60px": isScreenSmall? '110px':'160px',ml: isScreenSm?"-120px": isScreenSmall?'-80px': 1.5}}
+                  sx={{
+                    width: isScreenSm
+                      ? "60px"
+                      : isScreenSmall
+                      ? "110px"
+                      : "160px",
+                    ml: isScreenSm ? "-120px" : isScreenSmall ? "-80px" : 1.5,
+                  }}
                   {...formik.getFieldProps("casual_leave")}
                   disabled={!formik.values.casual_leave_checked}
                 />
@@ -187,129 +214,177 @@ const isScreenSm = useMediaQuery("(max-width:910px)");
       </Grid>
 
       <Grid item xs={6}>
-        <div style={{marginLeft: isScreenSm?"25px":"auto"}}>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "start",
-            mt: -0.7,
-            ml: isScreenSm?'-10px':'auto',
-          }}
-        >
-          <Typography variant="body1" style={{ marginLeft:isScreenSmall?"-12px": "55px", marginTop:'10px', marginBottom:'-16px' }}>
-            Allow Late Attendance <span style={{ color: "red" }}>*</span>
-          </Typography>
+        <div style={{ marginLeft: isScreenSm ? "25px" : "auto" }}>
           <Box
             sx={{
               display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              gap: "10px",
-            marginLeft: isScreenSmall?"1px":"60px" 
+              flexDirection: "column",
+              alignItems: "start",
+              mt: -0.7,
+              ml: isScreenSm ? "-10px" : "auto",
             }}
           >
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={formik.values.allow_late_attendance_checked === 1}
-                  onChange={(e) =>
-                    formik.setFieldValue(
-                      "allow_late_attendance_checked",
-                      e.target.checked ? 1 : 0
-                    )
-                  }
-                  name="allow_late_attendance_checked"
-                  style={{marginRight: isScreenSm?"30px":isScreenSmall?"47px":'-10px', marginLeft:isScreenSm?"-18px" :isScreenSmall?"-14px":"auto" }}
-                />
-              }
-            />
-            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginLeft: isScreenSmall?"-60px":"auto" }}>
-              <Button
-                sx={{ height: "55px", marginRight: -1.25, marginTop: 0.9 }}
-                variant="outlined"
-                onClick={() => handleHoursChange(false)}
-                disabled={!formik.values.allow_late_attendance_checked}
-              >
-                -
-              </Button>
-              <TextField
-                label="Working Hours"
-                variant="outlined"
-                sx={{ width: isScreenSm?"80px": isScreenSmall?"160px": "230px", textAlign: "center" }}
-                margin="normal"
-                name="working_hours"
-                inputProps={{ style: { textAlign: "center" } }}
-                {...formik.getFieldProps("working_hours")}
-                InputProps={{
-                  disabled: !formik.values.allow_late_attendance_checked,
-                }}
+            <Typography
+              variant="body1"
+              style={{
+                marginLeft: isScreenSmall ? "-12px" : "55px",
+                marginTop: "10px",
+                marginBottom: "-16px",
+              }}
+            >
+              Allow Late Attendance <span style={{ color: "red" }}>*</span>
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                gap: "10px",
+                marginLeft: isScreenSmall ? "1px" : "60px",
+              }}
+            >
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={formik.values.allow_late_attendance_checked === 1}
+                    onChange={(e) =>
+                      formik.setFieldValue(
+                        "allow_late_attendance_checked",
+                        e.target.checked ? 1 : 0
+                      )
+                    }
+                    name="allow_late_attendance_checked"
+                    style={{
+                      marginRight: isScreenSm
+                        ? "30px"
+                        : isScreenSmall
+                        ? "47px"
+                        : "-10px",
+                      marginLeft: isScreenSm
+                        ? "-18px"
+                        : isScreenSmall
+                        ? "-14px"
+                        : "auto",
+                    }}
+                  />
+                }
               />
-              <Button
-                variant="outlined"
-                sx={{ height: "55px", marginLeft: -1.3, marginTop: 0.9 }}
-                onClick={() => handleHoursChange(true)}
-                disabled={!formik.values.allow_late_attendance_checked}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  marginLeft: isScreenSmall ? "-60px" : "auto",
+                }}
               >
-                +
-              </Button>
-            </div>
-          </Box>
+                <Button
+                  sx={{ height: "55px", marginRight: -1.25, marginTop: 0.9 }}
+                  variant="outlined"
+                  onClick={() => handleHoursChange(false)}
+                  disabled={!formik.values.allow_late_attendance_checked}
+                >
+                  -
+                </Button>
+                <TextField
+                  label="Working Hours"
+                  variant="outlined"
+                  sx={{
+                    width: isScreenSm
+                      ? "80px"
+                      : isScreenSmall
+                      ? "160px"
+                      : "230px",
+                    textAlign: "center",
+                  }}
+                  margin="normal"
+                  name="working_hours"
+                  inputProps={{ style: { textAlign: "center" } }}
+                  {...formik.getFieldProps("working_hours")}
+                  InputProps={{
+                    disabled: !formik.values.allow_late_attendance_checked,
+                  }}
+                />
+                <Button
+                  variant="outlined"
+                  sx={{ height: "55px", marginLeft: -1.3, marginTop: 0.9 }}
+                  onClick={() => handleHoursChange(true)}
+                  disabled={!formik.values.allow_late_attendance_checked}
+                >
+                  +
+                </Button>
+              </div>
+            </Box>
 
-          <Typography
-            variant="body1"
-            style={{ marginTop: "12px" , marginBottom:'1px', marginLeft: isScreenSmall?"-10px": "60px"}}
-          >
-            Over Time Ratio <span style={{ color: "red" }}>*</span>
-          </Typography>
-          <Box>
-            <TextField
-              label="eg ratio: 2, 4, 5, 6"
-              value={formik.values.overtime_ratio}
-              onChange={formik.handleChange}
-              name="overtime_ratio"
-              sx={{ mt: -0.1, mb: 2, ml: isScreenSmall?-1.1: 7, width: isScreenSm?"226px": isScreenSmall?"330px": "405px" }}
-              disabled={!formik.values.overtime_checked}
-            />
+            <Typography
+              variant="body1"
+              style={{
+                marginTop: "12px",
+                marginBottom: "1px",
+                marginLeft: isScreenSmall ? "-10px" : "60px",
+              }}
+            >
+              Over Time Ratio <span style={{ color: "red" }}>*</span>
+            </Typography>
+            <Box>
+              <TextField
+                label="eg ratio: 2, 4, 5, 6"
+                value={formik.values.overtime_ratio}
+                onChange={formik.handleChange}
+                name="overtime_ratio"
+                sx={{
+                  mt: -0.1,
+                  mb: 2,
+                  ml: isScreenSmall ? -1.1 : 7,
+                  width: isScreenSm
+                    ? "226px"
+                    : isScreenSmall
+                    ? "330px"
+                    : "405px",
+                }}
+                disabled={!formik.values.overtime_checked}
+              />
+            </Box>
+            <Typography
+              variant="body1"
+              style={{ marginLeft: isScreenSmall ? "-12px" : "55px" }}
+            >
+              Allow access Network <span style={{ color: "red" }}>*</span>
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+                padding: "10px",
+                width: isScreenSm ? "220px" : isScreenSmall ? "330px" : "400px",
+                ml: isScreenSmall ? -1 : 7,
+                height: "55px",
+              }}
+            >
+              <FormControlLabel
+                value="all"
+                control={<Radio />}
+                label="All"
+                checked={formik.values.allow_network_access === "all"}
+                onChange={formik.handleChange}
+                name="allow_network_access"
+              />
+              <Divider
+                style={{ height: "55px", marginTop: "-11px" }}
+                orientation="vertical"
+                flexItem
+              />
+              <FormControlLabel
+                value="QR code"
+                control={<Radio />}
+                label="QR code"
+                checked={formik.values.allow_network_access === "QR code"}
+                onChange={formik.handleChange}
+                name="allow_network_access"
+              />
+            </Box>
           </Box>
-          <Typography variant="body1" style={{ marginLeft:isScreenSmall?"-12px": "55px" }}>
-            Allow access Network <span style={{ color: "red" }}>*</span>
-          </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              border: "1px solid #ccc",
-              borderRadius: "5px",
-              padding: "10px",
-              width: isScreenSm?"220px": isScreenSmall?"330px":"400px",
-              ml: isScreenSmall? -1:7,
-              height: "55px",
-            }}
-          >
-            <FormControlLabel
-              value="all"
-              control={<Radio />}
-              label="All"
-              checked={formik.values.allow_network_access === "all"}
-              onChange={formik.handleChange}
-              name="allow_network_access"
-            />
-            <Divider
-              style={{ height: "55px", marginTop: "-11px" }}
-              orientation="vertical"
-              flexItem
-            />
-            <FormControlLabel
-              value="QR code"
-              control={<Radio />}
-              label="QR code"
-              checked={formik.values.allow_network_access === "QR code"}
-              onChange={formik.handleChange}
-              name="allow_network_access"
-            />
-          </Box>
-        </Box>
         </div>
       </Grid>
     </Grid>

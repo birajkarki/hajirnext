@@ -56,32 +56,55 @@ const HeaderAttendance = () => {
   //   getActiveCandidateToday,
   //   "checkinggggggggggggggg getActiveCandidateToday"
   // );
-
+  const attende = getAttendaceReportToday?.data?.total_attendee;
+  const present = getAttendaceReportToday?.data?.present;
+  const late = getAttendaceReportToday?.data?.late;
+  const absent = getAttendaceReportToday?.data?.absent;
+  const early_checkout = getAttendaceReportToday?.data?.early_check_out;
+  const leave = getAttendaceReportToday?.data?.Leave;
   return (
     <Stack
       direction={{ xs: "column", sm: "row" }}
-      sx={{ width: "100%", marginTop: "20px" }}
+      sx={{ marginTop: "20px", marginRight: "20px " }}
       spacing={{ xs: 1, sm: 2, md: 12 }}
     >
       <Item sx={{ backgroundColor: "#0080000D " }}>
         <Typography sx={{ color: "#FF5050" }} variant="h6">
-          {getAttendaceReportToday?.data?.total_attendee}
+          {attende}
         </Typography>
-        <Typography variant="body1">Attendee</Typography>
+        <Typography variant="body1">Attende</Typography>
       </Item>
 
       <Item sx={{ backgroundColor: "#FF00000D " }}>
         <Typography sx={{ color: "#FF5050" }} variant="h6">
-          {getAttendaceReportToday?.data?.absent}
+          {present}
         </Typography>
-        <Typography variant="body1">Absent</Typography>
+        <Typography variant="body1">Present</Typography>
       </Item>
 
       <Item sx={{ backgroundColor: "#FFA5000D " }}>
         <Typography sx={{ color: "#FF5050" }} variant="h6">
-          {getAttendaceReportToday?.data?.late}
+          {late}
         </Typography>
         <Typography variant="body1">Late</Typography>
+      </Item>
+      <Item sx={{ backgroundColor: "#FFA5000D " }}>
+        <Typography sx={{ color: "#FF5050" }} variant="h6">
+          {absent}
+        </Typography>
+        <Typography variant="body1">Absent</Typography>
+      </Item>
+      <Item sx={{ backgroundColor: "#FFA5000D " }}>
+        <Typography sx={{ color: "#FF5050" }} variant="h6">
+          {early_checkout}
+        </Typography>
+        <Typography variant="body1">Early Checkout</Typography>
+      </Item>
+      <Item sx={{ backgroundColor: "#FFA5000D " }}>
+        <Typography sx={{ color: "#FF5050" }} variant="h6">
+          {leave}
+        </Typography>
+        <Typography variant="body1">Leave</Typography>
       </Item>
     </Stack>
   );

@@ -1,7 +1,7 @@
 // api.js
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const hardcodedToken =
+const token =
   typeof window !== "undefined"
     ? JSON.parse(localStorage.getItem("token"))
     : null;
@@ -12,7 +12,8 @@ export const api = createApi({
     baseUrl: process.env.NEXT_PUBLIC_API_URL,
     prepareHeaders: (headers) => {
       const newHeaders = new Headers(headers);
-      newHeaders.set("Authorization", `Bearer ${hardcodedToken}`);
+      newHeaders.set("Authorization", `Bearer ${token}`);
+      // newHeaders.set("Content-Type", "application/json");
       return newHeaders;
     },
   }),
@@ -296,6 +297,17 @@ export const api = createApi({
         body: MissingLeaveData,
       }),
     }),
+
+    // api performace report
+    // <<v2>>/employer/report/daily-report/95/31
+    // i want to pass parameters also today_date
+    // <<v2>>/employer/report/daily-report/95/31?today_date=2022-10-10
+
+    getDailyCompanyCandidatePerformaceReport: builder.query({
+      query: ({ company_id, candidate_id }) => ({
+        url: `/employer/report/daily-report/${company_id}/${candidate_id}`,
+      }),
+    }),
   }),
 });
 
@@ -339,4 +351,5 @@ export const {
   useGetAllLeaveTypesQuery,
   useChangePhoneNumberMutation,
   useGetCandidateDetailQuery,
+  useGetDailyCompanyCandidatePerformaceReportQuery,
 } = api;

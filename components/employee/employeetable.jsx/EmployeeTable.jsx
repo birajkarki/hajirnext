@@ -27,6 +27,8 @@ import {
 } from "@mui/material";
 import {
   useDeleteCandidateQuery,
+  useGetCandidateCodeQuery,
+  useGetDepartmentQuery,
   useInviteCandidateMutation,
 } from "@/services/api";
 import { useParams, useRouter } from "next/navigation";
@@ -51,7 +53,10 @@ const EmployeeTable = ({ candidates, statusFilter }) => {
   };
   const [filteredData, setFilteredData] = useState(candidates);
   const [selectedDepartment, setSelectedDepartment] = useState("");
+  const departmentList = useGetDepartmentQuery(companyId);
 
+  // console.log("department list", departmentList);
+  console.log("department list", departmentList);
   const [searchText, setSearchText] = useState("");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -79,12 +84,12 @@ const EmployeeTable = ({ candidates, statusFilter }) => {
     filterData(searchText, department);
   };
   const filterData = (searchText, department) => {
-    // if (
-    //   !attendanceData ||
-    //   !attendanceData.data ||
-    //   !attendanceData.data.candidates
-    // )
-    //   return;
+    if (
+      !departmentList ||
+      !departmentList.data ||
+      !departmentList.data.candidates
+    )
+      return;
 
     let filtered = candidates;
     if (searchText) {
@@ -195,10 +200,12 @@ const EmployeeTable = ({ candidates, statusFilter }) => {
             value={selectedDepartment}
             onChange={handleDepartmentChange}
           >
-            {candidates &&
-              candidates.data &&
-              candidates.data.data.candidates.map((dept) => (
-                <MenuItem key={dept.id} value={dept.name}>
+            <MenuItem value="">All Departments</MenuItem>
+            {/* Add options dynamically based on backend response */}
+            {departmentList &&
+              departmentList.data &&
+              departmentList.data.data.departments.map((dept) => (
+                <MenuItem key={dept.id} value={dept.id}>
                   {dept.name}
                 </MenuItem>
               ))}

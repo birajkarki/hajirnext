@@ -5,7 +5,6 @@ import React, { useEffect } from "react";
 
 const Template = ({ children }) => {
   const router = useRouter();
-  const params = useParams();
   const { setAuthUser, isLoggedIn, setIsLoggedIn } = useAuth();
 
   useEffect(() => {
@@ -19,7 +18,6 @@ const Template = ({ children }) => {
       setIsLoggedIn(true);
       setAuthUser({ user: user, token });
 
-      // Redirect to the dashboard if user is already logged in and trying to access /, /otp, or /login
       if (
         router.pathname === "/" ||
         router.pathname === "/otp" ||
@@ -31,7 +29,6 @@ const Template = ({ children }) => {
       setIsLoggedIn(false);
       setAuthUser(null);
 
-      // Redirect to the login page if there is no token
       if (router.pathname !== "/login" && router.pathname !== "/otp") {
         router.replace("/login");
       }
