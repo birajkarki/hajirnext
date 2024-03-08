@@ -1,5 +1,4 @@
 import ThemeRegistry from "@/components/ThemeRegistry/ThemeRegistry";
-import AuthProvider from "@/context/AuthContext";
 import { Providers } from "@/redux/providers";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 
@@ -13,11 +12,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-          <AuthProvider>
-            <ThemeRegistry>
-              <Providers>{children}</Providers>
-            </ThemeRegistry>
-          </AuthProvider>
+          <ThemeRegistry>
+            <Providers>{children}</Providers>
+          </ThemeRegistry>
         </AppRouterCacheProvider>
       </body>
     </html>

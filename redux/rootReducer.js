@@ -1,4 +1,3 @@
-// rootReducer.js
 import { combineReducers } from "@reduxjs/toolkit";
 import companyReducer from "./companySlice";
 import employeeReducer from "./employeeSlice";

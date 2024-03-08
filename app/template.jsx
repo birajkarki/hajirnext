@@ -1,11 +1,12 @@
 "use client";
-import { useAuth } from "@/context/AuthContext";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setCredentials, clearToken } from "@/redux/authSlice";
 
 const Template = ({ children }) => {
   const router = useRouter();
-  const { setAuthUser, isLoggedIn, setIsLoggedIn } = useAuth();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const token =
@@ -15,8 +16,7 @@ const Template = ({ children }) => {
       typeof window !== "undefined" && JSON.parse(localStorage.getItem("user"));
 
     if (token && user) {
-      setIsLoggedIn(true);
-      setAuthUser({ user: user, token });
+      dispatch(setCredentials({ token, user }));
 
       if (
         router.pathname === "/" ||
@@ -26,14 +26,13 @@ const Template = ({ children }) => {
         router.push("/dashboard");
       }
     } else {
-      setIsLoggedIn(false);
-      setAuthUser(null);
+      dispatch(clearToken());
 
       if (router.pathname !== "/login" && router.pathname !== "/otp") {
         router.replace("/login");
       }
     }
-  }, [router, setAuthUser, setIsLoggedIn]);
+  }, [dispatch, router]);
 
   return <div>{children}</div>;
 };

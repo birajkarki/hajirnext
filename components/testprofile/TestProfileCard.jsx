@@ -7,7 +7,8 @@ import {
   useUpdateProfileMutation,
   useChangePhoneNumberMutation,
 } from "@/services/api";
-import { useAuth } from "@/context/AuthContext";
+import { useDispatch, useSelector } from "react-redux";
+import { selectCurrentUser } from "@/redux/authSlice"; // Import the selector for current user
 
 const ProfileContainer = styled(Button)({
   display: "flex",
@@ -20,17 +21,18 @@ const ProfileContainer = styled(Button)({
 });
 
 const TestProfileCard = () => {
-  const { authUser } = useAuth();
+  const dispatch = useDispatch();
+  const currentUser = useSelector(selectCurrentUser); // Access current user from Redux store
   const [openDialog, setOpenDialog] = useState(false);
   const { data: getProfileQuery, isLoading, error } = useGetProfileQuery();
 
   const profileData = getProfileQuery?.data;
 
   useEffect(() => {
-    if (authUser && authUser.token) {
+    if (currentUser && currentUser.token) {
       console.log(getProfileQuery);
     }
-  }, [authUser]);
+  }, [currentUser]);
 
   const handleOpenDialog = () => {
     setOpenDialog(true);

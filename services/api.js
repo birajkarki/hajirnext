@@ -1,41 +1,54 @@
-// api.js
+import { setCredentials } from "@/redux/authSlice";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-const token =
-  typeof window !== "undefined"
-    ? JSON.parse(localStorage.getItem("token"))
-    : null;
 
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_API_URL,
-    prepareHeaders: (headers) => {
-      const newHeaders = new Headers(headers);
-      newHeaders.set("Authorization", `Bearer ${token}`);
-      // newHeaders.set("Content-Type", "application/json");
-      return newHeaders;
+    prepareHeaders: (headers, { getState }) => {
+      const token = getState().auth.token;
+      console.log("prepareHeaders is called", token);
+
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
+      return headers;
     },
   }),
   endpoints: (builder) => ({
     //******************AUTH ***********************
 
     // Employee Registration
-    registerEmployee: builder.mutation({
-      query: (employeeData) => ({
+    registerEmployer: builder.mutation({
+      query: (body) => ({
         url: "employer/register",
         method: "POST",
-        body: employeeData,
+        body,
       }),
     }),
 
     // Verify Employee OTP
-    verifyEmployeeOpt: builder.mutation({
+    verifyEmployerOpt: builder.mutation({
       query: (otpData) => ({
         url: "employer/verify-opt",
         method: "POST",
         body: otpData,
       }),
+      async onQueryStarted({ dispatch, api }, { getState }, otpData) {
+        const { token, user } = getState().auth;
+        try {
+          const result = await api.fetchBaseQuery({
+            method: "POST",
+            body: JSON.stringify(otpData),
+          });
+          if (result.status === "success") {
+            dispatch(setCredentials({ token: token, user: user }));
+          }
+          return { data: result.data };
+        } catch (error) {
+          throw error;
+        }
+      },
     }),
 
     // Profile Update
@@ -313,8 +326,8 @@ export const api = createApi({
 
 export const {
   useGetDataQuery,
-  useRegisterEmployeeMutation,
-  useVerifyEmployeeOptMutation,
+  useRegisterEmployerMutation,
+  useVerifyEmployerOptMutation,
   useUpdateProfileMutation,
   useGetOtpChangeNumberMutation,
   useVerifyOtpChangeNumberMutation,
