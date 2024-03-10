@@ -14,12 +14,14 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import TestProfileCard from "../testprofile/TestProfileCard";
 import LogoutButton from "./LogoutButton";
-import { getRequest } from "@/services/ApiRequestService";
+// import { uselogoutUserQuery } from "@/services/api";
+// import { getRequest } from "@/services/ApiRequestService";
 
 const MainSidebar = () => {
   const router = useRouter();
   const [hoveredItem, setHoveredItem] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
+  // const logoutUser = uselogoutUserQuery();
 
   const LINKS = [
     { text: "Home", href: "/dashboard", icon: HomeIcon },
@@ -27,15 +29,21 @@ const MainSidebar = () => {
     { text: "My Plans", href: "/dashboard/myplansbiraj", icon: SortIcon },
   ];
 
-  const onLogoutClick = async (e) => {
-    const logout = await getRequest(`/employer/logout`);
-    if (logout) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
+  // const onLogoutClick = async () => {
+  //   try {
+  //     const result = await logoutUser();
+  //     if (result.error) {
+  //       throw new Error(result.error.message);
+  //     }
+  //     localStorage.removeItem("token");
+  //     localStorage.removeItem("user");
+  //     router.push("/login");
+  //   } catch (error) {
+  //     console.error("Logout failed:", error);
+  //     // Handle logout failure appropriately
+  //   }
+  // };
 
-      return router.push("/login");
-    }
-  };
   const handleItemClick = (href) => {
     setSelectedItem(href);
     setHoveredItem(null);
@@ -86,7 +94,8 @@ const MainSidebar = () => {
       </List>
       <Divider />
       <List>
-        <LogoutButton onClick={(e) => onLogoutClick(e)} />
+        <LogoutButton />
+        {/* <LogoutButton onClick={(e) => onLogoutClick(e)} /> */}
       </List>
     </Drawer>
   );

@@ -1,4 +1,5 @@
-import { setCredentials } from "@/redux/authSlice";
+import { selectCurrentToken } from "@/redux/authSlice";
+
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const api = createApi({
@@ -6,7 +7,7 @@ export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_API_URL,
     prepareHeaders: (headers, { getState }) => {
-      const token = getState().auth.token;
+      const token = selectCurrentToken(getState());
       console.log("prepareHeaders is called", token);
 
       if (token) {
@@ -64,6 +65,23 @@ export const api = createApi({
     // Get Profile
     getProfile: builder.query({
       query: () => "employer/get-profile",
+    }),
+    //logout
+    // /api/employer/logout
+    logoutUser: builder.mutation({
+      query: () => ({
+        url: "/api/employer/logout",
+        method: "POST",
+      }),
+      async onQueryStarted({ dispatch }) {
+        try {
+          // Perform logout logic, e.g., clearing local storage
+          // Dispatch action to clear token and user from Redux state
+          dispatch(clearToken());
+        } catch (error) {
+          throw error;
+        }
+      },
     }),
 
     // ***************change number********************
@@ -332,6 +350,7 @@ export const {
   useGetOtpChangeNumberMutation,
   useVerifyOtpChangeNumberMutation,
   useGetProfileQuery,
+  uselogoutUserQuery,
   useDeleteCandidateQuery,
   useCreateCompanyMutation,
   useUpdateCompanyMutation,

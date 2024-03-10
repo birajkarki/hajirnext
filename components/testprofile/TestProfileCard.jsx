@@ -22,7 +22,7 @@ const ProfileContainer = styled(Button)({
 
 const TestProfileCard = () => {
   const dispatch = useDispatch();
-  const currentUser = useSelector(selectCurrentUser); // Access current user from Redux store
+  const currentUser = useSelector(selectCurrentUser);
   const [openDialog, setOpenDialog] = useState(false);
   const { data: getProfileQuery, isLoading, error } = useGetProfileQuery();
 
@@ -32,7 +32,7 @@ const TestProfileCard = () => {
     if (currentUser && currentUser.token) {
       console.log(getProfileQuery);
     }
-  }, [currentUser]);
+  }, [currentUser, getProfileQuery]); // Include getProfileQuery in the dependency array
 
   const handleOpenDialog = () => {
     setOpenDialog(true);

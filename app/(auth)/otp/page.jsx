@@ -22,14 +22,22 @@ const Otp = () => {
 
   useEffect(() => {
     const token =
-      typeof window !== "undefined" &&
-      JSON.parse(localStorage.getItem("token"));
-    const user =
-      typeof window !== "undefined" && JSON.parse(localStorage.getItem("user"));
+      typeof window !== "undefined" && localStorage.getItem("token");
+    const user = typeof window !== "undefined" && localStorage.getItem("user");
+
+    console.log("Token from localStorage:", token);
+    console.log("User from localStorage:", user);
 
     if (token && user) {
-      // Redirect to dashboard if user is already logged in
-      router.push("/dashboard");
+      try {
+        const parsedToken = JSON.parse(token);
+        const parsedUser = JSON.parse(user);
+
+        // Redirect to dashboard if user is already logged in
+        router.push("/dashboard");
+      } catch (error) {
+        console.error("Error parsing token or user:", error);
+      }
     }
   }, [router]);
 

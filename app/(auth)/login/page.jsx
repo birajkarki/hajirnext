@@ -44,15 +44,24 @@ export default function Signin() {
   console.log("data", data);
   useEffect(() => {
     const token =
-      typeof window !== "undefined" &&
-      JSON.parse(localStorage.getItem("token"));
-    const user =
-      typeof window !== "undefined" && JSON.parse(localStorage.getItem("user"));
+      typeof window !== "undefined" && localStorage.getItem("token");
+    const user = typeof window !== "undefined" && localStorage.getItem("user");
+
+    console.log("Token from localStorage:", token);
+    console.log("User from localStorage:", user);
 
     if (token && user) {
-      router.push("/dashboard");
+      try {
+        const parsedToken = JSON.parse(token);
+        const parsedUser = JSON.parse(user);
+
+        router.push("/dashboard");
+      } catch (error) {
+        console.error("Error parsing token or user:", error);
+      }
     }
   }, [router]);
+
   const images = [
     {
       src: "/auth/otp1111.png",
