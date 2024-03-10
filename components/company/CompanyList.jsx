@@ -1,7 +1,7 @@
 // CompanyList.js
 
 import React, { useState } from "react";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, useMediaQuery } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Button from "@mui/material/Button";
 import { useRouter } from "next/navigation";
@@ -41,6 +41,8 @@ const CompanyList = () => {
   const totalCount = allCompanies.length;
   const activeCount = activeCompanies.length;
   const inactiveCount = inactiveCompanies.length;
+  const isScreenBelow1270px = useMediaQuery("(max-width:1270px)");
+  const isScreenBelow1120px = useMediaQuery("(max-width:1120px)");
 
   return (
     <>
@@ -62,7 +64,9 @@ const CompanyList = () => {
               <Box>
                 <h2>Company</h2>
               </Box>
-              <Box>
+         
+              <Box sx={{marginRight: isScreenBelow1120px?"80px": isScreenBelow1270px?"30px":'20px'}} >
+           
                 <Button
                   variant="contained"
                   onClick={() =>

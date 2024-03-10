@@ -25,6 +25,7 @@ import {
   Typography,
   Menu,
   Tooltip,
+  useMediaQuery,
 } from "@mui/material";
 import ReplayIcon from '@mui/icons-material/Replay';
 import ShareIcon from '@mui/icons-material/Share';
@@ -215,6 +216,7 @@ const CompanyTable = ({ companies, statusFilter }) => {
     setSelectedCompany(company);
   };
 
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", height: 1000, mt: 3 ,
     
@@ -232,8 +234,18 @@ const CompanyTable = ({ companies, statusFilter }) => {
 
         <br />
       </Box>
-      <TableContainer component={Paper} sx={{ boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.1)' }}>
-        <Table>
+   
+      <TableContainer component={Paper} 
+  sx={{
+    boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.1)',
+
+  
+    
+    }}>
+     
+        <Table  >
+  
+
           <TableHead>
             <TableRow>
               <TableCell>ID</TableCell>
@@ -263,31 +275,9 @@ const CompanyTable = ({ companies, statusFilter }) => {
                     <TableCell>{company.id}</TableCell>
                     <TableCell>
                       <Link href={`/dashboard/company/${company.id}`} passHref>
-                        {/* <Button sx={{ color: "#555555", fontWeight: "440" }}>
+                        <Button sx={{ color: "#555555", fontWeight: "440" }}>
                           {company.name}
-                        </Button> */}
-         
-         <Button>
-         <div
-  style={{
-    color: "#555555",
-    fontWeight: "440",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    wordBreak: "break-all",
-  }}
->
-  {company.name.length > 7
-  ? (
-    <div style={{   overflow: "hidden",
-    textOverflow: "ellipsis",
-    wordBreak: "break-all"}}>{company.name}</div>
-  ) : (
-    company.name
-  )}
-  </div>
-</Button>
-
+                        </Button>
 
                       </Link>
                     </TableCell>
@@ -361,6 +351,7 @@ const CompanyTable = ({ companies, statusFilter }) => {
                 ))}
           </TableBody>
         </Table>
+     
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
@@ -371,6 +362,7 @@ const CompanyTable = ({ companies, statusFilter }) => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </TableContainer>
+    
       {/* delete dialog  */}
       <Dialog
         open={isDeleteConfirmationDialogOpen}

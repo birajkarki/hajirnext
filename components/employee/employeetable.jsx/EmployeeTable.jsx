@@ -223,16 +223,17 @@ const EmployeeTable = ({ candidates, statusFilter }) => {
         </FormControl>
         <br />
       </Box>
-      <Box  >
+      <Box >
   
  <TableContainer component={Paper}
  sx={{
- width:'1000px'
 
+ boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.1)' 
  }}
  >
-<div style={{overflowX: isScreenMed ? 'auto' : 'unset' }}>
-        <Table sx={{tableLayout:isScreenMed ? "auto":"", width:  isScreenMed ? "max-content":"1000px",height:"max-content",overflowX:isScreenMed?'auto':""}}  >
+
+<div style={{overflowX:'auto'}}>
+          <Table sx={{tableLayout:"auto",overflowX:"auto"}}  >
           <TableHead>
             <TableRow>
               <TableCell >ID</TableCell>
