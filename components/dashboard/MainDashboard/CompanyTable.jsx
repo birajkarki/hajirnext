@@ -216,7 +216,11 @@ const CompanyTable = ({ companies, statusFilter }) => {
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", height: 1000, mt: 3 }}>
+    <Box sx={{ display: "flex", flexDirection: "column", height: 1000, mt: 3 ,
+    
+    ml: { xs: 0.1, sm: 0.4, md: 2 ,lg: 2, xl:2},
+    mr: { xs: 5,sm:5, md: 2 ,lg:2,xl:2}
+    }}>
       <Box sx={{ mb: 2 }}>
         <TextField
           label="Search by Company Name"
@@ -228,7 +232,7 @@ const CompanyTable = ({ companies, statusFilter }) => {
 
         <br />
       </Box>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} sx={{ boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.1)' }}>
         <Table>
           <TableHead>
             <TableRow>
@@ -259,23 +263,46 @@ const CompanyTable = ({ companies, statusFilter }) => {
                     <TableCell>{company.id}</TableCell>
                     <TableCell>
                       <Link href={`/dashboard/company/${company.id}`} passHref>
-                        <Button sx={{ color: "#555555", fontWeight: "440" }}>
+                        {/* <Button sx={{ color: "#555555", fontWeight: "440" }}>
                           {company.name}
-                        </Button>
+                        </Button> */}
+         
+         <Button>
+         <div
+  style={{
+    color: "#555555",
+    fontWeight: "440",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    wordBreak: "break-all",
+  }}
+>
+  {company.name.length > 7
+  ? (
+    <div style={{   overflow: "hidden",
+    textOverflow: "ellipsis",
+    wordBreak: "break-all"}}>{company.name}</div>
+  ) : (
+    company.name
+  )}
+  </div>
+</Button>
+
+
                       </Link>
                     </TableCell>
                     <TableCell>{company.employee_count}</TableCell>
                     <TableCell>{company.approver_count}</TableCell>
-                    <TableCell
-                      sx={{
+                    
+                    <TableCell>
+                    <span
+                      style={{
                         backgroundColor:
-                          company.status === "Active"
-                            ? "#00800033"
-                            : "#FF505033",
+                          company.status === "Active" ? "#00800033" : "#FF505033",
                         color: company.status === "Active" ? "green" : "red",
                         padding: "7px",
                         borderRadius: "4px",
-                        marginTop: "20px",
+                 
                         textAlign: "center",
                         justifyContent: "center",
                         marginRight: "10px",
@@ -285,7 +312,9 @@ const CompanyTable = ({ companies, statusFilter }) => {
                       }}
                     >
                       {company.status}
-                    </TableCell>
+                    </span>
+                  </TableCell>
+                  
                     <TableCell>
                       {useImage({
                         src: company.qr_path,

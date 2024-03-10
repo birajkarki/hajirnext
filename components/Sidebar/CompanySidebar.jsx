@@ -33,7 +33,6 @@ const CompanySidebar = () => {
   const [openReport, setOpenReport] = useState(false); // Add this line
   const [activeLink, setActiveLink] = useState("");
   const { companyId } = useParams();
-  const router = useRouter();
 
   const onLogoutClick = async (e) => {
     const logout = await getRequest(`/employer/logout`);
