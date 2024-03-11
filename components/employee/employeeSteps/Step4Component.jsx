@@ -17,7 +17,7 @@ import { useMediaQuery } from "@mui/material";
 
 const Step4Component = ({ formik }) => {
   const handleAccessNetworkChange = (event) => {
-    formik.setFieldValue("allow_network_access", event.target.value);
+    // formik.setFieldValue("allow_network_access", event.target.value);
   };
 
   const handleHoursChange = (increase) => {
@@ -366,7 +366,7 @@ const Step4Component = ({ formik }) => {
                 value="all"
                 control={<Radio />}
                 label="All"
-                checked={formik.values.allow_network_access === "all"}
+                checked={formik.values.allow_network_access === "All Net"}
                 onChange={formik.handleChange}
                 name="allow_network_access"
               />

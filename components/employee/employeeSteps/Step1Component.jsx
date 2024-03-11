@@ -28,9 +28,12 @@ const Step1Component = ({ formik, validationErrors }) => {
     company_id: companyId,
   });
   // console.log("department list", departmentList);
-  console.log("department list", departmentList);
+  // console.log("department list", departmentList);
   console.log("isFormIncomplete:", isFormIncomplete);
-  console.log("candidate code is coming:", candidateCode);
+  // console.log("candidate code is coming:", candidateCode);
+
+  const disableCodeField = candidateCode?.data?.data ? true : false;
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={6}>
@@ -55,23 +58,28 @@ const Step1Component = ({ formik, validationErrors }) => {
             margin="normal"
             name="code"
             {...formik.getFieldProps("code")}
-            error={
-              ((formik.touched.code || formik.submitCount > 0) &&
-                Boolean(formik.errors.code) &&
-                formik.touched.code &&
-                formik.errors.code) ||
-              (!formik.touched.code &&
-                formik.submitCount > 0 &&
-                formik.errors.code) ||
-              (validationErrors.code && validationErrors.code)
-            }
-            helperText={
-              (formik.touched.code && formik.errors.code) ||
-              (!formik.touched.code &&
-                formik.submitCount > 0 &&
-                formik.errors.code) ||
-              (validationErrors.code && validationErrors.code)
-            }
+            disabled={disableCodeField}
+            // If uniqueCandidateCode exists, set the field value to its code
+            // Otherwise, let it be an empty string
+            value={candidateCode?.data?.data ? candidateCode?.data?.data : ""}
+
+            // error={
+            //   ((formik.touched.code || formik.submitCount > 0) &&
+            //     Boolean(formik.errors.code) &&
+            //     formik.touched.code &&
+            //     formik.errors.code) ||
+            //   (!formik.touched.code &&
+            //     formik.submitCount > 0 &&
+            //     formik.errors.code) ||
+            //   (validationErrors.code && validationErrors.code)
+            // }
+            // helperText={
+            //   (formik.touched.code && formik.errors.code) ||
+            //   (!formik.touched.code &&
+            //     formik.submitCount > 0 &&
+            //     formik.errors.code) ||
+            //   (validationErrors.code && validationErrors.code)
+            // }
           />
 
           {/* Name Holder */}
