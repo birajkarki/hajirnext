@@ -104,6 +104,7 @@ const HorizontalLinearStepper = () => {
     initialValues: {
       name_holder: "Mr", //required string
       name: "biraj", // required
+      code: candidateCode?.data?.data || "", // Set the initial value based on candidateCode
       code: "",
       contact: "9808426215", // required
       designation: "coder", // required

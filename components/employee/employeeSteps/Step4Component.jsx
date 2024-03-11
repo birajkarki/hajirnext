@@ -11,8 +11,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import DatePick from "./DatePick"; // Import DatePick component
-import { useFormik } from "formik";
+import DatePick from "./DatePick";
 import { useMediaQuery } from "@mui/material";
 
 const Step4Component = ({ formik }) => {
@@ -246,14 +245,14 @@ const Step4Component = ({ formik }) => {
               <FormControlLabel
                 control={
                   <Checkbox
-                    checked={formik.values.allow_late_attendance_checked === 1}
+                    checked={formik.values.allow_late_attendance === 1}
                     onChange={(e) =>
                       formik.setFieldValue(
-                        "allow_late_attendance_checked",
+                        "allow_late_attendance",
                         e.target.checked ? 1 : 0
                       )
                     }
-                    name="allow_late_attendance_checked"
+                    name="allow_late_attendance"
                     style={{
                       marginRight: isScreenSm
                         ? "30px"
@@ -301,7 +300,7 @@ const Step4Component = ({ formik }) => {
                   inputProps={{ style: { textAlign: "center" } }}
                   {...formik.getFieldProps("working_hours")}
                   InputProps={{
-                    disabled: !formik.values.allow_late_attendance_checked,
+                    disabled: !formik.values.allow_late_attendance,
                   }}
                 />
                 <Button
