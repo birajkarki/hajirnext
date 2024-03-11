@@ -1,17 +1,16 @@
 // api.js
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const token =
-  typeof window !== "undefined"
-    ? JSON.parse(localStorage.getItem("token"))
-    : null;
-
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_API_URL,
     prepareHeaders: (headers) => {
       const newHeaders = new Headers(headers);
+      const token =
+        typeof window !== "undefined"
+          ? JSON.parse(localStorage.getItem("token"))
+          : null;
       newHeaders.set("Authorization", `Bearer ${token}`);
       // newHeaders.set("Content-Type", "application/json");
       return newHeaders;

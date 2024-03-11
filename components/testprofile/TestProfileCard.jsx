@@ -44,7 +44,7 @@
 //     <ProfileContainer
 //       sx={{ width: "210px", marginTop: "20px" ,pointerEvents: "none"}}
 //       onClick={handleOpenDialog}
-    
+
 //     >
 //       {isLoading ? (
 //         <Stack spacing={1}>
@@ -102,16 +102,15 @@
 //         </>
 
 //       )}
-    
 
 //       <ProfileDialog
 //         open={openDialog}
-       
+
 //         handleClose={handleCloseDialog}
-        
+
 //         profileData={profileData}
 //       />
-  
+
 //     </ProfileContainer>
 //   );
 // };
@@ -161,41 +160,24 @@ const TestProfileCard = () => {
 
   return (
     <>
-    <ProfileContainer
-      sx={{ width: "210px", marginTop: "20px" ,
-      display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  padding: "20px",
-  cursor: "pointer",
-  justifyContent: "center",
-  textAlign: "center",
-    
-    }}
-      onClick={handleOpenDialog}
-    >
-      {isLoading ? (
-        <Stack spacing={1}>
-          <Skeleton
-            variant="circular"
-            sx={{
-              width: 100,
-              height: 100,
-              cursor: "pointer",
-              justifyContent: "center",
-              alignContent: "center",
-              alignItems: "center",
-              textAlign: "center",
-            }}
-          />
-          <Skeleton variant="text" />
-          <Skeleton variant="text" />
-        </Stack>
-      ) : (
-        <>
-          <label htmlFor="photo">
-            <Avatar
-              src={profileData?.profile_image || "/default-avatar.png"}
+      <ProfileContainer
+        sx={{
+          width: "210px",
+          marginTop: "20px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          padding: "20px",
+          cursor: "pointer",
+          justifyContent: "center",
+          textAlign: "center",
+        }}
+        onClick={handleOpenDialog}
+      >
+        {isLoading ? (
+          <Stack spacing={1}>
+            <Skeleton
+              variant="circular"
               sx={{
                 width: 100,
                 height: 100,
@@ -205,42 +187,58 @@ const TestProfileCard = () => {
                 alignItems: "center",
                 textAlign: "center",
               }}
-              alt="Profile Avatar"
             />
-          </label>
-          <Typography
-            variant="h6"
-            sx={{
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",
-              maxWidth: "200px",
-              fontSize: "16px",
-              color: "black",
-              textTransform: "none",
-            }}
-          >
-            {profileData?.name || "Name not available"}
-          </Typography>
-          <Typography
-            sx={{ fontSize: "14px", color: "black", textTransform: "none" }}
-          >
-            {profileData?.email || "Email not available"}
-          </Typography>
-        </>
+            <Skeleton variant="text" />
+            <Skeleton variant="text" />
+          </Stack>
+        ) : (
+          <>
+            <label htmlFor="photo">
+              <Avatar
+                src={profileData?.profile_image || "/default-avatar.png"}
+                sx={{
+                  width: 100,
+                  height: 100,
+                  cursor: "pointer",
+                  justifyContent: "center",
+                  alignContent: "center",
+                  alignItems: "center",
+                  textAlign: "center",
+                }}
+                alt="Profile Avatar"
+              />
+            </label>
+            <Typography
+              variant="h6"
+              sx={{
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                maxWidth: "200px",
+                fontSize: "16px",
+                color: "black",
+                textTransform: "none",
+              }}
+            >
+              {profileData?.name || "Name not available"}
+            </Typography>
+            <Typography
+              sx={{ fontSize: "14px", color: "black", textTransform: "none" }}
+            >
+              {profileData?.email || "Email not available"}
+            </Typography>
+          </>
+        )}
+      </ProfileContainer>
+      {openDialog && (
+        <ProfileDialog
+          open={openDialog}
+          handleClose={handleCloseDialog}
+          profileData={profileData}
+        />
       )}
-     
-    </ProfileContainer>
-    {openDialog && (
-      <ProfileDialog
-        open={openDialog}
-        handleClose={handleCloseDialog}
-        profileData={profileData}
-      />
-    )}
-
-</>
+    </>
   );
-    };
+};
 
 export default TestProfileCard;
