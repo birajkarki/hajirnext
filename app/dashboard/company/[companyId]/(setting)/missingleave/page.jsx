@@ -10,6 +10,7 @@ import {
   InputLabel,
   FormControl,
   MenuItem,
+  useMediaQuery,
 } from "@mui/material";
 import { useParams } from "next/navigation";
 import { useFormik } from "formik";
@@ -22,7 +23,6 @@ import {
   useGetCandidatesQuery,
   useUpdateMissingLeaveMutation,
 } from "@/services/api";
-
 const MissingAttendance = () => {
   const { companyId } = useParams();
   const { data: candidateData, isLoading: candidatesLoading } =
@@ -63,6 +63,8 @@ const MissingAttendance = () => {
       }
     },
   });
+  const isMobile = useMediaQuery("(max-width:1214px)");
+  const isSM = useMediaQuery("(max-width:883px)");
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -72,6 +74,7 @@ const MissingAttendance = () => {
           height: "100vh",
           padding: "10px",
           backgroundColor: "#fff",
+          paddingTop:"90px"
         }}
       >
         <Typography
@@ -88,7 +91,7 @@ const MissingAttendance = () => {
         </Typography>
 
         <div style={{ display: "flex", alignItems: "center" }}>
-          <div style={{ flex: 1 }}>
+          <div style={{ flex: 0.4 }}>
             <Box sx={{ display: "flex", flexDirection: "column", gap: "16px" }}>
               {candidatesLoading ? (
                 <Typography>Loading...</Typography>
@@ -134,7 +137,7 @@ const MissingAttendance = () => {
                 {...formik.getFieldProps("attendance_date")}
               />
 
-              <FormControl sx={{ width: "700px", marginTop: 2 }}>
+              <FormControl sx={{ width:  isMobile?"300px":"500px", marginTop: 2 }}>
                 <InputLabel htmlFor="" sx={{ color: "black", marginBottom: 0 }}>
                   Leave Type
                 </InputLabel>
@@ -158,18 +161,21 @@ const MissingAttendance = () => {
                 variant="contained"
                 color="primary"
                 onClick={formik.handleSubmit}
+              sx={{width:  isMobile?"300px":"500px"}}
               >
                 Add
               </Button>
             </Box>
           </div>
           {/* Image component */}
-          <div style={{ flex: 1 }}>
+          <div style={{ flex: 0.6}}>
             <Image
               width={600}
               height={500}
               src="/dashboard/missingleave/missingleave.png"
               alt="Missing Attendance Image"
+              style={{ display: isSM?"none":"block", maxWidth: "100%", height: "auto" }}
+             
             />
           </div>
         </div>

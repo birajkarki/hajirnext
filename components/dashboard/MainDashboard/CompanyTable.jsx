@@ -217,11 +217,14 @@ const CompanyTable = ({ companies, statusFilter }) => {
   };
 
 
+  const isNarrowScreen = useMediaQuery('(max-width:1199px)');
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", height: 1000, mt: 3 ,
     
     ml: { xs: 0.1, sm: 0.4, md: 2 ,lg: 2, xl:2},
-    mr: { xs: 5,sm:5, md: 2 ,lg:2,xl:2}
+    mr: { xs: 5,sm:5, md: 2 ,lg:2,xl:2},
+  
     }}>
       <Box sx={{ mb: 2 }}>
         <TextField
@@ -234,12 +237,14 @@ const CompanyTable = ({ companies, statusFilter }) => {
 
         <br />
       </Box>
-   
+  <Box sx={{maxWidth:'99%', overflowX:'auto',   boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.1)',}} >
       <TableContainer component={Paper} 
   sx={{
     boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.1)',
 
-  
+// "&:: -webkit-scrollbar":{
+//   width:20
+// }
     
     }}>
      
@@ -248,7 +253,7 @@ const CompanyTable = ({ companies, statusFilter }) => {
 
           <TableHead>
             <TableRow>
-              <TableCell>ID</TableCell>
+              <TableCell >ID</TableCell>
               <TableCell>Company Name</TableCell>
               <TableCell>Employee</TableCell>
               <TableCell>Approver</TableCell>
@@ -272,12 +277,12 @@ const CompanyTable = ({ companies, statusFilter }) => {
                     }}
                     onClick={() => handleRowClick(company.id)} // Handle row clicks
                   >
-                    <TableCell>{company.id}</TableCell>
+                    <TableCell >{company.id}</TableCell>
                     <TableCell>
-                      <Link href={`/dashboard/company/${company.id}`} passHref>
-                        <Button sx={{ color: "#555555", fontWeight: "440" }}>
+                      <Link href={`/dashboard/company/${company.id}`} passHref style={{textDecoration:'none', fontWeight:'400', color:'#434345',fontSize:'14px'}}>
+                        <span sx={{ color: "#434345", fontWeight: "440" }}>
                           {company.name}
-                        </Button>
+                        </span>
 
                       </Link>
                     </TableCell>
@@ -351,7 +356,7 @@ const CompanyTable = ({ companies, statusFilter }) => {
                 ))}
           </TableBody>
         </Table>
-     
+    
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
@@ -362,7 +367,7 @@ const CompanyTable = ({ companies, statusFilter }) => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </TableContainer>
-    
+   </Box>
       {/* delete dialog  */}
       <Dialog
         open={isDeleteConfirmationDialogOpen}
@@ -547,18 +552,17 @@ const CompanyTable = ({ companies, statusFilter }) => {
 
   {" "}
  
+  <Image
+  src={qrCodeContent}
+  height={250}
+  width={250}
+  style={{
+    marginBottom: '20px',
+    marginTop: '20px'
+  }}
+  alt="QR Code"
+/>
 
-  {/* QR code image */}
-  {useImage({
-    src: qrCodeContent,
-    height: 250,
-    width: 250,
-    style: {
-      marginBottom: '20px',
-      marginTop:'20px'
-    },
-    alt: "QR Code",
-  })}
          
 <Typography variant="body2" sx={{fontWeight:500, fontSize:'22px'}}>{selectedCompany && selectedCompany.name}</Typography>
 

@@ -101,6 +101,8 @@ export default function TableLayoutPaymentReport() {
   };
 
   return (
+    <>
+    <div style={{fontWeight:'500', fontSize:'24px', marginTop:'-40px', marginBottom:'10px'}}>Total Employees Details</div>
     <Box sx={{ display: "flex", flexDirection: "column", height: 500 }}>
       <Box sx={{ mb: 2 }}>
         <Tabs
@@ -196,7 +198,8 @@ export default function TableLayoutPaymentReport() {
           </Select>
         </FormControl>
       </Box>
-      <TableContainer component={Paper} sx={{ width: "100%" }}>
+      <Box sx={{  maxWidth:'98%',overflowX:'auto',width:'1225px', marginRight:'30px',marginLeft:'3px', boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.1)'}}>
+      <TableContainer component={Paper} sx={{  boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.1)' }}>
         <Table>
           <TableHead>
             <TableRow>
@@ -232,7 +235,25 @@ export default function TableLayoutPaymentReport() {
                       </Box>
                     </Box>
                   </TableCell>
-                  <TableCell>{person.PaymentStatus}</TableCell>
+                  <TableCell> 
+                    
+              
+                      <span
+                        style={{
+                          backgroundColor:
+                            person.PaymentStatus === "Paid"
+                              ? " #00800033"
+                              : "#FF505033 ",
+                          color:
+                          person.PaymentStatus  === "Unpaid"
+                              ? "red"
+                              : "green",
+                          
+                       padding:'7px',
+                          borderRadius: "4px"
+                        }}>{person.PaymentStatus} </span>
+                       
+                        </TableCell>
                   <TableCell>{person.PaymentAmount}</TableCell>
                 </TableRow>
               ))}
@@ -248,6 +269,8 @@ export default function TableLayoutPaymentReport() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </TableContainer>
+      </Box>
     </Box>
+    </>
   );
 }

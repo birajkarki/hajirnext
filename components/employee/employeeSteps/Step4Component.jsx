@@ -64,8 +64,8 @@ const Step4Component = ({ formik }) => {
             width: "300px",
           }}
         >
-          <Typography variant="body1">
-            Joining Date <span sx={{ width: "150px", color: "red" }}> *</span>
+          <Typography variant="body1" sx={{marginBottom:'6px'}}>
+            Joining Date <span style={{ width: "150px", color: "red" }}> *</span>
           </Typography>
 
           <div style={{ width: "50px" }}>
@@ -229,7 +229,7 @@ const Step4Component = ({ formik }) => {
               style={{
                 marginLeft: isScreenSmall ? "-12px" : "55px",
                 marginTop: "10px",
-                marginBottom: "-16px",
+                marginBottom: "-10px",
               }}
             >
               Allow Late Attendance <span style={{ color: "red" }}>*</span>
@@ -286,7 +286,7 @@ const Step4Component = ({ formik }) => {
                   -
                 </Button>
                 <TextField
-                  label="Working Hours"
+                  // label="Working Hours"
                   variant="outlined"
                   sx={{
                     width: isScreenSm
