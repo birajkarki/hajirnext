@@ -49,7 +49,10 @@ const Step3Component = ({ formik }) => {
   };
 
   return (
+    <Box > 
+      <Typography sx={{marginTop:'-20px', marginBottom:'10px'}}>Weekly Day Off <span style={{color:'red'}}>*</span></Typography>
     <Grid container spacing={2}>
+       
       {days.map((day, index) => (
         <Grid item key={day} xs={12} sm={6} md={5} lg={4}>
           <Box
@@ -68,6 +71,7 @@ const Step3Component = ({ formik }) => {
             }}
             onClick={() => handleDayClick(index)}
           >
+           
             <Box sx={{ display: "flex", flexDirection:'row', alignItems: "center" }}>
               <Checkbox
                 checked={formik.values.week_days_off.includes(index + 1)}
@@ -117,6 +121,7 @@ const Step3Component = ({ formik }) => {
         </Grid>
       ))}
     </Grid>
+    </Box>
   );
 };
 export default Step3Component;

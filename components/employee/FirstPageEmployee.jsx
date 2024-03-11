@@ -35,7 +35,8 @@ const FirstPageEmployee = () => {
   const totalCountEmployee = allEmployee.length;
   const activeCountEmployee = activeEmployee.length;
   const inactiveCountEmployee = inactiveEmployee.length;
-  const isScreenBelow970px = useMediaQuery("(max-width:970px)");
+  const isScreenBelow1270px = useMediaQuery("(max-width:1270px)");
+  const isScreenBelow1120px = useMediaQuery("(max-width:1120px)");
 
   return (
     <>
@@ -57,7 +58,7 @@ const FirstPageEmployee = () => {
               <Box>
                 <h2>Employee</h2>
               </Box>
-              <Box sx={{marginRight: isScreenBelow970px?"95px":'20px'}} >
+              <Box sx={{marginRight: isScreenBelow1120px?"80px": isScreenBelow1270px?"30px":'20px'}} >
                 <Button
                   variant="contained"
                   onClick={() =>

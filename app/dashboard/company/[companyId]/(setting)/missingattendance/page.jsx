@@ -175,6 +175,7 @@ const MissingAttendance = () => {
               height={500}
               src="/dashboard/missingAttendance/missingAttendance.png"
               alt="Missing Attendance Image"
+              style={{ display: "block", maxWidth: "100%", height: "auto" }}
             />
           </div>
         </div>

@@ -25,6 +25,7 @@ import {
   Typography,
   Menu,
   Tooltip,
+  useMediaQuery,
 } from "@mui/material";
 import ReplayIcon from "@mui/icons-material/Replay";
 import ShareIcon from "@mui/icons-material/Share";
@@ -213,18 +214,16 @@ const CompanyTable = ({ companies, statusFilter }) => {
     setSelectedCompany(company);
   };
 
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        height: 1000,
-        mt: 3,
 
-        ml: { xs: 0.1, sm: 0.4, md: 2, lg: 2, xl: 2 },
-        mr: { xs: 5, sm: 5, md: 2, lg: 2, xl: 2 },
-      }}
-    >
+  const isNarrowScreen = useMediaQuery('(max-width:1199px)');
+
+  return (
+    <Box sx={{ display: "flex", flexDirection: "column", height: 1000, mt: 3 ,
+    
+    ml: { xs: 0.1, sm: 0.4, md: 2 ,lg: 2, xl:2},
+    mr: { xs: 5,sm:5, md: 2 ,lg:2,xl:2},
+  
+    }}>
       <Box sx={{ mb: 2 }}>
         <TextField
           label="Search by Company Name"
@@ -236,14 +235,23 @@ const CompanyTable = ({ companies, statusFilter }) => {
 
         <br />
       </Box>
-      <TableContainer
-        component={Paper}
-        sx={{ boxShadow: "0px 0px 0px 1px rgba(0, 0, 0, 0.1)" }}
-      >
-        <Table>
+  <Box sx={{maxWidth:'99%', overflowX:'auto',   boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.1)',}} >
+      <TableContainer component={Paper} 
+  sx={{
+    boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.1)',
+
+// "&:: -webkit-scrollbar":{
+//   width:20
+// }
+    
+    }}>
+     
+        <Table  >
+  
+
           <TableHead>
             <TableRow>
-              <TableCell>ID</TableCell>
+              <TableCell >ID</TableCell>
               <TableCell>Company Name</TableCell>
               <TableCell>Employee</TableCell>
               <TableCell>Approver</TableCell>
@@ -267,38 +275,13 @@ const CompanyTable = ({ companies, statusFilter }) => {
                     }}
                     onClick={() => handleRowClick(company.id)} // Handle row clicks
                   >
-                    <TableCell>{company.id}</TableCell>
+                    <TableCell >{company.id}</TableCell>
                     <TableCell>
-                      <Link href={`/dashboard/company/${company.id}`} passHref>
-                        {/* <Button sx={{ color: "#555555", fontWeight: "440" }}>
+                      <Link href={`/dashboard/company/${company.id}`} passHref style={{textDecoration:'none', fontWeight:'400', color:'#434345',fontSize:'14px'}}>
+                        <span sx={{ color: "#434345", fontWeight: "440" }}>
                           {company.name}
-                        </Button> */}
+                        </span>
 
-                        <Button>
-                          <div
-                            style={{
-                              color: "#555555",
-                              fontWeight: "440",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              wordBreak: "break-all",
-                            }}
-                          >
-                            {company.name.length > 7 ? (
-                              <div
-                                style={{
-                                  overflow: "hidden",
-                                  textOverflow: "ellipsis",
-                                  wordBreak: "break-all",
-                                }}
-                              >
-                                {company.name}
-                              </div>
-                            ) : (
-                              company.name
-                            )}
-                          </div>
-                        </Button>
                       </Link>
                     </TableCell>
                     <TableCell>{company.employee_count}</TableCell>
@@ -371,6 +354,7 @@ const CompanyTable = ({ companies, statusFilter }) => {
                 ))}
           </TableBody>
         </Table>
+    
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
@@ -381,6 +365,7 @@ const CompanyTable = ({ companies, statusFilter }) => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </TableContainer>
+   </Box>
       {/* delete dialog  */}
       <Dialog
         open={isDeleteConfirmationDialogOpen}
@@ -527,105 +512,66 @@ const CompanyTable = ({ companies, statusFilter }) => {
         </DialogActions>
       </Dialog>
 
-      <Dialog open={openQrCodeModal} onClose={() => setOpenQrCodeModal(false)}>
-        <DialogContent
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            marginTop: "3px",
-          }}
-        >
-          {/* Generate New QR button */}
-          <div
-            onClick={generateNewQrCode}
-            sx={{ color: "black", marginBottom: "20px", width: "50%" }}
-          >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <ReplayIcon style={{ cursor: "pointer" }} />
-              <div style={{ marginLeft: "10px", marginRight: "160px" }}>
-                <Typography
-                  sx={{
-                    fontSize: "24px",
-                    fontStyle: "normal",
-                    fontWeight: 300,
-                    textTransform: "lowercase",
-                    width: "280px",
-                    cursor: "pointer",
-                  }}
-                >
-                  <span style={{ textTransform: "capitalize" }}>G</span>enerate{" "}
-                  <span style={{ textTransform: "capitalize" }}>N</span>ew{" "}
-                  <span style={{ textTransform: "capitalize" }}>QR</span>
-                </Typography>
-              </div>
-            </div>
-          </div>
-          <IconButton
-            onClick={() => setOpenQrCodeModal(false)}
-            sx={{
-              position: "absolute",
-              right: 4,
-              top: "9%",
-              transform: "translateY(-50%)",
-              fontSize: "24px",
-              color: "black",
-            }}
-          >
-            <CloseOutlined style={{ fontSize: "24px" }} />
-          </IconButton>{" "}
-          {/* QR code image */}
-          {useImage({
-            src: qrCodeContent,
-            height: 250,
-            width: 250,
-            style: {
-              marginBottom: "20px",
-              marginTop: "20px",
-            },
-            alt: "QR Code",
-          })}
-          <Typography
-            variant="body2"
-            sx={{ fontWeight: 500, fontSize: "22px" }}
-          >
-            {selectedCompany && selectedCompany.name}
-          </Typography>
-          <Button
-            onClick={() => downloadQrCodeAsPdf()}
-            sx={{ overflow: "hidden", marginLeft: "-70px", marginTop: "10pX " }}
-          >
-            <Typography
-              variant="body2"
-              sx={{
-                width: "50px",
-                height: "50px",
-                borderRadius: "50%",
-                backgroundColor: "#D9D9D940",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <ShareIcon />
-            </Typography>
-            <h1
-              style={{
-                fontSize: "18px",
-                fontWeight: "450",
-                color: "gray",
-                marginLeft: "40px",
-              }}
-            >
-              S<span style={{ textTransform: "lowercase" }}>hare</span> PDF
-            </h1>
-          </Button>
+         <Dialog open={openQrCodeModal} onClose={() => setOpenQrCodeModal(false)}>
+    
+     <DialogContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop:'3px' }}>
+  {/* Generate New QR button */}
+
+  <div onClick={generateNewQrCode} sx={{ color: "black", marginBottom: '20px', width:'50%' }}>
+  <div style={{ display: 'flex', alignItems: 'center', justifyContent:'center' }}>
+    <ReplayIcon style={{cursor:'pointer'}}/>
+    <div style={{ marginLeft: '10px', marginRight:'160px' }}>
+      <Typography
+        sx={{
+          fontSize: "24px",
+          fontStyle: "normal",
+          fontWeight: 300,
+          textTransform: 'lowercase',
+          width:'280px',
+          cursor:'pointer'
+        }}
+      >
+        <span style={{textTransform:'capitalize'}}>G</span>enerate <span style={{textTransform:'capitalize'}}>N</span>ew <span style={{textTransform:'capitalize'}}>QR</span>
+      </Typography>
+    </div>
+  
+ </div>
+
+ </div> 
+ <IconButton 
+  onClick={() => setOpenQrCodeModal(false)} 
+  sx={{ position: 'absolute', right: 4, top: '9%', transform: 'translateY(-50%)', fontSize:'24px', color:'black' }}
+>
+  <CloseOutlined style={{ fontSize:'24px'}} />
+</IconButton>
+
+
+
+
+  {" "}
+ 
+  <Image
+  src={qrCodeContent}
+  height={250}
+  width={250}
+  style={{
+    marginBottom: '20px',
+    marginTop: '20px'
+  }}
+  alt="QR Code"
+/>
+
+         
+<Typography variant="body2" sx={{fontWeight:500, fontSize:'22px'}}>{selectedCompany && selectedCompany.name}</Typography>
+
+
+        <Button onClick={() => downloadQrCodeAsPdf()} sx={{  overflow: 'hidden',marginLeft:'-70px' , marginTop:'10pX '}}>
+  <Typography variant="body2" sx={{ width: '50px', height: '50px',  borderRadius: '50%',backgroundColor: '#D9D9D940', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <ShareIcon /> 
+ 
+  </Typography>
+  <h1 style={{fontSize:'18px', fontWeight:'450', color:'gray', marginLeft:'40px'}}>S<span style={{textTransform:'lowercase'}}>hare</span> PDF</h1>
+</Button>
         </DialogContent>
       </Dialog>
     </Box>

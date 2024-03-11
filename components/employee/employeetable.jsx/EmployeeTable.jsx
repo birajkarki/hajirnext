@@ -223,16 +223,17 @@ const EmployeeTable = ({ candidates, statusFilter }) => {
         </FormControl>
         <br />
       </Box>
-      <Box  >
+      <Box sx={{maxWidth:'99%',overflowX:'auto',   boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.1)'}} >
   
  <TableContainer component={Paper}
  sx={{
- width:'1000px'
 
+ boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.1)' 
  }}
  >
-<div style={{overflowX: isScreenMed ? 'auto' : 'unset' }}>
-        <Table sx={{tableLayout:isScreenMed ? "auto":"", width:  isScreenMed ? "max-content":"1000px",height:"max-content",overflowX:isScreenMed?'auto':""}}  >
+
+
+          <Table   >
           <TableHead>
             <TableRow>
               <TableCell >ID</TableCell>
@@ -300,30 +301,42 @@ const EmployeeTable = ({ candidates, statusFilter }) => {
                       </div>
                     </TableCell>
 
+
 <TableCell>
-  {candidate.designation}
+
+  {/* <div> */}
+    {candidate.departments.map((dept) => (
+      <span key={dept.id}>{dept.name}</span>
+    ))}
+  {/* </div> */}
 </TableCell>
 <TableCell>   
       {candidate.code}
 </TableCell>
                     <TableCell>
-                      <span
-                        style={{
-                          backgroundColor:
-                            candidate.status === "Not-Verified"
-                              ? "#FF505033"
-                              : "#00800033",
-                          color:
-                            candidate.status === "Not-Verified"
-                              ? "red"
-                              : "green",
-                          padding: "7px",
-                          borderRadius: "4px",
-                        }}
-                      >
-                        {candidate.status}
-                      </span>
-                    </TableCell>
+  <span
+    style={{
+      backgroundColor:
+        candidate.status === "Not-Verified" || candidate.status === "absent"||candidate.status === "Late"
+          ? "#FF505033"
+          : candidate.status === "Leave"
+          ? "#FFA50033"
+          : "#00800033",
+      color:
+        candidate.status === "Not-Verified" || candidate.status === "absent" || candidate.status === "Late"
+          ? "red"
+          : candidate.status === "Leave"
+          ? "orange"
+          : "green",
+          width:  candidate.status === "Leave"?"100px":"",
+      padding: "7px",
+      borderRadius: "4px",
+    }}
+  >
+    {candidate.status}
+  </span>
+</TableCell>
+
 
                     <TableCell> 
       {candidate.phone}
@@ -374,7 +387,7 @@ const EmployeeTable = ({ candidates, statusFilter }) => {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
-        </div>
+       
       </TableContainer>
 
       </Box>

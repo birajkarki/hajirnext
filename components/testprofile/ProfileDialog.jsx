@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import {
   Avatar,
   Dialog,
@@ -23,7 +23,7 @@ import { Content } from "next/font/google";
 
 const ProfileDialog = ({ open, handleClose, profileData }) => {
   const [editProfileOpen, setEditProfileOpen] = useState(false); // State to manage visibility of Edit Profile dialog
-
+ 
   // Formik initialization for viewing profile
   const formikView = useFormik({
     initialValues: {
@@ -34,18 +34,22 @@ const ProfileDialog = ({ open, handleClose, profileData }) => {
       maritalStatus: profileData?.maritalStatus || "married",
       phone: profileData?.phone || "",
       uploadfile: profileData?.profile_image || null,
-      uploadfile: profileData?.profile_image || null,
+      // uploadfile: profileData?.profile_image || null,
+
     },
     onSubmit: async (values) => {
       console.log("View Form submitted:", values);
       // Add your submission logic here
     },
   });
+ 
+
 
   const handleEditProfileOpen = () => {
-    handleClose(); // Close the current dialog
-    setEditProfileOpen(true); // Open the Edit Profile dialog
+    setEditProfileOpen(true);
   };
+  
+
   const handleCloseDialog = () => {
     handleClose();
   };
@@ -54,7 +58,8 @@ const ProfileDialog = ({ open, handleClose, profileData }) => {
 
   return (
     <>
-      <Dialog open={open} onClose={handleClose} maxWidth="md">
+
+      <Dialog open={open} onClose={handleCloseDialog} maxWidth="md">
         <DialogTitle
           style={{
             textAlign: "center",
@@ -66,18 +71,20 @@ const ProfileDialog = ({ open, handleClose, profileData }) => {
         >
           Profile
         </DialogTitle>
-        <IconButton
+  
+         <IconButton
           aria-label="close"
           onClick={handleCloseDialog}
           sx={{
             position: "absolute",
             right: 8,
             top: 8,
-            color: (theme) => theme.palette.grey[500],
+            color: "black",
           }}
-        >
-          <CloseIcon />
-        </IconButton>
+        > 
+        <CloseIcon/>
+        </IconButton> 
+     
         <DialogContent>
           <div style={{ display:'flex',justifyContent:'center'}}>
           <Avatar

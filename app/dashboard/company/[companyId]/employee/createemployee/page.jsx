@@ -232,7 +232,7 @@ const HorizontalLinearStepper = () => {
           </div>
         ) : (
           <div>
-            <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography>
+            {/* <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography> */}
             <Box sx={{ mt: 2, mb: 2, flex: 1 }}>
               {React.cloneElement(stepComponents[activeStep], {
                 formik: formik,
