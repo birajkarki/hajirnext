@@ -87,8 +87,8 @@ const HorizontalLinearStepper = () => {
   const candidateCode = useGetCandidateCodeQuery({
     company_id: companyId,
   });
-  const uniqueCandidateCode = candidateCode?.data?.data;
-  console.log("uniqueCandidateCode", uniqueCandidateCode);
+  // const uniqueCandidateCode = candidateCode?.data?.data;
+  // console.log("uniqueCandidateCode", uniqueCandidateCode);
   const [createCandidateMutation] = useCreateCandidateMutation();
 
   const [activeStep, setActiveStep] = useState(0);
