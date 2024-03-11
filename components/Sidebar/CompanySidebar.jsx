@@ -130,7 +130,8 @@ const CompanySidebar = () => {
       variant="permanent"
       anchor="left"
       sx={{
-        width: 250,
+ 
+   width: 250,
         display: "flex",
         flexDirection: "column",
       }}
@@ -189,12 +190,19 @@ const CompanySidebar = () => {
                     <ListItemButton
                       component={href ? Link : undefined}
                       href={href}
-                      onClick={() => handleLinkClick(text)} // Set active link when clicked
+                      onClick={() => handleLinkClick(text)}
                       sx={{
-                        pl: 4,
-                        // ...(activeLink === text && { backgroundColor: "#22408B15" })
-                        "&:hover, &:active": {
-                          backgroundColor: "#22408B15", // Change background color on hover and click
+                      width:"100px",
+                        pl: 4, 
+                       
+                        pr: openReport || openSettings ? 2 : 0,
+                        py: 1, 
+                        backgroundColor: activeLink === text ? "#22408B15" : "transparent", // Set background color based on active link
+                        "&:hover": {
+                          backgroundColor: "#22408B15", // Change background color on hover
+                        },
+                        "&:active": {
+                          backgroundColor: "#22408B15", // Change background color when link is active
                         },
                       }}
                     >
@@ -221,7 +229,7 @@ const CompanySidebar = () => {
       <Divider />
 
       <List>
-        <LogoutButton onClick={(e) => onLogoutClick(e)} />
+        <LogoutButton onClick={(e) => onLogoutClick(e)} sx={{ position: "absolute",bottom: 0, left: 0}} />
       </List>
     </Drawer>
   );

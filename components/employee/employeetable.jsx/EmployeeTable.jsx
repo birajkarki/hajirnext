@@ -24,7 +24,10 @@ import {
   MenuItem,
   InputLabel,
   Avatar,
+  Grid,
+
 } from "@mui/material";
+
 import {
   useDeleteCandidateQuery,
   useGetCandidateCodeQuery,
@@ -179,11 +182,18 @@ const EmployeeTable = ({ candidates, statusFilter }) => {
     }
   };
   const [selectedRow, setSelectedRow] = useState(null);
+ 
+  const isScreenMed = useMediaQuery("(max-width:1267px)");
 
-  const isScreenSmall = useMediaQuery("(max-width:1024px)");
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", height: 1000, mt: 3 }}>
-      <Box sx={{ mb: 2 }}>
+    <Box sx={{ display: "flex", flexDirection: "column", height: 1000, mt: 3 ,
+
+    ml: { xs: 0.1, sm: 0.4, md: 2 ,lg: 2, xl:2},
+    mr: { xs: 5,sm:5, md: 2 ,lg:2,xl:2}
+  }}
+    
+    >
+      <Box sx={{ mb: 2}}>
         <TextField
           label="Search by Employee Name"
           variant="outlined"
@@ -213,16 +223,28 @@ const EmployeeTable = ({ candidates, statusFilter }) => {
         </FormControl>
         <br />
       </Box>
+      <Box sx={{maxWidth:'99%',overflowX:'auto',   boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.1)'}} >
+  
+ <TableContainer component={Paper}
+ sx={{
 
-      <TableContainer component={Paper}>
-        <Table>
+ boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.1)' 
+ }}
+ >
+
+
+          <Table   >
           <TableHead>
             <TableRow>
-              <TableCell>ID</TableCell>
+              <TableCell >ID</TableCell>
 
-              <TableCell>Employee Name</TableCell>
+              <TableCell 
+    style={{width:'20%'}}
+              >Employee Name</TableCell>
+        
               <TableCell>Department</TableCell>
 
+              
               <TableCell>Staff ID</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Phone</TableCell>
@@ -230,13 +252,15 @@ const EmployeeTable = ({ candidates, statusFilter }) => {
               <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
+          
+          <TableBody  >
             {filteredData &&
               filteredData.length > 0 &&
               filteredData
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((candidate) => (
                   <TableRow
+              
                     key={candidate.id}
                     sx={{
                       borderBottom: "0.7px dotted #ccc",
@@ -248,7 +272,7 @@ const EmployeeTable = ({ candidates, statusFilter }) => {
                   >
                     <TableCell>{candidate.id}</TableCell>
 
-                    <TableCell sx={{ width: "40px" }}>
+                    <TableCell style={{whiteSpace: "normal", whiteSpace: candidate.email.length > 6 ? "normal" : "nowrap" }}>
                       <div style={{ display: "flex", flexDirection: "row" }}>
                         <label htmlFor="photo">
                           <Avatar
@@ -272,34 +296,51 @@ const EmployeeTable = ({ candidates, statusFilter }) => {
                           }}
                         >
                           <span> {candidate.name}</span>
-                          <span style={{ color: "gray" }}>
-                            {candidate.email}
-                          </span>
-                        </div>
+                          <span>{candidate.email}</span>
+                        </div>                
                       </div>
                     </TableCell>
-                    <TableCell>{candidate.designation}</TableCell>
-                    <TableCell>{candidate.code}</TableCell>
-                    <TableCell>
-                      <span
-                        style={{
-                          backgroundColor:
-                            candidate.status === "Not-Verified"
-                              ? "#FF505033"
-                              : "#00800033",
-                          color:
-                            candidate.status === "Not-Verified"
-                              ? "red"
-                              : "green",
-                          padding: "7px",
-                          borderRadius: "4px",
-                        }}
-                      >
-                        {candidate.status}
-                      </span>
-                    </TableCell>
 
-                    <TableCell>{candidate.phone}</TableCell>
+
+<TableCell>
+
+  {/* <div> */}
+    {candidate.departments.map((dept) => (
+      <span key={dept.id}>{dept.name}</span>
+    ))}
+  {/* </div> */}
+</TableCell>
+<TableCell>   
+      {candidate.code}
+</TableCell>
+                    <TableCell>
+  <span
+    style={{
+      backgroundColor:
+        candidate.status === "Not-Verified" || candidate.status === "absent"||candidate.status === "Late"
+          ? "#FF505033"
+          : candidate.status === "Leave"
+          ? "#FFA50033"
+          : "#00800033",
+      color:
+        candidate.status === "Not-Verified" || candidate.status === "absent" || candidate.status === "Late"
+          ? "red"
+          : candidate.status === "Leave"
+          ? "orange"
+          : "green",
+          width:  candidate.status === "Leave"?"100px":"",
+      padding: "7px",
+      borderRadius: "4px",
+    }}
+  >
+    {candidate.status}
+  </span>
+</TableCell>
+
+
+                    <TableCell> 
+      {candidate.phone}
+      </TableCell>
 
                     <TableCell>
                       {candidate.status === "Active" ? (
@@ -336,6 +377,7 @@ const EmployeeTable = ({ candidates, statusFilter }) => {
                 ))}
           </TableBody>
         </Table>
+        
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
@@ -345,7 +387,10 @@ const EmployeeTable = ({ candidates, statusFilter }) => {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
+       
       </TableContainer>
+
+      </Box>
       <EmployeeDetailsDialog
         isOpen={isRowDialogOpen}
         onClose={() => setIsRowDialogOpen(false)}

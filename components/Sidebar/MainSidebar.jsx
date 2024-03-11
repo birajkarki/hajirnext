@@ -85,7 +85,11 @@ const MainSidebar = () => {
               }}
             >
               <ListItemIcon>
-                <Icon />
+              {typeof Icon === "string" ? (
+                  <img src={Icon} alt={text}  />
+                ) : (
+                  <Icon />
+                )}
               </ListItemIcon>
               <ListItemText primary={text} />
             </ListItemButton>

@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import { useGetCandidatesQuery } from "@/services/api";
 import TabsActiveInactive from "../dashboard/MainDashboard/TabsActiveInactive";
 import EmployeeTable from "./employeetable.jsx/EmployeeTable";
+import { useMediaQuery } from "@mui/material";
 
 const FirstPageEmployee = () => {
   const router = useRouter();
@@ -34,6 +35,8 @@ const FirstPageEmployee = () => {
   const totalCountEmployee = allEmployee.length;
   const activeCountEmployee = activeEmployee.length;
   const inactiveCountEmployee = inactiveEmployee.length;
+  const isScreenBelow1270px = useMediaQuery("(max-width:1270px)");
+  const isScreenBelow1120px = useMediaQuery("(max-width:1120px)");
 
   return (
     <>
@@ -55,7 +58,7 @@ const FirstPageEmployee = () => {
               <Box>
                 <h2>Employee</h2>
               </Box>
-              <Box>
+              <Box sx={{marginRight: isScreenBelow1120px?"80px": isScreenBelow1270px?"30px":'20px'}} >
                 <Button
                   variant="contained"
                   onClick={() =>

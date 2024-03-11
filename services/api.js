@@ -333,10 +333,44 @@ export const api = createApi({
     // <<v2>>/employer/report/daily-report/95/31
     // i want to pass parameters also today_date
     // <<v2>>/employer/report/daily-report/95/31?today_date=2022-10-10
-
+    // daily report
     getDailyCompanyCandidatePerformaceReport: builder.query({
       query: ({ company_id, candidate_id }) => ({
         url: `/employer/report/daily-report/${company_id}/${candidate_id}`,
+        params: { today_date }, // Pass start and end as query parameters
+      }),
+    }),
+    // weekly report
+    getWeeklyCompanyCandidatePerformaceReport: builder.query({
+      query: ({ company_id, candidate }) => ({
+        url: `/employer/report/weekly-report/${company_id}/${candidate}`,
+        params: { start, end }, // Pass start and end as query parameters
+      }),
+    }),
+    // monthly report
+    getMonthlyCompanyCandidatePerformaceReport: builder.query({
+      query: ({ company_id, candidate }) => ({
+        url: `/employer/report/monthly-report/${company_id}/${candidate}`,
+      }),
+    }),
+    // yearly report
+    getYearlyCompanyCandidatePerformaceReport: builder.query({
+      query: ({ company_id, candidate }) => ({
+        url: `/employer/report/yearly-report/${company_id}/${candidate}`,
+      }),
+    }),
+    // send payment
+    sendPayment: builder.mutation({
+      query: ({ company_id, candidate_id }) => ({
+        url: `/employer/report/payment-submit/${company_id}/${candidate_id}`,
+        method: "POST",
+      }),
+    }),
+    // send notification
+    sendNotification: builder.mutation({
+      query: ({ company_id, candidate_id }) => ({
+        url: `/employer/notification-send/${company_id}/${candidate_id}`,
+        method: "POST",
       }),
     }),
   }),
@@ -384,4 +418,9 @@ export const {
   useChangePhoneNumberMutation,
   useGetCandidateDetailQuery,
   useGetDailyCompanyCandidatePerformaceReportQuery,
+  useGetWeeklyCompanyCandidatePerformaceReportQuery,
+  useGetMonthlyCompanyCandidatePerformaceReportQuery,
+  useGetYearlyCompanyCandidatePerformaceReportQuery,
+  useSendPaymentMutation,
+  useSendNotificationMutation,
 } = api;

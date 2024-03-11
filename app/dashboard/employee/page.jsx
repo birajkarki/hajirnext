@@ -15,7 +15,10 @@ import {
 
 const Company = () => {
   const validationSchema = yup.object({
-    name: yup.string().required("Full name is required"),
+    name: yup
+    .string()
+    .matches(/^[A-Za-z]+$/, "Name must only contain alphabets")
+    .required("Full name is required"),
     staffCode: yup.string().required("Please select a staff code"),
     dateSelect: yup.string().required("Please select a date"),
     calculationType: yup.string().required("Please select a calculation type"),

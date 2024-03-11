@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
@@ -14,7 +14,10 @@ import Step3Component from "@/components/employee/employeeSteps/Step3Component";
 import Step4Component from "@/components/employee/employeeSteps/Step4Component";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useCreateCandidateMutation } from "@/services/api";
+import {
+  useCreateCandidateMutation,
+  useGetCandidateCodeQuery,
+} from "@/services/api";
 import { useParams, useRouter } from "next/navigation";
 
 const steps = ["Step 1", "Step 2", "Step 3", "Step 4"];
@@ -26,24 +29,24 @@ const stepComponents = [
 ];
 
 const validationSchemaStep1 = Yup.object({
-  code: Yup.string()
-    .required("Staff Code is required")
-    .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field"),
-  name_holder: Yup.string().required("Name Holder is required"),
-  contact: Yup.string().required("Mobile Number is required"),
-  designation: Yup.string().required("Designation is required"),
-  marriage_status: Yup.string().required("Marriage Status is required"),
-  name: Yup.string().required("Full Name is required"),
-  confirmPhoneNumber: Yup.string()
-    .required("Confirm Phone Number is required")
-    .oneOf([Yup.ref("contact"), null], "Phone Numbers must match"),
-  departments: Yup.string().required("Departments is required"),
+  // code: Yup.string()
+  //   .required("Staff Code is required")
+  //   .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field"),
+  // name_holder: Yup.string().required("Name Holder is required"),
+  // contact: Yup.string().required("Mobile Number is required"),
+  // designation: Yup.string().required("Designation is required"),
+  // marriage_status: Yup.string().required("Marriage Status is required"),
+  // name: Yup.string().required("Full Name is required"),
+  // confirmPhoneNumber: Yup.string()
+  //   .required("Confirm Phone Number is required")
+  //   .oneOf([Yup.ref("contact"), null], "Phone Numbers must match"),
+  // departments: Yup.string().required("Departments is required"),
 });
 
 const validationSchemaStep2 = Yup.object({
-  salary: Yup.string()
-    .required("Salary Type is required")
-    .oneOf(["Fixed", "Breakdown"], "Invalid Salary Type"),
+  // salary: Yup.string()
+  //   .required("Salary Type is required")
+  //   .oneOf(["Fixed", "Breakdown"], "Invalid Salary Type"),
   // Temporarily removing salary_amount and allowance_amount from validation
   // salary_amount: Yup.number().when("salary", {
   //   is: "Fixed",
@@ -55,32 +58,37 @@ const validationSchemaStep2 = Yup.object({
   //   then: Yup.number().nullable(),
   //   otherwise: Yup.number().required("Allowance is required").positive("Allowance amount must be positive")
   // }),
-  working_hours: Yup.string().required("Working Hours is required"),
-  duty_time: Yup.string().required("Duty Time is required"),
-  probation_period: Yup.number()
-    .required("Probation Period is required")
-    .positive("Probation period must be positive")
-    .integer("Probation period must be an integer"),
+  // working_hours: Yup.string().required("Working Hours is required"),
+  // duty_time: Yup.string().required("Duty Time is required"),
+  // probation_period: Yup.number()
+  //   .required("Probation Period is required")
+  //   .positive("Probation period must be positive")
+  //   .integer("Probation period must be an integer"),
 });
 
 const validationSchemaStep3 = Yup.object({
-  week_days_off: Yup.array().required("Week Days Off is required"),
+  // week_days_off: Yup.array().required("Week Days Off is required"),
 });
 
 const validationSchemaStep4 = Yup.object({
-  overtime_checked: Yup.number().required("Overtime Hours is required"),
-  sick_leave_checked: Yup.number().required("Sick Leave is required"),
-  casual_leave_checked: Yup.number().required("Casual Leave is required"),
-  working_hours: Yup.string().required("Working Hours is required"),
-  allow_late_attendance_checked: Yup.number().required(
-    "Allow Late Attendance is required"
-  ),
-  overtime_ratio: Yup.number().required("Over Time Ratio is required"),
+  // overtime_checked: Yup.number().required("Overtime Hours is required"),
+  // sick_leave_checked: Yup.number().required("Sick Leave is required"),
+  // casual_leave_checked: Yup.number().required("Casual Leave is required"),
+  // working_hours: Yup.string().required("Working Hours is required"),
+  // allow_late_attendance_checked: Yup.number().required(
+  //   "Allow Late Attendance is required"
+  // ),
+  // overtime_ratio: Yup.number().required("Over Time Ratio is required"),
 });
 
 const HorizontalLinearStepper = () => {
   const { companyId } = useParams();
-  console.log(companyId, "companyId by useParams");
+
+  const candidateCode = useGetCandidateCodeQuery({
+    company_id: companyId,
+  });
+  // const uniqueCandidateCode = candidateCode?.data?.data;
+  // console.log("uniqueCandidateCode", uniqueCandidateCode);
   const [createCandidateMutation] = useCreateCandidateMutation();
 
   const [activeStep, setActiveStep] = useState(0);
@@ -96,7 +104,8 @@ const HorizontalLinearStepper = () => {
     initialValues: {
       name_holder: "Mr", //required string
       name: "biraj", // required
-      code: "sasa", // required
+      code: candidateCode?.data?.data || "", // Set the initial value based on candidateCode
+      code: "",
       contact: "9808426215", // required
       designation: "coder", // required
       marriage_status: "Unmarried", //required enum['Married', 'Unmarried']
@@ -118,11 +127,11 @@ const HorizontalLinearStepper = () => {
       week_days_off: [1, 7], // array
       half_days: [], // array
       allow_network_access: "All Net", // required - enum['All Net', 'QR']
-      confirmPhoneNumber: "9808426215",
-      allow_late_attendance_checked: "",
-      casual_leave_checked: "",
-      overtime_checked: "",
-      sick_leave_checked: "",
+      // confirmPhoneNumber: "9808426215",
+      // allow_late_attendance_checked: "",
+      // casual_leave_checked: "",
+      // overtime_checked: "",
+      // sick_leave_checked: "",
     },
     validationSchema: validationSchemas[activeStep],
     onSubmit: async (values, { resetForm }) => {
@@ -223,7 +232,7 @@ const HorizontalLinearStepper = () => {
           </div>
         ) : (
           <div>
-            <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography>
+            {/* <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography> */}
             <Box sx={{ mt: 2, mb: 2, flex: 1 }}>
               {React.cloneElement(stepComponents[activeStep], {
                 formik: formik,
