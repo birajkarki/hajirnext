@@ -1,22 +1,8 @@
-version: "3.9"
-
+version: '3.8'
 services:
-  # Service for your Next.js application
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: hajir-app
+    build: .
     ports:
-      - "3000:80"
-
-  # Service for Nginx
-  nginx:
-    image: nginx:alpine
-    container_name: hajir-nginx
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - app
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
