@@ -1,22 +1,23 @@
-FROM node:20-alpine AS builder
+# Use the official Node.js 16 image as a parent image
+FROM node:20-alpine
 
-WORKDIR /app
+# Set the working directory inside the container
+WORKDIR /usr/src/app
+
+# Copy package.json and package-lock.json
 COPY package*.json ./
-RUN npm install
-COPY . .
-ENV NEXT_TELEMETRY_DISABLED 1
 
+# Install dependencies
+RUN npm install
+
+# Copy the rest of your application's code
+COPY . .
+
+# Build your NestJS application
 RUN npm run build
 
-FROM nginx:alpine
+# Expose the port your app runs on
+EXPOSE 3000
 
-#COPY --from=builder /app/out /usr/share/nginx/html
-
-COPY --from=builder /app/.next /usr/share/nginx/html/.next
-
-COPY nginx.conf /etc/nginx/nginx.conf
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
-
+# Command to run your app
+CMD ["npm", "run", "start:prod"]
