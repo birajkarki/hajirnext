@@ -26,13 +26,15 @@ import { getRequest } from "@/services/ApiRequestService";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import SsidChartIcon from "@mui/icons-material/SsidChart";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 const CompanySidebar = () => {
   const router = useRouter();
   const [openSettings, setOpenSettings] = useState(false);
-  const [openReport, setOpenReport] = useState(false); // Add this line
+  const [openReport, setOpenReport] = useState(false);
   const [activeLink, setActiveLink] = useState("");
   const { companyId } = useParams();
+  const { authUser, setAuthUser, setIsLoggedIn } = useAuth();
 
   const onLogoutClick = async (e) => {
     const logout = await getRequest(`/employer/logout`);

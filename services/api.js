@@ -80,6 +80,7 @@ export const api = createApi({
         body: companyData,
         formData: true,
       }),
+      invalidatesTags: ["Companies"], // Add invalidation tag
     }),
     //update company
     updateCompany: builder.mutation({
@@ -89,6 +90,9 @@ export const api = createApi({
         body: companyData,
         formData: true,
       }),
+      invalidatesTags: (result, error, args) => [
+        { type: "Company", id: args.company_id },
+      ], // Add invalidation tag
     }),
     // deletecompany
     deleteCompany: builder.mutation({
@@ -96,6 +100,7 @@ export const api = createApi({
         url: `employer/company/destroy/${company_id}`,
         method: "POST",
       }),
+      invalidatesTags: ["Companies"], // Add invalidation tag
     }),
 
     // update company status
@@ -105,25 +110,34 @@ export const api = createApi({
         method: "POST",
         body: { status },
       }),
+      invalidatesTags: (result, error, args) => [
+        { type: "Company", id: args.company_id },
+      ], // Add invalidation tag
     }),
     // All companies
     getEmployerCompanies: builder.query({
       query: () => "employer/company/employercompanies",
+      providesTags: ["Companies"], // Add tag for caching
     }),
 
     // Get Active Company
     getActiveCompany: builder.query({
       query: () => "employer/company/active",
+      providesTags: ["Companies"], // Add tag for caching
     }),
 
     // Get Inactive Company
     getInactiveCompany: builder.query({
       query: () => "employer/company/inactive",
+      providesTags: ["Companies"], // Add tag for caching
     }),
 
     // Get Candidates for a company by company_id
     getCandidates: builder.query({
       query: (companyId) => `/employer/candidate/get-candidates/${companyId}`,
+      providesTags: (result, error, companyId) => [
+        { type: "Company", id: companyId },
+      ],
     }),
 
     // Create Candidate for a company by company_id

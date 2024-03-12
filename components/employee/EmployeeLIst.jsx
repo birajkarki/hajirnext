@@ -8,30 +8,23 @@ import TabsActiveInactive from "../dashboard/MainDashboard/TabsActiveInactive";
 import EmployeeTable from "./employeetable.jsx/EmployeeTable";
 import { useMediaQuery } from "@mui/material";
 
-const FirstPageEmployee = () => {
+const EmployeeList = () => {
   const router = useRouter();
   const { companyId } = useParams();
-
   const {
     data: candidateData,
     isLoading,
     refetch,
   } = useGetCandidatesQuery(companyId);
-
   const [selectedTab, setSelectedTab] = useState(0);
-
   const handleChangeTab = (event, newValue) => {
     refetch();
     setSelectedTab(newValue);
   };
-
+  
   const activeEmployee = candidateData?.data?.active_candidates || [];
   const inactiveEmployee = candidateData?.data?.inactive_candidates || [];
   const allEmployee = [...activeEmployee, ...inactiveEmployee];
-  console.log("Active employee:", activeEmployee);
-  console.log("InActive employee:", inactiveEmployee);
-  console.log("allEmployee:", allEmployee);
-
   const totalCountEmployee = allEmployee.length;
   const activeCountEmployee = activeEmployee.length;
   const inactiveCountEmployee = inactiveEmployee.length;
@@ -58,7 +51,15 @@ const FirstPageEmployee = () => {
               <Box>
                 <h2>Employee</h2>
               </Box>
-              <Box sx={{marginRight: isScreenBelow1120px?"80px": isScreenBelow1270px?"30px":'20px'}} >
+              <Box
+                sx={{
+                  marginRight: isScreenBelow1120px
+                    ? "80px"
+                    : isScreenBelow1270px
+                    ? "30px"
+                    : "20px",
+                }}
+              >
                 <Button
                   variant="contained"
                   onClick={() =>
@@ -90,7 +91,11 @@ const FirstPageEmployee = () => {
                   height: "100%",
                 }}
               >
-                <EmployeeTable candidates={allEmployee} statusFilter="all" />
+                <EmployeeTable
+                  candidates={allEmployee}
+                  statusFilter="all"
+                  refetch={refetch}
+                />
               </Box>
               <Box
                 sx={{
@@ -101,6 +106,7 @@ const FirstPageEmployee = () => {
                 <EmployeeTable
                   candidates={activeEmployee}
                   statusFilter="active"
+                  refetch={refetch}
                 />
               </Box>
               <Box
@@ -112,6 +118,7 @@ const FirstPageEmployee = () => {
                 <EmployeeTable
                   candidates={inactiveEmployee}
                   statusFilter="inactive"
+                  refetch={refetch}
                 />
               </Box>
             </Box>
@@ -123,4 +130,4 @@ const FirstPageEmployee = () => {
   );
 };
 
-export default FirstPageEmployee;
+export default EmployeeList;

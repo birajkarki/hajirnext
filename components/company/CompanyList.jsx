@@ -64,9 +64,16 @@ const CompanyList = () => {
               <Box>
                 <h2>Company</h2>
               </Box>
-         
-              <Box sx={{marginRight: isScreenBelow1120px?"80px": isScreenBelow1270px?"30px":'20px'}} >
-           
+
+              <Box
+                sx={{
+                  marginRight: isScreenBelow1120px
+                    ? "80px"
+                    : isScreenBelow1270px
+                    ? "30px"
+                    : "20px",
+                }}
+              >
                 <Button
                   variant="contained"
                   onClick={() =>
@@ -95,7 +102,11 @@ const CompanyList = () => {
                   height: "100%",
                 }}
               >
-                <CompanyTable companies={allCompanies} statusFilter="all" />
+                <CompanyTable
+                  companies={allCompanies}
+                  statusFilter="all"
+                  refetch={refetch}
+                />
               </Box>
               <Box
                 sx={{
@@ -106,6 +117,7 @@ const CompanyList = () => {
                 <CompanyTable
                   companies={activeCompanies}
                   statusFilter="active"
+                  refetch={refetch}
                 />
               </Box>
               <Box
@@ -117,6 +129,7 @@ const CompanyList = () => {
                 <CompanyTable
                   companies={inactiveCompanies}
                   statusFilter="inactive"
+                  refetch={refetch}
                 />
               </Box>
             </Box>

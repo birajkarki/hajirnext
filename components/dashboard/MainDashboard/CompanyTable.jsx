@@ -30,38 +30,19 @@ import {
 import ReplayIcon from "@mui/icons-material/Replay";
 import ShareIcon from "@mui/icons-material/Share";
 
-import {
-  BlockSharp,
-  Check,
-  CheckCircleOutline,
-  CloseOutlined,
-  Delete,
-  DeleteOutline,
-  DoNotDisturbAlt,
-  Edit,
-  EditAttributes,
-  MoreVert,
-  Update,
-  UpdateSharp,
-} from "@mui/icons-material";
-import DoNotDisturbAltIcon from "@mui/icons-material/DoNotDisturbAlt";
+import { CloseOutlined, Delete, Edit, Update } from "@mui/icons-material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import useImage from "../../../hooks/useImage";
 
 import {
   useDeleteCompanyMutation,
-  useGetActiveCompanyQuery,
-  useGetInactiveCompanyQuery,
   useUpdateCompanyStatusMutation,
   useGenerateQrCodeQuery,
 } from "@/services/api";
 import Image from "next/image";
-import { textTransform } from "@mui/system";
 
-const CompanyTable = ({ companies, statusFilter }) => {
+const CompanyTable = ({ companies, refetch }) => {
   const router = useRouter();
-
   const [filteredData, setFilteredData] = useState(companies);
   const [selectedCompanyId, setSelectedCompanyId] = useState(null);
   const [isDeleteConfirmationDialogOpen, setDeleteConfirmationDialogOpen] =
@@ -74,27 +55,13 @@ const CompanyTable = ({ companies, statusFilter }) => {
   const [searchText, setSearchText] = useState("");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const activeCompaniesData = useGetActiveCompanyQuery();
-  const activeCompanies = activeCompaniesData.data?.companies || [];
   const [updateCompanyStatus] = useUpdateCompanyStatusMutation();
   const [deleteCompanyMutation] = useDeleteCompanyMutation();
-
   const [openQrCodeModal, setOpenQrCodeModal] = useState(false);
   const [qrCodeContent, setQrCodeContent] = useState("");
   const [companyIdForQrCode, setCompanyIdForQrCode] = useState(null);
-  const generateQrCode = useGenerateQrCodeQuery(); // This line initializes the hook
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedMenuCompanyId, setSelectedMenuCompanyId] = useState(null);
-  const [selectedCompany, setSelectedCompany] = useState(null); // Add state for selected company
-
-  const handleOpenMenu = (event, companyId) => {
-    setAnchorEl(event.currentTarget);
-    setSelectedMenuCompanyId(companyId);
-  };
-
-  const handleCloseMenu = () => {
-    setAnchorEl(null);
-  };
+  const generateQrCode = useGenerateQrCodeQuery();
+  const [selectedCompany, setSelectedCompany] = useState(null);
 
   const handleSearchTextChange = (event) => {
     const text = event.target.value.toLowerCase();
@@ -103,6 +70,7 @@ const CompanyTable = ({ companies, statusFilter }) => {
   };
 
   const filterData = (searchText) => {
+    refetch();
     const filtered = companies.filter((company) =>
       company.name.toLowerCase().includes(searchText)
     );
@@ -128,6 +96,7 @@ const CompanyTable = ({ companies, statusFilter }) => {
       console.log("Company deleted successfully", selectedCompanyId);
       await deleteCompanyMutation(selectedCompanyId);
       setDeleteConfirmationDialogOpen(false);
+      refetch();
     } catch (error) {
       console.error("Error deleting company:", error);
     }
@@ -142,13 +111,11 @@ const CompanyTable = ({ companies, statusFilter }) => {
     setSelectedCompanyId(companyId);
     const company = companies.find((company) => company.id === companyId);
     setSelectedCompany(company);
-
     setUpdateDialogOpen(true);
   };
 
   const handleUpdate = (companyId) => {
     setUpdateDialogOpen(false);
-
     router.push(`/dashboard/company/editcompany/${selectedCompanyId}`);
   };
 
@@ -162,18 +129,17 @@ const CompanyTable = ({ companies, statusFilter }) => {
   const handleConfirmStatusUpdate = async () => {
     try {
       let newStatus = "Inactive";
-
       if (selectedCompany && selectedCompany.status === "Active") {
         newStatus = "Inactive";
       } else {
         newStatus = "Active";
       }
-
       await updateCompanyStatus({
         company_id: selectedCompanyId,
         status: newStatus,
       });
       setStatusUpdateConfirmationDialogOpen(false);
+      refetch();
     } catch (error) {
       console.error("Error updating company status:", error);
     }
@@ -193,12 +159,8 @@ const CompanyTable = ({ companies, statusFilter }) => {
     console.log("Generating new QR code for company:", companyIdForQrCode);
 
     try {
-      // Fetch QR code data using useGenerateQrCodeQuery
       const response = await generateQrCode(companyIdForQrCode);
-
-      // Check if the response is successful
       if (response.data) {
-        // Handle the response data here, maybe set it to state or display it
       } else {
         console.error("Error: Invalid QR code response");
       }
@@ -214,16 +176,17 @@ const CompanyTable = ({ companies, statusFilter }) => {
     setSelectedCompany(company);
   };
 
-
-  const isNarrowScreen = useMediaQuery('(max-width:1199px)');
-
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", height: 1000, mt: 3 ,
-    
-    ml: { xs: 0.1, sm: 0.4, md: 2 ,lg: 2, xl:2},
-    mr: { xs: 5,sm:5, md: 2 ,lg:2,xl:2},
-  
-    }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        height: 1000,
+        mt: 3,
+        ml: { xs: 0.1, sm: 0.4, md: 2, lg: 2, xl: 2 },
+        mr: { xs: 5, sm: 5, md: 2, lg: 2, xl: 2 },
+      }}
+    >
       <Box sx={{ mb: 2 }}>
         <TextField
           label="Search by Company Name"
@@ -232,140 +195,152 @@ const CompanyTable = ({ companies, statusFilter }) => {
           onChange={handleSearchTextChange}
           value={searchText}
         />
-
         <br />
       </Box>
-  <Box sx={{maxWidth:'99%', overflowX:'auto',   boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.1)',}} >
-      <TableContainer component={Paper} 
-  sx={{
-    boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.1)',
+      <Box
+        sx={{
+          maxWidth: "99%",
+          overflowX: "auto",
+          boxShadow: "0px 0px 0px 1px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        <TableContainer
+          component={Paper}
+          sx={{
+            boxShadow: "0px 0px 0px 1px rgba(0, 0, 0, 0.1)",
+          }}
+        >
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>ID</TableCell>
+                <TableCell>Company Name</TableCell>
+                <TableCell>Employee</TableCell>
+                <TableCell>Approver</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>QR Code</TableCell>
+                <TableCell>Action</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredData &&
+                filteredData.length > 0 &&
+                filteredData
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((company, index) => (
+                    <TableRow
+                      key={company.id}
+                      sx={{
+                        borderBottom: "0.7px dotted #ccc",
+                        backgroundColor:
+                          activeCompanyId === company.id ? "#f1f1f1" : "",
+                      }}
+                      onClick={() => handleRowClick(company.id)} // Handle row clicks
+                    >
+                      <TableCell>{company.id}</TableCell>
+                      <TableCell>
+                        <Link
+                          href={`/dashboard/company/${company.id}`}
+                          passHref
+                          style={{
+                            textDecoration: "none",
+                            fontWeight: "400",
+                            color: "#434345",
+                            fontSize: "14px",
+                          }}
+                        >
+                          <span sx={{ color: "#434345", fontWeight: "440" }}>
+                            {company.name}
+                          </span>
+                        </Link>
+                      </TableCell>
+                      <TableCell>{company.employee_count}</TableCell>
+                      <TableCell>{company.approver_count}</TableCell>
 
-// "&:: -webkit-scrollbar":{
-//   width:20
-// }
-    
-    }}>
-     
-        <Table  >
-  
+                      <TableCell>
+                        <span
+                          style={{
+                            backgroundColor:
+                              company.status === "Active"
+                                ? "#00800033"
+                                : "#FF505033",
+                            color:
+                              company.status === "Active" ? "green" : "red",
+                            padding: "7px",
+                            borderRadius: "4px",
 
-          <TableHead>
-            <TableRow>
-              <TableCell >ID</TableCell>
-              <TableCell>Company Name</TableCell>
-              <TableCell>Employee</TableCell>
-              <TableCell>Approver</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>QR Code</TableCell>
-              <TableCell>Action</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {filteredData &&
-              filteredData.length > 0 &&
-              filteredData
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((company, index) => (
-                  <TableRow
-                    key={company.id}
-                    sx={{
-                      borderBottom: "0.7px dotted #ccc",
-                      backgroundColor:
-                        activeCompanyId === company.id ? "#f1f1f1" : "",
-                    }}
-                    onClick={() => handleRowClick(company.id)} // Handle row clicks
-                  >
-                    <TableCell >{company.id}</TableCell>
-                    <TableCell>
-                      <Link href={`/dashboard/company/${company.id}`} passHref style={{textDecoration:'none', fontWeight:'400', color:'#434345',fontSize:'14px'}}>
-                        <span sx={{ color: "#434345", fontWeight: "440" }}>
-                          {company.name}
+                            textAlign: "center",
+                            justifyContent: "center",
+                            marginRight: "10px",
+                            height: "34px",
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          {company.status}
                         </span>
+                      </TableCell>
 
-                      </Link>
-                    </TableCell>
-                    <TableCell>{company.employee_count}</TableCell>
-                    <TableCell>{company.approver_count}</TableCell>
+                      <TableCell>
+                        <Image
+                          src={company.qr_path}
+                          height={50}
+                          width={50}
+                          alt="QR Code"
+                        />
+                      </TableCell>
 
-                    <TableCell>
-                      <span
-                        style={{
-                          backgroundColor:
-                            company.status === "Active"
-                              ? "#00800033"
-                              : "#FF505033",
-                          color: company.status === "Active" ? "green" : "red",
-                          padding: "7px",
-                          borderRadius: "4px",
+                      <TableCell>
+                        {company.status === "Active" ? (
+                          <>
+                            <IconButton
+                              onClick={() => handleUpdateClick(company.id)}
+                            >
+                              <Edit />
+                            </IconButton>
+                            <IconButton
+                              onClick={() =>
+                                handleUpdateStatusClick(company.id)
+                              }
+                            >
+                              <Update />
+                            </IconButton>
+                          </>
+                        ) : (
+                          <>
+                            <IconButton
+                              onClick={() => {
+                                handleDeleteClick(company.id);
+                              }}
+                            >
+                              <Delete />
+                            </IconButton>
+                            <IconButton
+                              onClick={() =>
+                                handleUpdateStatusClick(company.id)
+                              }
+                            >
+                              <Update />
+                            </IconButton>
+                          </>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+            </TableBody>
+          </Table>
 
-                          textAlign: "center",
-                          justifyContent: "center",
-                          marginRight: "10px",
-                          height: "34px",
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        {company.status}
-                      </span>
-                    </TableCell>
-
-                    <TableCell>
-                      <Image
-                        src={company.qr_path}
-                        height={50}
-                        width={50}
-                        alt="QR Code"
-                      />
-                    </TableCell>
-
-                    <TableCell>
-                      {company.status === "Active" ? (
-                        <>
-                          <IconButton
-                            onClick={() => handleUpdateClick(company.id)}
-                          >
-                            <Edit />
-                          </IconButton>
-                          <IconButton
-                            onClick={() => handleUpdateStatusClick(company.id)}
-                          >
-                            <Update />
-                          </IconButton>
-                        </>
-                      ) : (
-                        <>
-                          <IconButton
-                            onClick={() => {
-                              handleDeleteClick(company.id);
-                            }}
-                          >
-                            <Delete />
-                          </IconButton>
-                          <IconButton
-                            onClick={() => handleUpdateStatusClick(company.id)}
-                          >
-                            <Update />
-                          </IconButton>
-                        </>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                ))}
-          </TableBody>
-        </Table>
-    
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={filteredData?.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </TableContainer>
-   </Box>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={filteredData?.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </TableContainer>
+      </Box>
       {/* delete dialog  */}
       <Dialog
         open={isDeleteConfirmationDialogOpen}
@@ -456,15 +431,14 @@ const CompanyTable = ({ companies, statusFilter }) => {
         onClose={handleCloseConfirmationDialog}
       >
         <DialogTitle sx={{ display: "flex", justifyContent: "center" }}>
-          {" "}
           {selectedCompany && selectedCompany.status === "Active"
             ? "Inactive"
-            : "Active"}{" "}
+            : "Active"}
           Company
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure to{" "}
+            Are you sure to
             {selectedCompany && selectedCompany.status === "Active"
               ? "Inactive"
               : "Active"}
@@ -512,66 +486,104 @@ const CompanyTable = ({ companies, statusFilter }) => {
         </DialogActions>
       </Dialog>
 
-         <Dialog open={openQrCodeModal} onClose={() => setOpenQrCodeModal(false)}>
-    
-     <DialogContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop:'3px' }}>
-  {/* Generate New QR button */}
-
-  <div onClick={generateNewQrCode} sx={{ color: "black", marginBottom: '20px', width:'50%' }}>
-  <div style={{ display: 'flex', alignItems: 'center', justifyContent:'center' }}>
-    <ReplayIcon style={{cursor:'pointer'}}/>
-    <div style={{ marginLeft: '10px', marginRight:'160px' }}>
-      <Typography
-        sx={{
-          fontSize: "24px",
-          fontStyle: "normal",
-          fontWeight: 300,
-          textTransform: 'lowercase',
-          width:'280px',
-          cursor:'pointer'
-        }}
-      >
-        <span style={{textTransform:'capitalize'}}>G</span>enerate <span style={{textTransform:'capitalize'}}>N</span>ew <span style={{textTransform:'capitalize'}}>QR</span>
-      </Typography>
-    </div>
-  
- </div>
-
- </div> 
- <IconButton 
-  onClick={() => setOpenQrCodeModal(false)} 
-  sx={{ position: 'absolute', right: 4, top: '9%', transform: 'translateY(-50%)', fontSize:'24px', color:'black' }}
->
-  <CloseOutlined style={{ fontSize:'24px'}} />
-</IconButton>
-
-
-
-
-  {" "}
- 
-  <Image
-  src={qrCodeContent}
-  height={250}
-  width={250}
-  style={{
-    marginBottom: '20px',
-    marginTop: '20px'
-  }}
-  alt="QR Code"
-/>
-
-         
-<Typography variant="body2" sx={{fontWeight:500, fontSize:'22px'}}>{selectedCompany && selectedCompany.name}</Typography>
-
-
-        <Button onClick={() => downloadQrCodeAsPdf()} sx={{  overflow: 'hidden',marginLeft:'-70px' , marginTop:'10pX '}}>
-  <Typography variant="body2" sx={{ width: '50px', height: '50px',  borderRadius: '50%',backgroundColor: '#D9D9D940', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-    <ShareIcon /> 
- 
-  </Typography>
-  <h1 style={{fontSize:'18px', fontWeight:'450', color:'gray', marginLeft:'40px'}}>S<span style={{textTransform:'lowercase'}}>hare</span> PDF</h1>
-</Button>
+      <Dialog open={openQrCodeModal} onClose={() => setOpenQrCodeModal(false)}>
+        <DialogContent
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            marginTop: "3px",
+          }}
+        >
+          {/* Generate New QR button */}
+          <div
+            onClick={generateNewQrCode}
+            sx={{ color: "black", marginBottom: "20px", width: "50%" }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <ReplayIcon style={{ cursor: "pointer" }} />
+              <div style={{ marginLeft: "10px", marginRight: "160px" }}>
+                <Typography
+                  sx={{
+                    fontSize: "24px",
+                    fontStyle: "normal",
+                    fontWeight: 300,
+                    textTransform: "lowercase",
+                    width: "280px",
+                    cursor: "pointer",
+                  }}
+                >
+                  <span style={{ textTransform: "capitalize" }}>G</span>enerate{" "}
+                  <span style={{ textTransform: "capitalize" }}>N</span>ew{" "}
+                  <span style={{ textTransform: "capitalize" }}>QR</span>
+                </Typography>
+              </div>
+            </div>
+          </div>
+          <IconButton
+            onClick={() => setOpenQrCodeModal(false)}
+            sx={{
+              position: "absolute",
+              right: 4,
+              top: "9%",
+              transform: "translateY(-50%)",
+              fontSize: "24px",
+              color: "black",
+            }}
+          >
+            <CloseOutlined style={{ fontSize: "24px" }} />
+          </IconButton>{" "}
+          <Image
+            src={qrCodeContent}
+            height={250}
+            width={250}
+            style={{
+              marginBottom: "20px",
+              marginTop: "20px",
+            }}
+            alt="QR Code"
+          />
+          <Typography
+            variant="body2"
+            sx={{ fontWeight: 500, fontSize: "22px" }}
+          >
+            {selectedCompany && selectedCompany.name}
+          </Typography>
+          <Button
+            onClick={() => downloadQrCodeAsPdf()}
+            sx={{ overflow: "hidden", marginLeft: "-70px", marginTop: "10pX " }}
+          >
+            <Typography
+              variant="body2"
+              sx={{
+                width: "50px",
+                height: "50px",
+                borderRadius: "50%",
+                backgroundColor: "#D9D9D940",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <ShareIcon />
+            </Typography>
+            <h1
+              style={{
+                fontSize: "18px",
+                fontWeight: "450",
+                color: "gray",
+                marginLeft: "40px",
+              }}
+            >
+              S<span style={{ textTransform: "lowercase" }}>hare</span> PDF
+            </h1>
+          </Button>
         </DialogContent>
       </Dialog>
     </Box>

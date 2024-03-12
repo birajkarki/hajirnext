@@ -15,8 +15,11 @@ import { useRouter } from "next/navigation";
 import TestProfileCard from "../testprofile/TestProfileCard";
 import LogoutButton from "./LogoutButton";
 import { getRequest } from "@/services/ApiRequestService";
+import { useAuth } from "@/context/AuthContext";
 
 const MainSidebar = () => {
+  const { authUser, setAuthUser, setIsLoggedIn } = useAuth();
+
   const router = useRouter();
   const [hoveredItem, setHoveredItem] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
