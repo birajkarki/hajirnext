@@ -30,9 +30,9 @@ const MainSidebar = () => {
   const onLogoutClick = async (e) => {
     const logout = await getRequest(`/employer/logout`);
     if (logout) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-
+      localStorage.clear();
+      setIsLoggedIn(false);
+      setAuthUser(null);
       return router.push("/login");
     }
   };
@@ -77,8 +77,8 @@ const MainSidebar = () => {
               }}
             >
               <ListItemIcon>
-              {typeof Icon === "string" ? (
-                  <img src={Icon} alt={text}  />
+                {typeof Icon === "string" ? (
+                  <img src={Icon} alt={text} />
                 ) : (
                   <Icon />
                 )}

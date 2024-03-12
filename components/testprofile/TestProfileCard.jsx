@@ -140,13 +140,19 @@ const ProfileContainer = styled(Button)({
 const TestProfileCard = () => {
   const { authUser } = useAuth();
   const [openDialog, setOpenDialog] = useState(false);
-  const { data: getProfileQuery, isLoading, error } = useGetProfileQuery();
+  const {
+    data: getProfileQuery,
+    isLoading,
+    error,
+    refetch,
+  } = useGetProfileQuery();
 
   const profileData = getProfileQuery?.data;
 
   useEffect(() => {
     if (authUser && authUser.token) {
       console.log(getProfileQuery);
+      refetch();
     }
   }, [authUser]);
 

@@ -37,9 +37,9 @@ const CompanySidebar = () => {
   const onLogoutClick = async (e) => {
     const logout = await getRequest(`/employer/logout`);
     if (logout) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-
+      localStorage.clear();
+      setIsLoggedIn(false);
+      setAuthUser(null);
       return router.push("/login");
     }
   };
@@ -130,8 +130,7 @@ const CompanySidebar = () => {
       variant="permanent"
       anchor="left"
       sx={{
- 
-   width: 250,
+        width: 250,
         display: "flex",
         flexDirection: "column",
       }}
@@ -192,12 +191,13 @@ const CompanySidebar = () => {
                       href={href}
                       onClick={() => handleLinkClick(text)}
                       sx={{
-                      width:"100px",
-                        pl: 4, 
-                       
+                        width: "100px",
+                        pl: 4,
+
                         pr: openReport || openSettings ? 2 : 0,
-                        py: 1, 
-                        backgroundColor: activeLink === text ? "#22408B15" : "transparent", // Set background color based on active link
+                        py: 1,
+                        backgroundColor:
+                          activeLink === text ? "#22408B15" : "transparent", // Set background color based on active link
                         "&:hover": {
                           backgroundColor: "#22408B15", // Change background color on hover
                         },
@@ -229,7 +229,10 @@ const CompanySidebar = () => {
       <Divider />
 
       <List>
-        <LogoutButton onClick={(e) => onLogoutClick(e)} sx={{ position: "absolute",bottom: 0, left: 0}} />
+        <LogoutButton
+          onClick={(e) => onLogoutClick(e)}
+          sx={{ position: "absolute", bottom: 0, left: 0 }}
+        />
       </List>
     </Drawer>
   );
