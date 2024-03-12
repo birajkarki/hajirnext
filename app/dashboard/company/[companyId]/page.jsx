@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useParams } from "next/navigation";
-import FirstPageEmployee from "@/components/employee/FirstPageEmployee";
+import EmployeeList from "@/components/employee/EmployeeLIst";
 import EmployeeFormFirst from "@/components/employee/EmployeeFormFirst";
 import { useGetCandidatesQuery } from "@/services/api";
 
@@ -22,7 +22,5 @@ export default function CompanyDashboard() {
     (candidateData?.data?.active_candidates?.length || 0) +
       (candidateData?.data?.inactive_candidates?.length || 0) >
     0;
-  return (
-    <div>{hasEmployees ? <FirstPageEmployee /> : <EmployeeFormFirst />}</div>
-  );
+  return <div>{hasEmployees ? <EmployeeList /> : <EmployeeFormFirst />}</div>;
 }

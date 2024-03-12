@@ -97,6 +97,7 @@ const EditProfileDialog = ({ open, handleClose, profileData }) => {
           right: 8,
           top: 8,
           color: (theme) => theme.palette.grey[500],
+          pointerEvents: "auto", 
         }}
       >
         <CloseIcon />

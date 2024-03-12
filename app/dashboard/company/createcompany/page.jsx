@@ -90,6 +90,7 @@ const CreateCompany = () => {
         });
 
         await mutateAsync(values);
+
         console.log("Company added successfully:", data);
 
         alert("Company added successfully!");

@@ -15,8 +15,11 @@ import { useRouter } from "next/navigation";
 import TestProfileCard from "../testprofile/TestProfileCard";
 import LogoutButton from "./LogoutButton";
 import { getRequest } from "@/services/ApiRequestService";
+import { useAuth } from "@/context/AuthContext";
 
 const MainSidebar = () => {
+  const { authUser, setAuthUser, setIsLoggedIn } = useAuth();
+
   const router = useRouter();
   const [hoveredItem, setHoveredItem] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -30,9 +33,9 @@ const MainSidebar = () => {
   const onLogoutClick = async (e) => {
     const logout = await getRequest(`/employer/logout`);
     if (logout) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-
+      localStorage.clear();
+      setIsLoggedIn(false);
+      setAuthUser(null);
       return router.push("/login");
     }
   };
@@ -77,7 +80,11 @@ const MainSidebar = () => {
               }}
             >
               <ListItemIcon>
-                <Icon />
+                {typeof Icon === "string" ? (
+                  <img src={Icon} alt={text} />
+                ) : (
+                  <Icon />
+                )}
               </ListItemIcon>
               <ListItemText primary={text} />
             </ListItemButton>

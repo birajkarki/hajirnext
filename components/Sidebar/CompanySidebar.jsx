@@ -26,20 +26,22 @@ import { getRequest } from "@/services/ApiRequestService";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import SsidChartIcon from "@mui/icons-material/SsidChart";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 const CompanySidebar = () => {
   const router = useRouter();
   const [openSettings, setOpenSettings] = useState(false);
-  const [openReport, setOpenReport] = useState(false); // Add this line
+  const [openReport, setOpenReport] = useState(false);
   const [activeLink, setActiveLink] = useState("");
   const { companyId } = useParams();
+  const { authUser, setAuthUser, setIsLoggedIn } = useAuth();
 
   const onLogoutClick = async (e) => {
     const logout = await getRequest(`/employer/logout`);
     if (logout) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-
+      localStorage.clear();
+      setIsLoggedIn(false);
+      setAuthUser(null);
       return router.push("/login");
     }
   };
@@ -189,12 +191,20 @@ const CompanySidebar = () => {
                     <ListItemButton
                       component={href ? Link : undefined}
                       href={href}
-                      onClick={() => handleLinkClick(text)} // Set active link when clicked
+                      onClick={() => handleLinkClick(text)}
                       sx={{
+                        width: "100px",
                         pl: 4,
-                        // ...(activeLink === text && { backgroundColor: "#22408B15" })
-                        "&:hover, &:active": {
-                          backgroundColor: "#22408B15", // Change background color on hover and click
+
+                        pr: openReport || openSettings ? 2 : 0,
+                        py: 1,
+                        backgroundColor:
+                          activeLink === text ? "#22408B15" : "transparent", // Set background color based on active link
+                        "&:hover": {
+                          backgroundColor: "#22408B15", // Change background color on hover
+                        },
+                        "&:active": {
+                          backgroundColor: "#22408B15", // Change background color when link is active
                         },
                       }}
                     >
@@ -221,7 +231,10 @@ const CompanySidebar = () => {
       <Divider />
 
       <List>
-        <LogoutButton onClick={(e) => onLogoutClick(e)} />
+        <LogoutButton
+          onClick={(e) => onLogoutClick(e)}
+          sx={{ position: "absolute", bottom: 0, left: 0 }}
+        />
       </List>
     </Drawer>
   );
