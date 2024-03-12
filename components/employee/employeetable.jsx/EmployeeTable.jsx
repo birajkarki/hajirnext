@@ -33,7 +33,14 @@ import {
   useInviteCandidateMutation,
 } from "@/services/api";
 import { useParams } from "next/navigation";
-import { Upcoming, Update } from "@mui/icons-material";
+import {
+  Delete,
+  Edit,
+  History,
+  Mail,
+  Upcoming,
+  Update,
+} from "@mui/icons-material";
 import EmployeeDetailsDialog from "./EmployeeDetailsDialog";
 
 const EmployeeTable = ({ candidates }) => {
@@ -100,55 +107,16 @@ const EmployeeTable = ({ candidates }) => {
     }
     setFilteredData(filtered);
   };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
-  const handleConfirmInvite = async () => {
-    try {
-      const status = "Not-Approved";
-      const { data } = await inviteCandidate({
-        candidate_id: selectedCandidate.candidate_id,
-        status,
-        companyId: companyId,
-      });
-      if (data) {
-        console.log("Invite sent successfully", data);
-      }
-      setOpenDialog(false);
-    } catch (error) {
-      console.error("Error sending invitation:", error);
-    }
-  };
-
-  const handleConfirmDelete = async () => {
-    try {
-      await deleteCandidate({
-        candidate_id: selectedCandidate.candidate_id,
-        company_id: companyId,
-      });
-      console.log("Candidate deleted successfully");
-      setIsConfirmationDialogOpen(false);
-    } catch (error) {
-      console.error("Error deleting candidate:", error);
-    }
-  };
-
-  const handleConfirmStatusChange = async () => {
-    // Logic for confirming status change
-  };
-
-  const handleConfirmEdit = async () => {
-    // Logic for confirming edit
-  };
   const handleDeleteClick = (candidate_id) => {
     setSelectedCandidateId(candidate_id);
+
     setIsConfirmationDialogOpen(true);
   };
 
@@ -165,6 +133,47 @@ const EmployeeTable = ({ candidates }) => {
   const handleInviteClick = (candidate_id) => {
     setSelectedCandidateId(candidate_id);
     setIsInviteDialogOpen(true);
+  };
+
+  const handleConfirmInvite = async () => {
+    try {
+      console.log(
+        "Inviting candidate with id:",
+        selectedCandidate.candidate_id
+      );
+      const status = "Approved";
+      await inviteCandidate({
+        candidate_id: selectedCandidateId,
+        status,
+        company_id: companyId,
+      });
+      console.log("Invite sent successfully", data);
+      setOpenDialog(false);
+    } catch (error) {
+      console.error("Error sending invitation:", error);
+    }
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      console.log("Deleting candidate with id:", selectedCandidateId);
+      await deleteCandidate({
+        candidate_id: selectedCandidateId,
+        company_id: companyId,
+      });
+      console.log("Candidate deleted successfully");
+      setIsConfirmationDialogOpen(false);
+    } catch (error) {
+      console.error("Error deleting candidate:", error);
+    }
+  };
+
+  const handleConfirmStatusChange = async () => {
+    // Logic for confirming status change
+  };
+
+  const handleConfirmEdit = async () => {
+    // Logic for confirming edit
   };
 
   const handleRowClick = (candidate, event) => {
@@ -340,37 +349,40 @@ const EmployeeTable = ({ candidates }) => {
                       <TableCell>{candidate.phone}</TableCell>
 
                       <TableCell>
-                        {candidate.status === "Active" ? (
+                        {candidate.status === "Not-Verified" ? (
                           <>
                             <IconButton
-                              onClick={() => handleStatusClick(candidate.id)}
+                              onClick={() => handleDeleteClick(candidate.id)}
+                              aria-label="Delete Candidate"
                             >
-                              <Update />
+                              <Delete />
                             </IconButton>
                             <IconButton
                               onClick={() => handleEditClick(candidate.id)}
+                              aria-label="Edit Candidate"
                             >
-                              <Update />
+                              <Edit />
+                            </IconButton>
+                            <IconButton
+                              onClick={() => handleInviteClick(candidate.id)}
+                              aria-label="Invite Candidate"
+                            >
+                              <Mail />
                             </IconButton>
                           </>
                         ) : (
                           <>
                             <IconButton
-                              onClick={() => {
-                                handleDeleteClick(candidate.id);
-                              }}
+                              onClick={() => handleStatusClick(candidate.id)}
+                              aria-label="Update Status"
                             >
-                              <Update />
+                              <History />
                             </IconButton>
                             <IconButton
                               onClick={() => handleEditClick(candidate.id)}
+                              aria-label="Edit Candidate"
                             >
-                              <Upcoming />
-                            </IconButton>
-                            <IconButton
-                              onClick={() => handleInviteClick(candidate.id)}
-                            >
-                              <Upcoming />
+                              <Edit />
                             </IconButton>
                           </>
                         )}

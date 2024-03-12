@@ -16,7 +16,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { useFormik } from "formik";
 import {
-  // useChangePhoneNumberMutation,
+  useChangePhoneNumberMutation,
   useGetOtpChangeNumberMutation,
   useUpdateProfileMutation,
 } from "@/services/api";
@@ -28,7 +28,7 @@ import { useMediaQuery } from "@mui/material";
 
 const EditProfileDialog = ({ open, handleClose, profileData }) => {
   const [updateProfile] = useUpdateProfileMutation();
-  // const [changePhoneNumber] = useChangePhoneNumberMutation();
+  const [changePhoneNumber] = useChangePhoneNumberMutation();
   const [changePhoneMode, setChangePhoneMode] = React.useState(false);
   const handleCloseDialog = () => {
     handleClose();
@@ -39,6 +39,8 @@ const EditProfileDialog = ({ open, handleClose, profileData }) => {
       email: profileData?.email || "",
       title: profileData?.title || "Mr",
       dob: profileData?.dob || "",
+      phone: profileData?.phone || "",
+
       marital_status: profileData?.marital_status || "Married",
       uploadfile: profileData?.profile_image || null,
     },
@@ -48,6 +50,7 @@ const EditProfileDialog = ({ open, handleClose, profileData }) => {
         formData.append("name", values.name);
         formData.append("email", values.email);
         formData.append("title", values.title);
+        formData.append("phone", values.phone);
         formData.append("dob", values.dob);
         formData.append("marital_status", values.marital_status);
         formData.append("uploadfile", values.uploadfile);
@@ -87,7 +90,6 @@ const EditProfileDialog = ({ open, handleClose, profileData }) => {
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="md">
-     
       <DialogTitle sx={{ textAlign: "center" }}>Edit Profile</DialogTitle>
       <IconButton
         aria-label="close"
@@ -97,7 +99,7 @@ const EditProfileDialog = ({ open, handleClose, profileData }) => {
           right: 8,
           top: 8,
           color: (theme) => theme.palette.grey[500],
-          pointerEvents: "auto", 
+          pointerEvents: "auto",
         }}
       >
         <CloseIcon />
@@ -114,47 +116,49 @@ const EditProfileDialog = ({ open, handleClose, profileData }) => {
             onChange={handlePhotoChange}
           />
           <label htmlFor="photo">
-          <div style={{ display:'flex',justifyContent:'center'}}>
-            <Avatar
-              src={
-                formikEdit.values.uploadfile instanceof File
-                  ? URL.createObjectURL(formikEdit.values.uploadfile)
-                  : profileData?.profile_image || ""
-              }
-              sx={{
-                width: 105,
-                height: 105,
-                // marginLeft: "380px",
-     
-                cursor: "pointer",
-                marginBottom:'20px'
-              }}
-              alt="Profile Avatar"
-            />
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <Avatar
+                src={
+                  formikEdit.values.uploadfile instanceof File
+                    ? URL.createObjectURL(formikEdit.values.uploadfile)
+                    : profileData?.profile_image || ""
+                }
+                sx={{
+                  width: 105,
+                  height: 105,
+                  // marginLeft: "380px",
+
+                  cursor: "pointer",
+                  marginBottom: "20px",
+                }}
+                alt="Profile Avatar"
+              />
             </div>
           </label>
           <Image
-        src="/imageUpload.png"
-        alt="Upload Image"
-       
-        width={28}
-        height={22}
-     
-        onClick={() => document.getElementById('photo').click()}
-        style={{
-          position: "absolute",
-          top: changePhoneMode ? "29.8%" :"32%",
-          left:isScreenExtraSmall?"56%": " 53.8%",
-          transform: "translate(-50%, -50%)",
-          zIndex: 8,
-          position: "absolute",
-    
-        }}
-      />
-         <div style={{marginTop:'-20px'}}>
-         <span>Personal details</span>
-         </div>
-          <FormControl style={{width: isScreenExtraSmall ? "80px" : "120px", marginBottom: "20px" }}>
+            src="/imageUpload.png"
+            alt="Upload Image"
+            width={28}
+            height={22}
+            onClick={() => document.getElementById("photo").click()}
+            style={{
+              position: "absolute",
+              top: changePhoneMode ? "29.8%" : "32%",
+              left: isScreenExtraSmall ? "56%" : " 53.8%",
+              transform: "translate(-50%, -50%)",
+              zIndex: 8,
+              position: "absolute",
+            }}
+          />
+          <div style={{ marginTop: "-20px" }}>
+            <span>Personal details</span>
+          </div>
+          <FormControl
+            style={{
+              width: isScreenExtraSmall ? "80px" : "120px",
+              marginBottom: "20px",
+            }}
+          >
             <Select
               id="title"
               name="title"
@@ -180,13 +184,17 @@ const EditProfileDialog = ({ open, handleClose, profileData }) => {
             value={formikEdit.values.name}
             onChange={formikEdit.handleChange}
             sx={{
-              width: isScreenExtraSmall ? "110px" : isScreenSmall ? "230px" : "310px",
+              width: isScreenExtraSmall
+                ? "110px"
+                : isScreenSmall
+                ? "230px"
+                : "310px",
               marginLeft: "20px",
               marginBottom: "20px",
               marginTop: "5px",
             }}
           />
-          {isScreenSmallest && <br />} 
+          {isScreenSmallest && <br />}
           <TextField
             id="email"
             name="email"
@@ -196,13 +204,17 @@ const EditProfileDialog = ({ open, handleClose, profileData }) => {
             onChange={formikEdit.handleChange}
             sx={{
               marginTop: "5px",
-              width: isScreenExtraSmall ? "195px" : isScreenSmall ? "230px" : "310px",
-          
-            marginLeft: isScreenSmallest ? "3px" :"20px",
+              width: isScreenExtraSmall
+                ? "195px"
+                : isScreenSmall
+                ? "230px"
+                : "310px",
+
+              marginLeft: isScreenSmallest ? "3px" : "20px",
               marginBottom: "20px",
             }}
           />
-         {isScreenSmallest && <br />} 
+          {isScreenSmallest && <br />}
           <TextField
             id="dob"
             name="dob"
@@ -214,13 +226,17 @@ const EditProfileDialog = ({ open, handleClose, profileData }) => {
             InputLabelProps={{
               shrink: true,
             }}
-            sx={{ 
-              width: isScreenExtraSmall ? "215px" : isScreenSmall ? "370px" : "450px",
-          }}
+            sx={{
+              width: isScreenExtraSmall
+                ? "215px"
+                : isScreenSmall
+                ? "370px"
+                : "450px",
+            }}
           />
-            {isScreenSmallest && <br />} 
-            {isScreenSmallest && <br />} 
-           
+          {isScreenSmallest && <br />}
+          {isScreenSmallest && <br />}
+
           <FormControl>
             <Select
               id="marital_status"
@@ -232,10 +248,13 @@ const EditProfileDialog = ({ open, handleClose, profileData }) => {
                 "& .MuiSelect-icon": {
                   color: "rgb(0, 0, 139)",
                 },
-                width: isScreenExtraSmall ? "195px" : isScreenSmall ? "230px" : "310px",
-            
-                
-            marginLeft: isScreenSmallest ? "3px" :"20px",
+                width: isScreenExtraSmall
+                  ? "195px"
+                  : isScreenSmall
+                  ? "230px"
+                  : "310px",
+
+                marginLeft: isScreenSmallest ? "3px" : "20px",
               }}
             >
               <MenuItem value="Married">Married</MenuItem>
@@ -250,11 +269,14 @@ const EditProfileDialog = ({ open, handleClose, profileData }) => {
             variant="outlined"
             value={formikEdit.values.phone}
             onChange={formikEdit.handleChange}
-            sx={{ 
-              width: isScreenExtraSmall ? "425px" : isScreenSmall ? "369px" : "450px", 
-              marginTop: '10px' 
+            sx={{
+              width: isScreenExtraSmall
+                ? "425px"
+                : isScreenSmall
+                ? "369px"
+                : "450px",
+              marginTop: "10px",
             }}
-            
             disabled={changePhoneMode}
           />
 
@@ -282,19 +304,28 @@ const EditProfileDialog = ({ open, handleClose, profileData }) => {
             </h1>
           </div>
           {changePhoneMode && (
-            <div style={{marginTop:'-20px', display:'flex', flexDirection:'row'}}>
+            <div
+              style={{
+                marginTop: "-20px",
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
               <TextField
                 label="Change number"
                 margin="normal"
                 id="new_phone"
                 value={formikEdit.values.new_phone} // Capture new_phone value
                 onChange={formikEdit.handleChange} // Update form state
-                style={{ width: isScreenSmall ? "300px" : "450px" , marginRight: "20px" }}
+                style={{
+                  width: isScreenSmall ? "300px" : "450px",
+                  marginRight: "20px",
+                }}
               />
               <TextField
                 label="Confirm Change Number"
                 margin="normal"
-                style={{ width: isScreenSmall ? "300px" : "450px"  }}
+                style={{ width: isScreenSmall ? "300px" : "450px" }}
               />
             </div>
           )}
@@ -323,7 +354,6 @@ const EditProfileDialog = ({ open, handleClose, profileData }) => {
           Update
         </Button>
       </DialogActions>
- 
     </Dialog>
   );
 };

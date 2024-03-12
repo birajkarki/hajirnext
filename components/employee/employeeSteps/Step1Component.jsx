@@ -1,6 +1,5 @@
-// Step1Component.jsx
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import { FormControl, Grid, InputLabel, MenuItem, Select } from "@mui/material";
 import { Box } from "@mui/system";
@@ -15,22 +14,24 @@ import { useParams } from "next/navigation";
 const Step1Component = ({ formik, validationErrors }) => {
   const { companyId } = useParams();
 
-  const isFormIncomplete =
-    Object.keys(validationErrors).length > 0 && formik.submitCount > 0;
-  // Log form values when moving to Step 2
-  const moveToStep2 = () => {
-    console.log("Step 1 Form Values:", formik.values);
-  };
+  // const isFormIncomplete =
+  //   Object.keys(validationErrors).length > 0 && formik.submitCount > 0;
+  // const moveToStep2 = () => {
+  //   console.log("Step 1 Form Values:", formik.values);
+  // };
   const isScreenSmall = useMediaQuery("(max-width:1390px)");
   const isScreenSM = useMediaQuery("(max-width:978px)");
   const departmentList = useGetDepartmentQuery(companyId);
   const candidateCode = useGetCandidateCodeQuery({
     company_id: companyId,
   });
-  // console.log("department list", departmentList);
-  // console.log("department list", departmentList);
-  console.log("isFormIncomplete:", isFormIncomplete);
-  // console.log("candidate code is coming:", candidateCode);
+
+  useEffect(() => {
+    // Update formik values when candidateCode changes
+    if (candidateCode.data?.data) {
+      formik.setFieldValue("code", candidateCode.data.data);
+    }
+  }, [candidateCode.data?.data]); // Trigger effect when candidateCode changes
 
   const disableCodeField = candidateCode?.data?.data ? true : false;
 
@@ -58,11 +59,9 @@ const Step1Component = ({ formik, validationErrors }) => {
             margin="normal"
             name="code"
             {...formik.getFieldProps("code")}
-            disabled={disableCodeField}
-            // If uniqueCandidateCode exists, set the field value to its code
-            // Otherwise, let it be an empty string
-            value={candidateCode?.data?.data ? candidateCode?.data?.data : ""}
-
+            disabled={!!candidateCode.data?.data}
+            value={formik.values.code}
+            // Set value directly from formik values
             // error={
             //   ((formik.touched.code || formik.submitCount > 0) &&
             //     Boolean(formik.errors.code) &&

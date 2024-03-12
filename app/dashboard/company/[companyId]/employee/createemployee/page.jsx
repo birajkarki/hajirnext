@@ -104,8 +104,7 @@ const HorizontalLinearStepper = () => {
     initialValues: {
       name_holder: "Mr", //required string
       name: "", // required
-      code: candidateCode?.data?.data || "", // Set the initial value based on candidateCode
-      code: "",
+      code: "", // Set the initial value based on candidateCode
       contact: "", // required
       designation: "", // required
       marriage_status: "Unmarried", //required enum['Married', 'Unmarried']
