@@ -1,5 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { styled } from "@mui/material/styles";
+
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
@@ -10,7 +12,7 @@ import { TextField, useMediaQuery } from "@mui/material";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
 import ScrollDialog from "@/components/Auth/ScrollDialog";
-import { useRegisterEmployerMutation } from "@/services/api";
+import { postRequest } from "@/services/ApiRequestService";
 
 const validationSchema = yup.object({
   phone: yup
@@ -40,8 +42,6 @@ export default function Signin() {
   const router = useRouter();
   const [termsChecked, setTermsChecked] = useState(false);
 
-  const [registerEmployer, { data, isloading }] = useRegisterEmployerMutation();
-  console.log("data", data);
   useEffect(() => {
     const token =
       typeof window !== "undefined" &&
@@ -128,28 +128,32 @@ export default function Signin() {
 
   const formik = useFormik({
     initialValues: {
-      phone: "9808426215",
+      phone: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      if (buttonClicked) {
-        return;
-      }
-      setButtonClicked(true);
       try {
-        const response = await registerEmployer({ ...values });
-        if (response.data.status === "success") {
-          alert(
-            `Successfully Registered. Your OTP is: ${response.data.data.otp}`
-          );
-          router.push(
-            `/otp?phone=${values.phone}&otp=${response.data.data.otp}`
-          );
+        if (buttonClicked) {
+          return;
+        }
+
+        setButtonClicked(true);
+        const apiResponse = await postRequest(`/employer/register`, values);
+
+        if (!apiResponse.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const data = await apiResponse.json();
+
+        if (data.status === "success") {
+          alert(`Successfully Registered.  \n Your OTP is: ${data.data.otp}`);
+          router.push(`/otp?phone=${values.phone}&otp=${data.data.otp}`);
         } else {
-          console.error("Registration failed. Message:", response.data.message);
+          console.error("Registration failed. Message:", data.message);
         }
       } catch (error) {
-        console.error("Error occurred while registering:", error);
+        console.error("Error during API request:", error.message);
       }
     },
   });

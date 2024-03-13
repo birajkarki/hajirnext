@@ -1,4 +1,4 @@
-import { setCredentials } from "@/redux/authSlice";
+// api.js
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const api = createApi({
@@ -20,36 +20,21 @@ export const api = createApi({
     //******************AUTH ***********************
 
     // Employee Registration
-    registerEmployer: builder.mutation({
-      query: (body) => ({
+    registerEmployee: builder.mutation({
+      query: (employeeData) => ({
         url: "employer/register",
         method: "POST",
-        body,
+        body: employeeData,
       }),
     }),
 
     // Verify Employee OTP
-    verifyEmployerOpt: builder.mutation({
+    verifyEmployeeOpt: builder.mutation({
       query: (otpData) => ({
         url: "employer/verify-opt",
         method: "POST",
         body: otpData,
       }),
-      async onQueryStarted({ dispatch, api }, { getState }, otpData) {
-        const { token, user } = getState().auth;
-        try {
-          const result = await api.fetchBaseQuery({
-            method: "POST",
-            body: JSON.stringify(otpData),
-          });
-          if (result.status === "success") {
-            dispatch(setCredentials({ token: token, user: user }));
-          }
-          return { data: result.data };
-        } catch (error) {
-          throw error;
-        }
-      },
     }),
 
     // Profile Update
@@ -375,8 +360,8 @@ export const api = createApi({
 
 export const {
   useGetDataQuery,
-  useRegisterEmployerMutation,
-  useVerifyEmployerOptMutation,
+  useRegisterEmployeeMutation,
+  useVerifyEmployeeOptMutation,
   useUpdateProfileMutation,
   useGetOtpChangeNumberMutation,
   useVerifyOtpChangeNumberMutation,

@@ -10,15 +10,8 @@ import { useAuth } from "@/context/AuthContext";
 import { useFormik } from "formik";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useMediaQuery } from "@mui/material";
-import { useDispatch } from "react-redux";
-import { setCredentials } from "@/redux/authSlice";
-import { useVerifyEmployerOptMutation } from "@/services/api";
-
 const Otp = () => {
   const router = useRouter();
-  const [verifyEmployer, { isLoading, isError }] =
-    useVerifyEmployerOptMutation();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const token =
@@ -32,17 +25,32 @@ const Otp = () => {
       router.push("/dashboard");
     }
   }, [router]);
-
   const query = useSearchParams();
   const otpnumber = query.get("otp");
   const phone = query.get("phone");
 
-  // const { setIsLoggedIn } = useAuth();
+  const { authUser, setAuthUser, setIsLoggedIn } = useAuth();
   const [otp, setOtp] = useState(
     otpnumber?.toString().split("") || ["", "", "", ""]
   );
   const [loading, setLoading] = useState(false);
   const isScreenSmall = useMediaQuery("(max-width:900px)");
+  async function getData(values) {
+    const apiResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/employer/verify-opt`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      }
+    );
+    if (!apiResponse.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return apiResponse.json();
+  }
 
   const formik = useFormik({
     initialValues: {
@@ -52,19 +60,13 @@ const Otp = () => {
     onSubmit: async (values) => {
       try {
         setLoading(true);
-        const { data } = await verifyEmployer(values); // Using useRegisterEmployeeMutation hook
-
+        const data = await getData(values);
         if (data.status === "success") {
           console.log("OTP verification successful");
           localStorage.setItem("token", JSON.stringify(data.data.token));
           localStorage.setItem("user", JSON.stringify(data.data.user));
-          // setIsLoggedIn(true);
-
-          // Dispatching setToken action along with user data
-          dispatch(
-            setCredentials({ token: data.data.token, user: data.data.user })
-          );
-
+          setIsLoggedIn(true);
+          setAuthUser({ user: data.data.user, token: data.data.token });
           router.push("/dashboard");
         } else {
           console.error("OTP verification failed. Message:", data.message);
@@ -79,13 +81,11 @@ const Otp = () => {
     },
     enableReinitialize: true,
   });
-
   if (otpnumber === "" || otpnumber === null) {
     console.error(
       "OTP is missing or empty. Please request a new OTP and verify."
     );
   }
-
   const handleInputChange = (index, value) => {
     const newOtp = [...otp];
     newOtp[index] = value;
