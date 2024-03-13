@@ -84,10 +84,6 @@ const validationSchemaStep4 = Yup.object({
 const HorizontalLinearStepper = () => {
   const { companyId } = useParams();
 
-  const candidateCode = useGetCandidateCodeQuery({
-    company_id: companyId,
-  });
-  // const uniqueCandidateCode = candidateCode?.data?.data;
   // console.log("uniqueCandidateCode", uniqueCandidateCode);
   const [createCandidateMutation] = useCreateCandidateMutation();
 
@@ -116,7 +112,7 @@ const HorizontalLinearStepper = () => {
       working_hours: "08:00", // required
       duty_time: "9:00", // required - time
       probation_period: "1", // required - unsignedBigInt
-      break_duration: "1:00", // required - min/hr to seconds - string
+      break_duration: "", // required - min/hr to seconds - string
       departments: "1", // required - array - api:{{globalLiveUrl}}/employer/all-departments
       allow_late_attendance: "", // nullable -time
       casual_leave: "", //required - unsignedInteger
@@ -125,7 +121,7 @@ const HorizontalLinearStepper = () => {
       overtime_hrs: "", // float(2.2)
       week_days_off: [1, 7], // array
       half_days: [], // array
-      allow_network_access: "All Net", // required - enum['All Net', 'QR']
+      allow_network_access: "", // required - enum['All Net', 'QR']
       // confirmPhoneNumber: "9808426215",
       // allow_late_attendance_checked: "",
       // casual_leave_checked: "",

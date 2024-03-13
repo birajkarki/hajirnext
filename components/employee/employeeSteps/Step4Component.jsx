@@ -63,8 +63,9 @@ const Step4Component = ({ formik }) => {
             width: "300px",
           }}
         >
-          <Typography variant="body1" sx={{marginBottom:'6px'}}>
-            Joining Date <span style={{ width: "150px", color: "red" }}> *</span>
+          <Typography variant="body1" sx={{ marginBottom: "6px" }}>
+            Joining Date{" "}
+            <span style={{ width: "150px", color: "red" }}> *</span>
           </Typography>
 
           <div style={{ width: "50px" }}>
@@ -375,7 +376,7 @@ const Step4Component = ({ formik }) => {
                 flexItem
               />
               <FormControlLabel
-                value="QR code"
+                value="QR"
                 control={<Radio />}
                 label="QR code"
                 checked={formik.values.allow_network_access === "QR code"}
