@@ -71,7 +71,15 @@ const EmployeeTable = ({ candidates }) => {
     setSelectedCandidate(candidate);
     setOpenDialog(true);
   };
-
+  const handleTabChange = (event, newValue) => {
+    setSelectedTab(newValue);
+    filterData(searchText, newValue);
+  };
+  const handleDepartmentChange = (event) => {
+    const department = event.target.value;
+    setSelectedDepartment(department);
+    filterData(searchText, department);
+  };
   const handleSearchTextChange = (event) => {
     const text = event.target.value.toLowerCase();
     setSearchText(text);
@@ -204,7 +212,7 @@ const EmployeeTable = ({ candidates }) => {
             label="Department"
             autoWidth={false}
             value={selectedDepartment}
-            onChange={handleDepartmentChange}
+            onChange={handleDepartmentChange}   
           >
             <MenuItem value="">All Departments</MenuItem>
             {departmentList &&
