@@ -8,6 +8,7 @@ import Search from "./Search";
 import ProfileMenu from "./ProfileMenu";
 import HeaderMenu from "./HeaderMenu";
 import Image from "next/image";
+import Link from "next/link";
 
 const Header = ({ onMenuIconClick }) => (
   <AppBar
@@ -26,13 +27,19 @@ const Header = ({ onMenuIconClick }) => (
           marginLeft: "240px",
         }}
       >
-        <Image src="/hajir-logo.png" width={150} height={50} alt="Hajir Logo" />
+        
+        <Link href="/dashboard">
+
+      <Image src="/hajir-logo.png" width={150} height={50} alt="Hajir Logo" />
+   
+  </Link>
       </div>
 
       <div style={{ display: "flex", alignItems: "center" }}>
         <HeaderMenu />
       </div>
     </Toolbar>
+
   </AppBar>
 );
 

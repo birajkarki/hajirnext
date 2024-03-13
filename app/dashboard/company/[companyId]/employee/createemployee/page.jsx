@@ -192,7 +192,7 @@ const HorizontalLinearStepper = () => {
         position: "relative",
       }}
     >
-      <HeaderEmployeeSteps />
+      <HeaderEmployeeSteps  companyId={companyId}/>
 
       <Stepper
         activeStep={activeStep}

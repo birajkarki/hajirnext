@@ -122,7 +122,7 @@ const CompanyTable = ({ companies, statusFilter }) => {
     setSelectedCompanyId(companyId);
     setDeleteConfirmationDialogOpen(true);
   };
-
+  
   const handleConfirmDelete = async () => {
     try {
       console.log("Company deleted successfully", selectedCompanyId);
@@ -132,6 +132,7 @@ const CompanyTable = ({ companies, statusFilter }) => {
       console.error("Error deleting company:", error);
     }
   };
+
 
   const handleCloseConfirmationDialog = () => {
     setDeleteConfirmationDialogOpen(false);
@@ -309,16 +310,17 @@ const CompanyTable = ({ companies, statusFilter }) => {
                         {company.status}
                       </span>
                     </TableCell>
-
                     <TableCell>
-                      <Image
-                        src={company.qr_path}
-                        height={50}
-                        width={50}
-                        alt="QR Code"
-                      />
-                    </TableCell>
+                 <Image
+    src={company.qr_path}
+    height={50}
+    width={50}
+    style={{}}
+    alt="QR Code"
+    onClick={() => handleQrCodeClick(company.qr_path)}
+/>
 
+                    </TableCell>
                     <TableCell>
                       {company.status === "Active" ? (
                         <>

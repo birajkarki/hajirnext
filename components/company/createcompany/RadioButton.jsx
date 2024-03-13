@@ -25,7 +25,9 @@ const CustomRadioGroup = ({
   const isScreenSmall = useMediaQuery("(max-width:1390px)");
   const isScreenSM = useMediaQuery("(max-width:978px)");
   return (
-    <RadioGroup row name={name} value={value} onChange={onChange} sx={{}}>
+    <RadioGroup row
+     name={name}
+      value={value} onChange={onChange} sx={{}}>
       {options.map((option) => (
         <Box
           key={option.value}

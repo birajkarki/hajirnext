@@ -39,7 +39,7 @@ import { Delete, Edit, Update } from "@mui/icons-material";
 import { useMediaQuery } from "@mui/material";
 import EmployeeDetailsDialog from "./EmployeeDetailsDialog";
 
-const EmployeeTable = ({ candidates, statusFilter }) => {
+const EmployeeTable = ({ candidates , statusFilter }) => {
   console.log(candidates, "coming from active inactive filet");
   const { companyId } = useParams();
   const [openDialog, setOpenDialog] = useState(false);
@@ -70,22 +70,14 @@ const EmployeeTable = ({ candidates, statusFilter }) => {
   const [selectedCandidateId, setSelectedCandidateId] = useState(null);
   const [isRowDialogOpen, setIsRowDialogOpen] = useState(false);
   const [selectedRowCandidate, setSelectedRowCandidate] = useState(null);
-
+  
+  
   const handleSearchTextChange = (event) => {
     const text = event.target.value.toLowerCase();
     setSearchText(text);
     filterData(text, selectedTab);
   };
 
-  const handleTabChange = (event, newValue) => {
-    setSelectedTab(newValue);
-    filterData(searchText, newValue);
-  };
-  const handleDepartmentChange = (event) => {
-    const department = event.target.value;
-    setSelectedDepartment(department);
-    filterData(searchText, department);
-  };
   const filterData = (searchText, department) => {
     if (
       !departmentList ||
@@ -107,6 +99,15 @@ const EmployeeTable = ({ candidates, statusFilter }) => {
     }
 
     setFilteredData(filtered);
+  };
+  const handleTabChange = (event, newValue) => {
+    setSelectedTab(newValue);
+    filterData(searchText, newValue);
+  };
+  const handleDepartmentChange = (event) => {
+    const department = event.target.value;
+    setSelectedDepartment(department);
+    filterData(searchText, department);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -186,14 +187,17 @@ const EmployeeTable = ({ candidates, statusFilter }) => {
   const isScreenMed = useMediaQuery("(max-width:1267px)");
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", height: 1000, mt: 3 ,
+    <Box sx={{ display: "flex", flexDirection: "column", mt: 3 ,mb:0,    
+    
 
     ml: { xs: 0.1, sm: 0.4, md: 2 ,lg: 2, xl:2},
-    mr: { xs: 5,sm:5, md: 2 ,lg:2,xl:2}
+    mr: { xs: 5,sm:5, md: 2 ,lg:2,xl:2},
+  
   }}
     
     >
-      <Box sx={{ mb: 2}}>
+      <Box mb={2}>
+
         <TextField
           label="Search by Employee Name"
           variant="outlined"
@@ -223,18 +227,23 @@ const EmployeeTable = ({ candidates, statusFilter }) => {
         </FormControl>
         <br />
       </Box>
-      <Box sx={{maxWidth:'99%',overflowX:'auto',   boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.1)'}} >
+      <Box sx={{maxWidth:'99%',overflowX:'auto', boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.1)' , marginBottom:'0px'}} >
   
  <TableContainer component={Paper}
  sx={{
+marginBottom:'0px',
+maxHeight:'800px',
+overflowY:'auto',
 
- boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.1)' 
+ boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.1)' ,
+
  }}
+ 
  >
 
 
-          <Table   >
-          <TableHead>
+          <Table  stickyHeader sx={{marginBottom:'0px'}}>
+          <TableHead  sx={{}}>
             <TableRow>
               <TableCell >ID</TableCell>
 
@@ -253,7 +262,7 @@ const EmployeeTable = ({ candidates, statusFilter }) => {
             </TableRow>
           </TableHead>
           
-          <TableBody  >
+          <TableBody >
             {filteredData &&
               filteredData.length > 0 &&
               filteredData
@@ -266,6 +275,7 @@ const EmployeeTable = ({ candidates, statusFilter }) => {
                       borderBottom: "0.7px dotted #ccc",
                       backgroundColor:
                         candidate.id === selectedRow ? "#f2f2f2" : "",
+                      marginBottom:'0px',maxHeight: "200px" , overflowY:'auto'
                     }}
                     onClick={(event) => handleRowClick(candidate, event)}
                     style={{ cursor: "pointer" }}
@@ -377,6 +387,7 @@ const EmployeeTable = ({ candidates, statusFilter }) => {
                 ))}
           </TableBody>
         </Table>
+        </TableContainer>
         
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
@@ -386,9 +397,17 @@ const EmployeeTable = ({ candidates, statusFilter }) => {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          sx={{
+            position: "sticky",
+            bottom: 0,
+            backgroundColor: "#fff",
+            zIndex: 1,
+           
+            boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.1)' ,
+          }}
         />
        
-      </TableContainer>
+ 
 
       </Box>
       <EmployeeDetailsDialog
