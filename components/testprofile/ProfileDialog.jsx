@@ -1,4 +1,4 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import {
   Avatar,
   Dialog,
@@ -19,11 +19,10 @@ import { useFormik } from "formik";
 import { useMediaQuery } from "@mui/material";
 
 import EditProfileDialog from "./EditProfileDialog";
-import { Content } from "next/font/google";
 
 const ProfileDialog = ({ open, handleClose, profileData }) => {
-  const [editProfileOpen, setEditProfileOpen] = useState(false); // State to manage visibility of Edit Profile dialog
- 
+  const [editProfileOpen, setEditProfileOpen] = useState(false);
+
   // Formik initialization for viewing profile
   const formikView = useFormik({
     initialValues: {
@@ -31,24 +30,18 @@ const ProfileDialog = ({ open, handleClose, profileData }) => {
       email: profileData?.email || "",
       gender: profileData?.gender || "Mr",
       birthdate: profileData?.birthdate || "",
-      maritalStatus: profileData?.maritalStatus || "married",
+      maritalStatus: profileData?.maritalStatus || "Married",
       phone: profileData?.phone || "",
       uploadfile: profileData?.profile_image || null,
-      // uploadfile: profileData?.profile_image || null,
-
     },
     onSubmit: async (values) => {
       console.log("View Form submitted:", values);
-      // Add your submission logic here
     },
   });
- 
-
 
   const handleEditProfileOpen = () => {
     setEditProfileOpen(true);
   };
-  
 
   const handleCloseDialog = () => {
     handleClose();
@@ -58,7 +51,6 @@ const ProfileDialog = ({ open, handleClose, profileData }) => {
 
   return (
     <>
-
       <Dialog open={open} onClose={handleCloseDialog} maxWidth="md">
         <DialogTitle
           style={{
@@ -71,8 +63,8 @@ const ProfileDialog = ({ open, handleClose, profileData }) => {
         >
           Profile
         </DialogTitle>
-  
-         <IconButton
+
+        <IconButton
           aria-label="close"
           onClick={handleCloseDialog}
           sx={{
@@ -81,37 +73,36 @@ const ProfileDialog = ({ open, handleClose, profileData }) => {
             top: 8,
             color: "black",
           }}
-        > 
-        <CloseIcon/>
-        </IconButton> 
-     
+        >
+          <CloseIcon />
+        </IconButton>
+
         <DialogContent>
-          <div style={{ display:'flex',justifyContent:'center'}}>
-          <Avatar
-            src={
-              formikView.values.uploadfile instanceof File
-                ? URL.createObjectURL(formikView.values.uploadfile)
-                : profileData?.profile_image || ""
-            }
-            sx={{
-              width: 110,
-              height: 110,
-      
-      
-              marginTop: "-10px",
-              cursor: "pointer",
-            justifyContent:'center'
-             
-            }}
-            alt="Profile Avatar"
-          />
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Avatar
+              src={
+                formikView.values.uploadfile instanceof File
+                  ? URL.createObjectURL(formikView.values.uploadfile)
+                  : profileData?.profile_image || ""
+              }
+              sx={{
+                width: 110,
+                height: 110,
+
+                marginTop: "-10px",
+                cursor: "pointer",
+                justifyContent: "center",
+              }}
+              alt="Profile Avatar"
+            />
           </div>
-          <DialogActions  sx={{
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: "10px", // Adjust the top margin as needed
-  }}>
-          
+          <DialogActions
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "10px",
+            }}
+          >
             <Button
               onClick={handleEditProfileOpen}
               sx={{
@@ -119,7 +110,7 @@ const ProfileDialog = ({ open, handleClose, profileData }) => {
                 color: "#000",
                 textAlign: "center",
                 alignItems: "center",
-            
+
                 marginTop: "20px",
               }}
             >
@@ -127,11 +118,15 @@ const ProfileDialog = ({ open, handleClose, profileData }) => {
               <EditIcon />
               Edit Profile
             </Button>
-        
           </DialogActions>
           <span>Personal details</span>
-          <form onSubmit={formikView.handleSubmit} >
-            <FormControl style={{ width: isScreenExtraSmall ? "80px" : "120px", marginBottom: "20px" }}>
+          <form onSubmit={formikView.handleSubmit}>
+            <FormControl
+              style={{
+                width: isScreenExtraSmall ? "80px" : "120px",
+                marginBottom: "20px",
+              }}
+            >
               <Select
                 id="gender"
                 name="gender"
@@ -150,9 +145,15 @@ const ProfileDialog = ({ open, handleClose, profileData }) => {
               variant="outlined"
               value={formikView.values.name}
               disabled
-              sx={{ 
-              width: isScreenExtraSmall ? "110px" : isScreenSmall ? "230px" : "310px",
-              marginLeft: "20px", marginBottom: "20px" }}
+              sx={{
+                width: isScreenExtraSmall
+                  ? "110px"
+                  : isScreenSmall
+                  ? "230px"
+                  : "310px",
+                marginLeft: "20px",
+                marginBottom: "20px",
+              }}
             />
             <TextField
               id="email"
@@ -162,9 +163,14 @@ const ProfileDialog = ({ open, handleClose, profileData }) => {
               value={formikView.values.email}
               disabled
               sx={{
-                width:
-              isScreenExtraSmall ? "195px" : isScreenSmall ? "230px" : "310px",
-              marginLeft: "20px", marginBottom: "20px" }}
+                width: isScreenExtraSmall
+                  ? "195px"
+                  : isScreenSmall
+                  ? "230px"
+                  : "310px",
+                marginLeft: "20px",
+                marginBottom: "20px",
+              }}
             />
             <TextField
               id="birthdate"
@@ -178,8 +184,13 @@ const ProfileDialog = ({ open, handleClose, profileData }) => {
                 shrink: true,
               }}
               sx={{
-              width: isScreenExtraSmall ? "210px" : isScreenSmall ? "370px" : "450px",
-              marginBottom: "20px" }}
+                width: isScreenExtraSmall
+                  ? "210px"
+                  : isScreenSmall
+                  ? "370px"
+                  : "450px",
+                marginBottom: "20px",
+              }}
             />
 
             <FormControl>
@@ -190,7 +201,11 @@ const ProfileDialog = ({ open, handleClose, profileData }) => {
                 value={formikView.values.maritalStatus}
                 disabled
                 sx={{
-                  width: isScreenExtraSmall ? "195px" : isScreenSmall ? "230px" : "310px",
+                  width: isScreenExtraSmall
+                    ? "195px"
+                    : isScreenSmall
+                    ? "230px"
+                    : "310px",
                   marginLeft: "20px",
                   marginBottom: "20px",
                 }}
@@ -206,14 +221,18 @@ const ProfileDialog = ({ open, handleClose, profileData }) => {
               variant="outlined"
               value={formikView.values.phone}
               disabled
-              sx={{ 
-              width: isScreenExtraSmall ? "425px" : isScreenSmall ? "369px" : "450px", 
-              marginBottom: "20px" }}
+              sx={{
+                width: isScreenExtraSmall
+                  ? "425px"
+                  : isScreenSmall
+                  ? "369px"
+                  : "450px",
+                marginBottom: "20px",
+              }}
             />
           </form>
         </DialogContent>
       </Dialog>
-      {/* Render EditProfileDialog only if editProfileOpen is true */}
       {editProfileOpen && (
         <EditProfileDialog
           open={editProfileOpen}
