@@ -78,15 +78,6 @@ const EmployeeTable = ({ candidates }) => {
     filterData(text, selectedTab);
   };
 
-  const handleTabChange = (event, newValue) => {
-    setSelectedTab(newValue);
-    filterData(searchText, newValue);
-  };
-  const handleDepartmentChange = (event) => {
-    const department = event.target.value;
-    setSelectedDepartment(department);
-    filterData(searchText, department);
-  };
   const filterData = (searchText, department) => {
     if (
       !departmentList ||
@@ -253,27 +244,29 @@ const EmployeeTable = ({ candidates }) => {
                 <TableCell>Status</TableCell>
                 <TableCell>Phone</TableCell>
 
-                <TableCell>Action</TableCell>
-              </TableRow>
-            </TableHead>
-
-            <TableBody>
-              {filteredData &&
-                filteredData.length > 0 &&
-                filteredData
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((candidate) => (
-                    <TableRow
-                      key={candidate.id}
-                      sx={{
-                        borderBottom: "0.7px dotted #ccc",
-                        backgroundColor:
-                          candidate.id === selectedRow ? "#f2f2f2" : "",
-                      }}
-                      onClick={(event) => handleRowClick(candidate, event)}
-                      style={{ cursor: "pointer" }}
-                    >
-                      <TableCell>{candidate.id}</TableCell>
+              <TableCell>Action</TableCell>
+            </TableRow>
+          </TableHead>
+          
+          <TableBody >
+            {filteredData &&
+              filteredData.length > 0 &&
+              filteredData
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((candidate) => (
+                  <TableRow
+              
+                    key={candidate.id}
+                    sx={{
+                      borderBottom: "0.7px dotted #ccc",
+                      backgroundColor:
+                        candidate.id === selectedRow ? "#f2f2f2" : "",
+                      marginBottom:'0px',maxHeight: "200px" , overflowY:'auto'
+                    }}
+                    onClick={(event) => handleRowClick(candidate, event)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <TableCell>{candidate.id}</TableCell>
 
                       <TableCell
                         style={{
@@ -348,60 +341,67 @@ const EmployeeTable = ({ candidates }) => {
 
                       <TableCell>{candidate.phone}</TableCell>
 
-                      <TableCell>
-                        {candidate.status === "Not-Verified" ? (
-                          <>
-                            <IconButton
-                              onClick={() => handleDeleteClick(candidate.id)}
-                              aria-label="Delete Candidate"
-                            >
-                              <Delete />
-                            </IconButton>
-                            <IconButton
-                              onClick={() => handleEditClick(candidate.id)}
-                              aria-label="Edit Candidate"
-                            >
-                              <Edit />
-                            </IconButton>
-                            <IconButton
-                              onClick={() => handleInviteClick(candidate.id)}
-                              aria-label="Invite Candidate"
-                            >
-                              <Mail />
-                            </IconButton>
-                          </>
-                        ) : (
-                          <>
-                            <IconButton
-                              onClick={() => handleStatusClick(candidate.id)}
-                              aria-label="Update Status"
-                            >
-                              <History />
-                            </IconButton>
-                            <IconButton
-                              onClick={() => handleEditClick(candidate.id)}
-                              aria-label="Edit Candidate"
-                            >
-                              <Edit />
-                            </IconButton>
-                          </>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-            </TableBody>
-          </Table>
+                    <TableCell> 
+      {candidate.phone}
+      </TableCell>
 
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={filteredData?.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
+                    <TableCell>
+                      {candidate.status === "Active" ? (
+                        <>
+                          <IconButton
+                            onClick={() => handleUpdateClick(company.id)}
+                          >
+                            <Update />
+                          </IconButton>
+                          <IconButton
+                            onClick={() => handleUpdateStatusClick(company.id)}
+                          >
+                            <Update />
+                          </IconButton>
+                        </>
+                      ) : (
+                        <>
+                          <IconButton
+                            onClick={() => {
+                              handleDeleteClick(company.id);
+                            }}
+                          >
+                            <Update />
+                          </IconButton>
+                          <IconButton
+                            onClick={() => handleUpdateStatusClick(company.id)}
+                          >
+                            <Update />
+                          </IconButton>
+                        </>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))}
+          </TableBody>
+        </Table>
         </TableContainer>
+        
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={filteredData?.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          sx={{
+            position: "sticky",
+            bottom: 0,
+            backgroundColor: "#fff",
+            zIndex: 1,
+           
+            boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.1)' ,
+          }}
+        />
+       
+ 
+
       </Box>
 
       <EmployeeDetailsDialog

@@ -83,8 +83,8 @@ export default function CreateCompany({ formik }) {
               variant="standard"
               fullWidth
             />
-            <FormControl component="fieldset">
-              <FormLabel component="legend">Staff Code</FormLabel>
+            <FormControl component="fieldset" row>
+              <FormLabel row  id="demo-row-radio-buttons-group-label" component="legend">Staff Code <span style={{color:'red'}}>*</span></FormLabel>
               <RadioGroup
                 row
                 name="row-radio-buttons-group"
@@ -102,8 +102,8 @@ export default function CreateCompany({ formik }) {
                 />
               </RadioGroup>
             </FormControl>
-            <FormControl component="fieldset">
-              <FormLabel component="legend">Date Selection</FormLabel>
+            <FormControl component="fieldset" row>
+              <FormLabel component="legend">Date Selection <span style={{color:'red'}}>*</span></FormLabel>
               <RadioGroup
                 row
                 name="row-radio-buttons-group"

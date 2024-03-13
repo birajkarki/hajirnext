@@ -33,12 +33,12 @@ const EmployeeList = () => {
 
   return (
     <>
-      <Box>
+      <Box >
         <Grid
           container
           spacing={5}
           columns={1}
-          sx={{ width: "100%", height: "100%" }}
+          sx={{ width: "100%", height: "100%"}}
         >
           <Grid item xs={8}>
             <Box
