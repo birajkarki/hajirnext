@@ -9,10 +9,11 @@ const DashboardFirstComponent = () => (
   <Paper
     sx={{
       padding: (theme) => theme.spacing(3),
-      width: "100%",
+      // width: "100%",
       flexGrow: 1,
       backgroundColor: "rgba(34, 64, 139, 0.15)",
       elevation: 0,
+      height:'426px'
     }}
   >
     <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -37,7 +38,7 @@ const DashboardFirstComponent = () => (
           <br /> Good luck!
         </Typography>
       </div>
-      <div style={{ width: "50%" }}>
+      <div style={{ width: "50%", marginRight:'50px' }}>
         <Image
           width={450}
           height={450}

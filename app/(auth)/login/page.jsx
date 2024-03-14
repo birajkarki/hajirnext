@@ -157,7 +157,6 @@ export default function Signin() {
       }
     },
   });
-
   return (
     <Box
       sx={{
@@ -170,20 +169,25 @@ export default function Signin() {
         overflow: "hidden",
       }}
     >
+      
       <Grid container spacing={3} justifyContent="center" alignItems="center">
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={6} >
           {!isScreenSmall && (
+            <div style={{ position: 'relative', width: '100%', height: '100vh' }}>
             <Image
-              src="/auth/login.png"
+              src="/side-img.png"
               alt="login image"
-              width={isScreenSmall ? 300 : 900}
-              height={900}
-              style={{ display: "block", maxWidth: "100%", height: "auto" }}
+           
+             fill
+             style={{objectFit:"cover"}}
+
               priority
+                sizes="(max-width: 600px) 100vw, 900px"
             />
+             </div>
           )}
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={6}  sx={{ marginBottom: "80px", marginTop:"60px" }} >
           <Paper
             sx={{
               backgroundColor: (theme) =>
@@ -194,24 +198,27 @@ export default function Signin() {
               color: (theme) => theme.palette.text.secondary,
               display: "flex",
               flexDirection: "column",
-              justifyContent: "center",
+              // justifyContent: "center",
               alignItems: "center",
-              height: "100%",
+              // height: "100%",
               boxShadow: "none",
               elevation: 0,
               background: "transparent",
             }}
           >
-            <div style={{ marginTop: "50px", marginBottom: "0px" }}>
+            {/* <Box sx={{ marginTop:'60px', paddingRight:'192px', paddingLeft:'212px', height:'519px'}}> */}
+          
               <Image src="/hajir-logo.png" width={140} height={50} alt="Logo" />
-            </div>
+    
 
             <h1
               style={{
                 color: "rgba(34, 64, 139, 0.87)",
                 fontWeight: "500",
                 fontSize: "18px",
-                marginTop: "1px",
+                marginBottom:'15px',
+          height:'20px',
+          width:'336px'
               }}
             >
               Smart attendance system
@@ -221,10 +228,9 @@ export default function Signin() {
               style={{
                 marginBottom: "0px",
                 fontWeight: "500",
-                marginTop: "-7px",
-                paddingTop: "0px",
-                paddingBottom: "0px",
-                marginTop: "-6px",
+                width:'336px',
+       fontSize:'15px',
+                height:'75px'
               }}
             >
               {images[selectedImageIndex].content}
@@ -235,7 +241,7 @@ export default function Signin() {
               width={images[selectedImageIndex].width}
               height={images[selectedImageIndex].height}
               alt={images[selectedImageIndex].alt}
-              style={{ marginTop: "0px" }}
+              style={{ marginTop: "15px" }}
               priority
             />
             <Box
@@ -249,7 +255,7 @@ export default function Signin() {
               noValidate
               autoComplete="off"
               onSubmit={formik.handleSubmit}
-              style={{ width: "250px" }}
+              // style={{ width: "250px" }}
             >
               <TextField
                 fullWidth
@@ -274,22 +280,26 @@ export default function Signin() {
                 variant="contained"
                 type="submit"
                 disabled={!termsChecked || buttonClicked}
-                style={{ width: "300px", marginLeft: "10px", marginTop: "2px" }}
+                style={{ width: "300px", marginLeft: "10px", marginTop: "15px" , marginBottom:'19px'}}
               >
                 Get OTP
               </Button>
+              {/* </Box> */}
             </Box>
-
-            <p
+{/* <Box sx={{marginBottom:'83px'}}> */}
+<div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div
               style={{
                 whiteSpace: "pre-line",
-                marginTop: "-6px",
+             
                 color: "black",
-                marginBottom: "20px",
-                marginTop: "20px",
+             justifyContent:'center'
+             
               }}
             >
-              <label>
+              <p style={{marginBottom:'10px', marginTop:'19px'}}>We will send OTP on this mobile number </p>
+      
+              <label style={{display:'flex', justifyContent:'center'}}>
                 <input
                   type="checkbox"
                   checked={termsChecked}
@@ -297,14 +307,16 @@ export default function Signin() {
                 />{" "}
                 I have read and agree{" "}
                 <span
-                  style={{ textDecoration: "underline", cursor: "pointer" }}
+                  style={{ textDecoration: "underline", cursor: "pointer" , marginLeft:'8px'}}
                   onClick={handleOpen}
                 >
                   Terms & Services
                 </span>
               </label>
-            </p>
-
+            
+            </div>
+            </div>
+{/* </Box> */}
             <ScrollDialog open={open} onClose={handleClose} />
           </Paper>
         </Grid>

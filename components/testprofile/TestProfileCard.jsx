@@ -109,25 +109,7 @@ const TestProfileCard = () => {
           >
             {profileData?.name || "Name not available"}
           </Typography>
-          {/* <Typography
-            sx={{ fontSize: "14px", color: "black", textTransform: "none" }}
-          >
-            {profileData?.email || "Email not available"}
-          </Typography> */}
-          {/* <Typography
-  sx={{
-    fontSize: "14px",
-    color: "black",
-    textTransform: "none",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    whiteSpace: "nowrap",
-  }}
->
-  {profileData?.email.length > 10
-    ? profileData?.email.slice(0, 8) + ".."
-    : profileData?.email || "Email not available"}
-</Typography> */}
+{/*          
 <Typography
   sx={{
     fontSize: "14px",
@@ -146,11 +128,11 @@ const TestProfileCard = () => {
   ) : (
     profileData?.email || "Email not available"
   )}
-</Typography>
+</Typography> */}
 
         </>
       )}
-     
+     <Typography>{  profileData?.email || "Email not available"}</Typography>
     </ProfileContainer>
     {openDialog && (
       <ProfileDialog
