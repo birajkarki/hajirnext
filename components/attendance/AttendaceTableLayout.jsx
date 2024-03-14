@@ -14,6 +14,7 @@ import {
   Select,
   InputLabel,
   MenuItem,
+  Avatar,
 } from "@mui/material";
 import { useGetAttendanceReportTodayQuery } from "@/services/api";
 import { useParams } from "next/navigation";
@@ -128,7 +129,7 @@ const AttendanceTable = () => {
           <TableHead>
             <TableRow>
               <TableCell>Candidate ID</TableCell>
-              <TableCell>Name</TableCell>
+              <TableCell style={{ width: "20%" }}>Employee Name</TableCell>
               <TableCell>Phone</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Departments</TableCell>
@@ -143,7 +144,34 @@ const AttendanceTable = () => {
                   <Link
                     href={`/dashboard/company/${companyId}/attendance/${candidate.candidate_id}`}
                   >
-                    <TableCell>{candidate.name}</TableCell>
+                    <TableCell>
+                      <div style={{ display: "flex", flexDirection: "row" }}>
+                        <label htmlFor="photo">
+                          <Avatar
+                            src={
+                              candidate.profile_image || "/default-avatar.png"
+                            }
+                            sx={{
+                              width: 50,
+                              height: 50,
+                              cursor: "pointer",
+                              marginRight: "10px",
+                            }}
+                            alt="Profile Avatar"
+                          />
+                        </label>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            marginTop: "5px",
+                          }}
+                        >
+                          <span> {candidate.name}</span>
+                          <span>{candidate.email}</span>
+                        </div>
+                      </div>
+                    </TableCell>
                   </Link>
 
                   <TableCell>{candidate.phone}</TableCell>

@@ -212,7 +212,7 @@ const EmployeeTable = ({ candidates }) => {
             label="Department"
             autoWidth={false}
             value={selectedDepartment}
-            onChange={handleDepartmentChange}   
+            onChange={handleDepartmentChange}
           >
             <MenuItem value="">All Departments</MenuItem>
             {departmentList &&
@@ -255,7 +255,7 @@ const EmployeeTable = ({ candidates }) => {
               <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>
-          
+
           <TableBody >
             {filteredData &&
               filteredData.length > 0 &&
@@ -263,7 +263,7 @@ const EmployeeTable = ({ candidates }) => {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((candidate) => (
                   <TableRow
-              
+
                     key={candidate.id}
                     sx={{
                       borderBottom: "0.7px dotted #ccc",
@@ -276,20 +276,20 @@ const EmployeeTable = ({ candidates }) => {
                   >
                     <TableCell>{candidate.id}</TableCell>
 
-                      <TableCell
-                        style={{
-                          whiteSpace: "normal",
-                          whiteSpace:
-                            candidate.email.length > 6 ? "normal" : "nowrap",
-                        }}
-                      >
-                        <div style={{ display: "flex", flexDirection: "row" }}>
-                          <label htmlFor="photo">
-                            <Avatar
-                              src={
-                                candidate.profile_image || "/default-avatar.png"
-                              }
-                              sx={{
+                        <TableCell
+                          style={{
+                            whiteSpace: "normal",
+                            whiteSpace:
+                              candidate.email.length > 6 ? "normal" : "nowrap",
+                          }}
+                        >
+                          <div style={{ display: "flex", flexDirection: "row" }}>
+                            <label htmlFor="photo">
+                              <Avatar
+                                src={
+                                  candidate.profile_image || "/default-avatar.png"
+                                }
+                                sx={{
                                 width: 50,
                                 height: 50,
                                 cursor: "pointer",
@@ -349,7 +349,7 @@ const EmployeeTable = ({ candidates }) => {
 
                       <TableCell>{candidate.phone}</TableCell>
 
-                    <TableCell> 
+                    <TableCell>
       {candidate.phone}
       </TableCell>
 
@@ -389,7 +389,7 @@ const EmployeeTable = ({ candidates }) => {
           </TableBody>
         </Table>
         </TableContainer>
-        
+
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
@@ -403,12 +403,12 @@ const EmployeeTable = ({ candidates }) => {
             bottom: 0,
             backgroundColor: "#fff",
             zIndex: 1,
-           
+
             boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.1)' ,
           }}
         />
-       
- 
+
+
 
       </Box>
 
