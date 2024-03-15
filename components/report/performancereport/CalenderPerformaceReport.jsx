@@ -89,7 +89,8 @@ const CalendarPerformanceReport = () => {
       return <DailyPerformanceReport startDate={startDate} endDate={endDate} />;
     } else if (diffInDays === 6 || diffInDays >= 7) {
       return (
-        <WeeklyPerformanceReport startDate={startDate} endDate={endDate} />
+        // <WeeklyPerformanceReport startDate={startDate} endDate={endDate} />
+        <YearlyPerformanceReport StartYear={StartYear} />
       );
     } else if (
       startDate.getDate() === 1 &&
@@ -97,7 +98,8 @@ const CalendarPerformanceReport = () => {
         new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0).getDate()
     ) {
       return (
-        <MonthlyPerformanceReport startDate={startDate} endDate={endDate} />
+        // <MonthlyPerformanceReport startDate={startDate} endDate={endDate} />
+        <YearlyPerformanceReport StartYear={StartYear} />
       );
     } else {
       return (
@@ -105,12 +107,12 @@ const CalendarPerformanceReport = () => {
       );
     }
   };
- const  StartYear = selectionRange.startDate.getFullYear()
- const StartMonth selectionRange.startDate.getMonth() + 1
- const StartDay selectionRange.startDate.getDate()
- const EndYear selectionRange.endDate.getFullYear()
- const EndMonth selectionRange.endDate.getMonth() + 1
- const EndDay selectionRange.endDate.getDate()
+  const StartYear = selectionRange.startDate.getFullYear();
+  const StartMonth = selectionRange.startDate.getMonth() + 1;
+  const StartDay = selectionRange.startDate.getDate();
+  const EndYear = selectionRange.endDate.getFullYear();
+  const EndMonth = selectionRange.endDate.getMonth() + 1;
+  const EndDay = selectionRange.endDate.getDate();
   return (
     <Box width="100%">
       <Box display="flex">
@@ -180,22 +182,17 @@ const CalendarPerformanceReport = () => {
           )}
         </Box>
       </Box>
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        width="100%"
-      >
+      <Box display="flex" flexDirection="column" width="100%">
         <p>
           Selected Date Range:{" "}
           {`${selectionRange.startDate.toLocaleDateString()} - ${selectionRange.endDate.toLocaleDateString()}`}
         </p>
-        <p>Start Year:</p>
-        <p>Start Month: </p>
-        <p>Start Day: </p>
-        <p>End Year: </p>
-        <p>End Month: </p>
-        <p>End Day: </p>
+        {/* <p>Start Year:{StartYear}</p>
+        <p>Start Month: :{StartMonth}</p>
+        <p>Start Day: :{StartDay}</p>
+        <p>End Year::{EndYear} </p>
+        <p>End Month::{EndMonth} </p>
+        <p>End Day: :{EndDay}</p> */}
         {selectedComponent}
       </Box>
     </Box>

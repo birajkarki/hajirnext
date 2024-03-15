@@ -35,9 +35,12 @@ import {
 import { useParams } from "next/navigation";
 import {
   Delete,
+  DoNotDisturbAlt,
   Edit,
   History,
+  InsertInvitationRounded,
   Mail,
+  Share,
   Upcoming,
   Update,
 } from "@mui/icons-material";
@@ -130,23 +133,22 @@ const EmployeeTable = ({ candidates }) => {
   };
 
   const handleInviteClick = (candidate_id) => {
-    setSelectedCandidateId(candidate_id);
+    const selectedCandidate = filteredData.find(
+      (candidate) => candidate.id === candidate_id
+    );
+    setSelectedCandidate(selectedCandidate);
     setIsInviteDialogOpen(true);
   };
 
   const handleConfirmInvite = async () => {
     try {
-      console.log(
-        "Inviting candidate with id:",
-        selectedCandidate.candidate_id
-      );
       const status = "Approved";
       await inviteCandidate({
-        candidate_id: selectedCandidateId,
+        candidate_id: selectedCandidate.candidate_id,
         status,
-        company_id: companyId,
+        companyId: companyId,
       });
-      console.log("Invite sent successfully", data);
+      console.log("Invite sent successfully");
       setOpenDialog(false);
     } catch (error) {
       console.error("Error sending invitation:", error);
@@ -252,44 +254,45 @@ const EmployeeTable = ({ candidates }) => {
                 <TableCell>Status</TableCell>
                 <TableCell>Phone</TableCell>
 
-              <TableCell>Action</TableCell>
-            </TableRow>
-          </TableHead>
+                <TableCell>Action</TableCell>
+              </TableRow>
+            </TableHead>
 
-          <TableBody >
-            {filteredData &&
-              filteredData.length > 0 &&
-              filteredData
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((candidate) => (
-                  <TableRow
+            <TableBody>
+              {filteredData &&
+                filteredData.length > 0 &&
+                filteredData
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((candidate) => (
+                    <TableRow
+                      key={candidate.id}
+                      sx={{
+                        borderBottom: "0.7px dotted #ccc",
+                        backgroundColor:
+                          candidate.id === selectedRow ? "#f2f2f2" : "",
+                        marginBottom: "0px",
+                        maxHeight: "200px",
+                        overflowY: "auto",
+                      }}
+                      onClick={(event) => handleRowClick(candidate, event)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <TableCell>{candidate.id}</TableCell>
 
-                    key={candidate.id}
-                    sx={{
-                      borderBottom: "0.7px dotted #ccc",
-                      backgroundColor:
-                        candidate.id === selectedRow ? "#f2f2f2" : "",
-                      marginBottom:'0px',maxHeight: "200px" , overflowY:'auto'
-                    }}
-                    onClick={(event) => handleRowClick(candidate, event)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <TableCell>{candidate.id}</TableCell>
-
-                        <TableCell
-                          style={{
-                            whiteSpace: "normal",
-                            whiteSpace:
-                              candidate.email.length > 6 ? "normal" : "nowrap",
-                          }}
-                        >
-                          <div style={{ display: "flex", flexDirection: "row" }}>
-                            <label htmlFor="photo">
-                              <Avatar
-                                src={
-                                  candidate.profile_image || "/default-avatar.png"
-                                }
-                                sx={{
+                      <TableCell
+                        style={{
+                          whiteSpace: "normal",
+                          whiteSpace:
+                            candidate.email.length > 6 ? "normal" : "nowrap",
+                        }}
+                      >
+                        <div style={{ display: "flex", flexDirection: "row" }}>
+                          <label htmlFor="photo">
+                            <Avatar
+                              src={
+                                candidate.profile_image || "/default-avatar.png"
+                              }
+                              sx={{
                                 width: 50,
                                 height: 50,
                                 cursor: "pointer",
@@ -349,45 +352,46 @@ const EmployeeTable = ({ candidates }) => {
 
                       <TableCell>{candidate.phone}</TableCell>
 
-                    <TableCell>
-      {candidate.phone}
-      </TableCell>
-
-                    <TableCell>
-                      {candidate.status === "Active" ? (
-                        <>
-                          <IconButton
-                            onClick={() => handleUpdateClick(company.id)}
-                          >
-                            <Update />
-                          </IconButton>
-                          <IconButton
-                            onClick={() => handleUpdateStatusClick(company.id)}
-                          >
-                            <Update />
-                          </IconButton>
-                        </>
-                      ) : (
-                        <>
-                          <IconButton
-                            onClick={() => {
-                              handleDeleteClick(company.id);
-                            }}
-                          >
-                            <Update />
-                          </IconButton>
-                          <IconButton
-                            onClick={() => handleUpdateStatusClick(company.id)}
-                          >
-                            <Update />
-                          </IconButton>
-                        </>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                ))}
-          </TableBody>
-        </Table>
+                      <TableCell>
+                        {candidate.status === "Not-Verified" ? (
+                          <>
+                            <IconButton
+                              onClick={() => handleInviteClick(candidate.id)}
+                            >
+                              <Share />
+                            </IconButton>
+                            <IconButton
+                              onClick={() => handleEditClick(candidate.id)}
+                            >
+                              <Edit />
+                            </IconButton>
+                            <IconButton
+                              onClick={() => handleStatusClick(candidate.id)}
+                            >
+                              <DoNotDisturbAlt />
+                            </IconButton>
+                          </>
+                        ) : (
+                          <>
+                            <IconButton
+                              onClick={() => {
+                                handleEditClick(candidate.id);
+                              }}
+                            >
+                              <Update />
+                            </IconButton>
+                            <IconButton
+                              onClick={() => handleStatusClick(candidate.id)}
+                            >
+                              <Update />
+                            </IconButton>
+                          </>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+            </TableBody>
+          </Table>
         </TableContainer>
 
         <TablePagination
@@ -404,12 +408,9 @@ const EmployeeTable = ({ candidates }) => {
             backgroundColor: "#fff",
             zIndex: 1,
 
-            boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.1)' ,
+            boxShadow: "0px 0px 0px 1px rgba(0, 0, 0, 0.1)",
           }}
         />
-
-
-
       </Box>
 
       <EmployeeDetailsDialog
@@ -524,6 +525,7 @@ const EmployeeTable = ({ candidates }) => {
             Do you want to invite {selectedCandidate && selectedCandidate.name}?
           </DialogContentText>
         </DialogContent>
+
         <DialogActions>
           <Button onClick={() => setIsInviteDialogOpen(false)}>Cancel</Button>
           <Button onClick={handleConfirmInvite} color="primary">

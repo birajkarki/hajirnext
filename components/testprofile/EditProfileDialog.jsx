@@ -28,7 +28,7 @@ import { useMediaQuery } from "@mui/material";
 
 const EditProfileDialog = ({ open, handleClose, profileData }) => {
   const [updateProfile] = useUpdateProfileMutation();
-  const [changePhoneNumber] = useChangePhoneNumberMutation();
+  // const [changePhoneNumber] = useChangePhoneNumberMutation();
   const [changePhoneMode, setChangePhoneMode] = React.useState(false);
   const handleCloseDialog = () => {
     handleClose();

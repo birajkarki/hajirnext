@@ -12,19 +12,25 @@ import {
   Button,
 } from "@mui/material";
 import { useGetYearlyCompanyCandidatePerformaceReportQuery } from "@/services/api";
+import { useParams } from "next/navigation";
+import NotifyComponent from "../tabNotificationPayment/NotifyComponent";
 
-const YearlyPerformanceReport = ({ startDate, endDate }) => {
-  console.log("this is start", startDate);
-  console.log("this is end", endDate);
-  const yearlyCompanyCandidatePerformanceReport =
-    useGetYearlyCompanyCandidatePerformaceReportQuery();
-  // console.log(yearlyCompanyCandidatePerformanceReport);
+const YearlyPerformanceReport = ({ StartYear }) => {
+  const { candidateId, companyId } = useParams();
+
+  const { data: yearlyCompanyCandidatePerformanceReport } =
+    useGetYearlyCompanyCandidatePerformaceReportQuery({
+      candidate_id: candidateId,
+      company_id: companyId,
+      year: StartYear,
+    });
+  console.log(yearlyCompanyCandidatePerformanceReport);
   return (
     <Box>
       <h2>Yearly Performance Report</h2>
       <p>
-        Displaying data from {startDate.getFullYear()} to{" "}
-        {endDate.getFullYear()}
+        {/* Displaying data from {startDate.getFullYear()} to{" "}
+        {endDate.getFullYear()} */}
       </p>
       <Grid container spacing={3}>
         {/* Left side with table */}
@@ -40,34 +46,66 @@ const YearlyPerformanceReport = ({ startDate, endDate }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {/* Rows for data */}
-                {/* Example row */}
+                {yearlyCompanyCandidatePerformanceReport?.data.map(
+                  (item, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{index + 1}</TableCell>
+                      <TableCell>{item.month}</TableCell>
+                      <TableCell>
+                        <span
+                          style={{
+                            backgroundColor:
+                              item.status === "Paid"
+                                ? "#00800033"
+                                : "#FF505033",
+                            color: item.status === "Paid" ? "green" : "red",
+                            padding: "7px",
+                            borderRadius: "4px",
+
+                            textAlign: "center",
+                            justifyContent: "center",
+                            marginRight: "10px",
+                            height: "34px",
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          {item.status}
+                        </span>
+                      </TableCell>{" "}
+                      <TableCell>
+                        {typeof item.amount === "string"
+                          ? parseFloat(item.amount).toFixed(2)
+                          : item.amount.toFixed(2)}
+                      </TableCell>
+                    </TableRow>
+                  )
+                )}
+                {/* Total row */}
                 <TableRow>
-                  <TableCell>1</TableCell>
-                  <TableCell>2024-01-01</TableCell>
-                  <TableCell>Description</TableCell>
-                  <TableCell>Paid</TableCell>
+                  <TableCell colSpan={3}>Total Amount</TableCell>
+                  <TableCell>
+                    {/* Calculate total amount here */}
+                    {yearlyCompanyCandidatePerformanceReport?.data
+                      .reduce((total, item) => {
+                        return (
+                          total +
+                          (typeof item.amount === "string"
+                            ? parseFloat(item.amount)
+                            : item.amount)
+                        );
+                      }, 0)
+                      .toFixed(2)}
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </Table>
           </TableContainer>
-          {/* Total row */}
-          {/* You can calculate totals and display here */}
         </Grid>
+
         {/* Right side with message box and submit button */}
         <Grid item xs={6}>
-          <Box>
-            <TextField
-              label="Send Message to Candidate"
-              multiline
-              rows={4}
-              variant="outlined"
-              fullWidth
-            />
-            <Button variant="contained" color="primary" fullWidth>
-              Submit
-            </Button>
-          </Box>
+          <NotifyComponent />
         </Grid>
       </Grid>
     </Box>

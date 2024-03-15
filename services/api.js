@@ -337,8 +337,9 @@ export const api = createApi({
     }),
     // yearly report
     getYearlyCompanyCandidatePerformaceReport: builder.query({
-      query: ({ company_id, candidate }) => ({
+      query: ({ company_id, candidate_id, year }) => ({
         url: `/employer/report/yearly-report/${company_id}/${candidate_id}`,
+        params: { year },
       }),
     }),
     // send payment

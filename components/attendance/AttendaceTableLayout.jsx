@@ -31,7 +31,7 @@ const AttendanceTable = () => {
 
   const { data: attendanceData, isLoading: isLoading2 } =
     useGetAttendanceReportTodayQuery(companyId);
-
+  console.log(attendanceData);
   useEffect(() => {
     if (
       attendanceData &&
@@ -132,6 +132,8 @@ const AttendanceTable = () => {
               <TableCell style={{ width: "20%" }}>Employee Name</TableCell>
               <TableCell>Phone</TableCell>
               <TableCell>Status</TableCell>
+              <TableCell>ClocK In</TableCell>
+              <TableCell>Clock Out</TableCell>
               <TableCell>Departments</TableCell>
             </TableRow>
           </TableHead>
@@ -176,6 +178,8 @@ const AttendanceTable = () => {
 
                   <TableCell>{candidate.phone}</TableCell>
                   <TableCell>{candidate.status}</TableCell>
+                  <TableCell>{candidate.start_time}</TableCell>
+                  <TableCell>{candidate.end_time}</TableCell>
                   <TableCell>
                     {candidate.departments.map((department) => (
                       <div key={department.id}>{department.name}</div>
