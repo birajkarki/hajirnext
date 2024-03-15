@@ -15,13 +15,14 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { useMediaQuery } from "@mui/material";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+
 const Step2Component = ({ formik }) => {
   const [ampm, setAmpm] = useState("am");
   const isScreenSmall = useMediaQuery("(max-width:1209px)");
   const isScreenSm = useMediaQuery("(max-width:1000px)");
+
   const handleworking_hoursChange = (decrease) => {
     const [hours, minutes] = formik.values.working_hours.split(":").map(Number);
     let totalMinutes = hours * 60 + minutes;
@@ -38,27 +39,15 @@ const Step2Component = ({ formik }) => {
   };
   const handlebreak_durationChange = (decrease) => {
     const break_duration = formik.values.break_duration;
-    if (!break_duration) return; // Null check
-
+    if (!break_duration) return;
     const [hours, minutes] = break_duration.split(":").map(Number);
-
-    // Convert hours and minutes to total minutes
     let totalMinutes = hours * 60 + minutes;
-
-    // Increase or decrease by 30 minutes
     totalMinutes = decrease ? totalMinutes + 10 : totalMinutes - 10;
-
-    // Ensure totalMinutes remain in range [0, 1439] (24 hours)
     totalMinutes = (totalMinutes + 1440) % 1440;
-
-    // Calculate new hours and minutes
     const newHours = Math.floor(totalMinutes / 60);
     const newMinutes = totalMinutes % 60;
-
-    // Format the new time
     const formattedHours = String(newHours).padStart(2, "0");
     const formattedMinutes = String(newMinutes).padStart(2, "0");
-
     formik.setFieldValue(
       "break_duration",
       `${formattedHours}:${formattedMinutes}`
@@ -68,7 +57,7 @@ const Step2Component = ({ formik }) => {
   const handleAmPmChange = () => {
     const duty_time = formik.values.duty_time;
 
-    if (!duty_time) return; // Null check
+    if (!duty_time) return;
 
     const [time, period] = duty_time.split(" ");
     const [hours, minutes] = time.split(":").map(Number);
@@ -80,17 +69,13 @@ const Step2Component = ({ formik }) => {
       newHours = 0;
     }
 
-    // Ensure minutes are formatted with leading zeros
     const formattedMinutes = String(minutes).padStart(2, "0");
 
-    // Format the new time with leading zeros for hours and minutes
     const formattedHours = String(newHours).padStart(2, "0");
     const formattedTime = `${formattedHours}:${formattedMinutes}`;
 
     formik.setFieldValue("duty_time", formattedTime);
   };
-
-  // Ensure minutes are formatted with leading zeros
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -297,6 +282,7 @@ const Step2Component = ({ formik }) => {
               <Button
                 variant="outlined"
                 sx={{ height: "55px", marginRight: -1.25, marginTop: 0.9 }}
+                onClick={() => handlebreak_durationChange(false)}
               >
                 -
               </Button>
@@ -320,6 +306,7 @@ const Step2Component = ({ formik }) => {
               <Button
                 variant="outlined"
                 sx={{ height: "55px", marginLeft: -1.3, marginTop: 0.9 }}
+                onClick={() => handlebreak_durationChange(true)}
               >
                 +
               </Button>

@@ -15,10 +15,6 @@ import DatePick from "./DatePick";
 import { useMediaQuery } from "@mui/material";
 
 const Step4Component = ({ formik }) => {
-  const handleAccessNetworkChange = (event) => {
-    // formik.setFieldValue("allow_network_access", event.target.value);
-  };
-
   const handleHoursChange = (increase) => {
     const [hours, minutes] = formik.values.working_hours.split(":").map(Number);
     let totalMinutes = hours * 60 + minutes;
@@ -41,10 +37,10 @@ const Step4Component = ({ formik }) => {
   };
 
   const handleDateSelect = (selectedDate) => {
-    const parsedDate = new Date(selectedDate); // Parse the selectedDate string into a Date object
+    const parsedDate = new Date(selectedDate);
     const year = parsedDate.getFullYear();
-    const month = String(parsedDate.getMonth() + 1).padStart(2, "0"); // Add leading zero if necessary
-    const day = String(parsedDate.getDate()).padStart(2, "0"); // Add leading zero if necessary
+    const month = String(parsedDate.getMonth() + 1).padStart(2, "0");
+    const day = String(parsedDate.getDate()).padStart(2, "0");
     const formattedDate = `${year}-${month}-${day}`;
     formik.setFieldValue("joining_date", formattedDate);
   };
