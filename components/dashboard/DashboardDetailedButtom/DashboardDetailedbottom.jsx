@@ -26,23 +26,29 @@ const DashboardDetailedbottom = () => {
   return (
     <Box
       sx={{
-        flexGrow: 1,
+        // flexGrow: 1,
         height: "100%",
         display: "flex",
         width: "100%",
         flexDirection: "column",
-     marginTop:'100px'
+
       }}
     >
       <Grid
         container
-        direction={{ xs: "column", sm: "row" }}
-        sx={{ width: "90%"}}
-        spacing={2}
+        direction="row"
+    
+        sx={{ width: { lg: "95%", xl:"95%", md: "95%" , sm:"100%", xs:"100%"} ,
+        
+   
+      }}
+  
+        spacing={9}
       >
         <Grid item xs={12} sm={6}>
           <Paper
             sx={{
+              
               backgroundColor: "rgba(34, 64, 139, 0.08)",
               height: "120px",
               padding: (theme) => theme.spacing(4),
@@ -52,6 +58,8 @@ const DashboardDetailedbottom = () => {
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
+              border: "1px solid #22408B",// Add border
+              borderRadius: "5px"
             }}
           >
             <Typography variant="body1" sx={{ color: "black", fontSize: "20px" }}>
@@ -66,7 +74,10 @@ const DashboardDetailedbottom = () => {
         <Grid item xs={12} sm={6}>
           <Paper
             sx={{
-              backgroundColor: "rgba(34, 64, 139, 0.09)",
+              // backgroundColor: "rgba(34, 64, 139, 0.09)",
+              backgroundColor:"rgba(98, 79, 181, 0.05) ",
+           
+
               height: "120px",
               padding: (theme) => theme.spacing(4),
               textAlign: "center",
@@ -75,6 +86,8 @@ const DashboardDetailedbottom = () => {
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
+              border: "1px solid #624FB5",// Add border
+              borderRadius: "5px"
             }}
           >
             <Typography variant="body1" sx={{ color: "black", fontSize: "20px" }}>
@@ -89,7 +102,8 @@ const DashboardDetailedbottom = () => {
         <Grid item xs={12} sm={6}>
           <Paper
             sx={{
-              backgroundColor: "rgba(0, 128, 0, 0.08)",
+             
+              backgroundColor: "rgba(0, 128, 0, 0.05)",      
               height: "120px",
               padding: (theme) => theme.spacing(4),
               textAlign: "center",
@@ -98,6 +112,9 @@ const DashboardDetailedbottom = () => {
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
+              border: "1px solid #00800033",// Add border
+              borderRadius: "5px"
+           
             }}
           >
             <Typography variant="body1" sx={{ color: "black", fontSize: "20px" }}>
@@ -112,7 +129,8 @@ const DashboardDetailedbottom = () => {
         <Grid item xs={12} sm={6}>
           <Paper
             sx={{
-              backgroundColor: "rgba(255, 80, 80, 0.08)",
+              backgroundColor: "#FF50500D",              
+                         
               height: "120px",
               padding: (theme) => theme.spacing(4),
               textAlign: "center",
@@ -121,6 +139,8 @@ const DashboardDetailedbottom = () => {
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
+              border: "1px solid #FF505033",
+              borderRadius: "5px"
             }}
           >
             <Typography variant="body1" sx={{ color: "black", fontSize: "20px" }}>

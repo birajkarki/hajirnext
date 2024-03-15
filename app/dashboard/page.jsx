@@ -10,26 +10,31 @@ export default function Dashboard() {
   const token =
     typeof window !== "undefined" && JSON.parse(localStorage.getItem("token"));
   console.log(token);
+
   return (
     <>
+    <Box >
+    <div style={{display:'flex', flexDirection:'column'}}>
+          <Typography sx={{ color:"#434345", fontWeight:"500", fontSize:"24px"}} >Dashboard</Typography>
+          <Typography sx={{ marginBottom:'26px'}} >Dashboard</Typography>
+          </div>
+    </Box>
       <Box
         sx={{
           flexGrow: 1,     
           display: "flex",
-          flexDirection: "row"
+          flexDirection: "row",
+       
         }}
       >
-        <Grid container spacing={2} mr={8}>
-          <div style={{display:'flex', flexDirection:'column'}}>
-          <Typography sx={{marginTop:'40px', marginLeft:'20px'}} >Dashboard</Typography>
-          <Typography  sx={{marginLeft:'20px'}}>Dashboard</Typography>
-          </div>
-          <Box pt={4}>
-            <DashboardFirstComponent />
-          </Box>
-        </Grid>
-
-        <DashboardDetailedbottom />
+        <Grid container spacing={2}>
+      <Grid item xs={12}  md={12} lg={6} xl={6}>
+        <DashboardFirstComponent />
+      </Grid>
+      <Grid item xs={12} md={12} lg={6} xl={6}>
+        <DashboardDetailedbottom  />
+      </Grid>
+    </Grid>
       </Box>
     </>
   );

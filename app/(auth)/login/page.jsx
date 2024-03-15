@@ -187,7 +187,7 @@ export default function Signin() {
              </div>
           )}
         </Grid>
-        <Grid item xs={12} md={6}  sx={{ marginBottom: "80px", marginTop:"60px" }} >
+        <Grid item xs={12} md={6} sx={{ marginBottom: "80px", marginTop:"60px" }}  >
           <Paper
             sx={{
               backgroundColor: (theme) =>
@@ -200,7 +200,7 @@ export default function Signin() {
               flexDirection: "column",
               // justifyContent: "center",
               alignItems: "center",
-              // height: "100%",
+              height: "100%",
               boxShadow: "none",
               elevation: 0,
               background: "transparent",

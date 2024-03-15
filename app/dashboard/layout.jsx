@@ -18,11 +18,14 @@ export default function DashboardLayout({ children }) {
         sx={{
           flexGrow: 1,
           // bgcolor: "#f2f2f2",
+          // ml: `${DRAWER_WIDTH}px`,
+          mt: "90px",
           ml: `${DRAWER_WIDTH}px`,
-          mt: ["48px", "56px", "64px"],
-
-          overflow: "auto", // Make the main content scrollable
+          // mt: ["48px", "56px", "64px"],
+        
+          // overflow: "auto", // Make the main content scrollable
         }}
+    
       >
         {children}
       </Box>
