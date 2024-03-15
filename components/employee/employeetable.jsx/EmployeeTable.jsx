@@ -26,7 +26,6 @@ import {
   Avatar,
   Grid,
 } from "@mui/material";
-
 import {
   useDeleteCandidateQuery,
   useGetDepartmentQuery,
@@ -378,12 +377,12 @@ const EmployeeTable = ({ candidates }) => {
                                 handleEditClick(candidate.id);
                               }}
                             >
-                              <Update />
+                              <Edit />
                             </IconButton>
                             <IconButton
                               onClick={() => handleStatusClick(candidate.id)}
                             >
-                              <Update />
+                              <DoNotDisturbAlt />
                             </IconButton>
                           </>
                         )}

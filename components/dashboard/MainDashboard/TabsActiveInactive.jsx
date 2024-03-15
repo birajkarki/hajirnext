@@ -52,8 +52,7 @@ export default function TabsActiveInactive({
         />
         <Tab
           label={
-            <div
-            >
+            <div>
               Active{" "}
               <span
                 style={{
@@ -75,9 +74,7 @@ export default function TabsActiveInactive({
         />
         <Tab
           label={
-            <div
-         
-            >
+            <div>
               Inactive{" "}
               <span
                 style={{
