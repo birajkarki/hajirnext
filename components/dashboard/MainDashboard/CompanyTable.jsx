@@ -90,7 +90,7 @@ const CompanyTable = ({ companies, refetch }) => {
     setSelectedCompanyId(companyId);
     setDeleteConfirmationDialogOpen(true);
   };
-
+  
   const handleConfirmDelete = async () => {
     try {
       console.log("Company deleted successfully", selectedCompanyId);
@@ -101,6 +101,7 @@ const CompanyTable = ({ companies, refetch }) => {
       console.error("Error deleting company:", error);
     }
   };
+
 
   const handleCloseConfirmationDialog = () => {
     setDeleteConfirmationDialogOpen(false);
@@ -269,78 +270,75 @@ const CompanyTable = ({ companies, refetch }) => {
                             padding: "7px",
                             borderRadius: "4px",
 
-                            textAlign: "center",
-                            justifyContent: "center",
-                            marginRight: "10px",
-                            height: "34px",
-                            display: "flex",
-                            alignItems: "center",
-                          }}
-                        >
-                          {company.status}
-                        </span>
-                      </TableCell>
+                          textAlign: "center",
+                          justifyContent: "center",
+                          marginRight: "10px",
+                          height: "34px",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        {company.status}
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                 <Image
+    src={company.qr_path}
+    height={50}
+    width={50}
+    style={{}}
+    alt="QR Code"
+    onClick={() => handleQrCodeClick(company.qr_path)}
+/>
 
-                      <TableCell>
-                        <Image
-                          src={company.qr_path}
-                          height={50}
-                          width={50}
-                          alt="QR Code"
-                        />
-                      </TableCell>
-
-                      <TableCell>
-                        {company.status === "Active" ? (
-                          <>
-                            <IconButton
-                              onClick={() => handleUpdateClick(company.id)}
-                            >
-                              <Edit />
-                            </IconButton>
-                            <IconButton
-                              onClick={() =>
-                                handleUpdateStatusClick(company.id)
-                              }
-                            >
-                              <Update />
-                            </IconButton>
-                          </>
-                        ) : (
-                          <>
-                            <IconButton
-                              onClick={() => {
-                                handleDeleteClick(company.id);
-                              }}
-                            >
-                              <Delete />
-                            </IconButton>
-                            <IconButton
-                              onClick={() =>
-                                handleUpdateStatusClick(company.id)
-                              }
-                            >
-                              <Update />
-                            </IconButton>
-                          </>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-            </TableBody>
-          </Table>
-
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={filteredData?.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </TableContainer>
-      </Box>
+                    </TableCell>
+                    <TableCell>
+                      {company.status === "Active" ? (
+                        <>
+                          <IconButton
+                            onClick={() => handleUpdateClick(company.id)}
+                          >
+                            <Edit />
+                          </IconButton>
+                          <IconButton
+                            onClick={() => handleUpdateStatusClick(company.id)}
+                          >
+                            <Update />
+                          </IconButton>
+                        </>
+                      ) : (
+                        <>
+                          <IconButton
+                            onClick={() => {
+                              handleDeleteClick(company.id);
+                            }}
+                          >
+                            <Delete />
+                          </IconButton>
+                          <IconButton
+                            onClick={() => handleUpdateStatusClick(company.id)}
+                          >
+                            <Update />
+                          </IconButton>
+                        </>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))}
+          </TableBody>
+        </Table>
+    
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={filteredData?.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </TableContainer>
+   </Box>
       {/* delete dialog  */}
       <Dialog
         open={isDeleteConfirmationDialogOpen}

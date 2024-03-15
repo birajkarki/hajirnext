@@ -42,6 +42,7 @@ const Header = ({ onMenuIconClick }) => (
         <HeaderMenu />
       </div>
     </Toolbar>
+
   </AppBar>
 );
 

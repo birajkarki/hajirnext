@@ -39,6 +39,8 @@ const CreateCompany = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const isScreenSmall = useMediaQuery("(max-width:1390px)");
   const isScreenSM = useMediaQuery("(max-width:978px)");
+ 
+
   const validationSchema = yup.object({
     name: yup
       .string()
@@ -53,8 +55,9 @@ const CreateCompany = () => {
       ),
     code: yup.string().required("Please select a staff code"),
     date_type: yup.string().required("Please select a date"),
-    holiday_type: yup.string().required("Please enter holiday_type"),
+    holiday_type: yup.string().required("Please select holiday type").oneOf(['Government', 'Custom'], 'Please select either Default Government Holidays or Custom Holidays'),
   });
+  
 
   const formik = useFormik({
     initialValues: {
@@ -127,6 +130,7 @@ const CreateCompany = () => {
         height: "100vh",
         padding: "10px",
         backgroundColor: "#fff",
+        marginTop:'70px'
       }}
     >
       <Typography
@@ -144,7 +148,7 @@ const CreateCompany = () => {
 
       {/* breadcrumb area  */}
       <div style={{ display: "flex", gap: "20px" }}>
-        <Link href="/dashboard" sx={{ textDecoration: "none" }}>
+        <Link href="/dashboard" style={{ textDecoration: "none" }}>
           <Typography
             sx={{
               marginTop: "10px",
@@ -159,7 +163,7 @@ const CreateCompany = () => {
             Dashboard
           </Typography>
         </Link>
-        <Link href="/dashboard" sx={{ textDecoration: "none" }}>
+        <Link href="/dashboard/company" style={{ textDecoration: "none" }}>
           <Typography
             sx={{
               marginTop: "10px",
@@ -169,16 +173,18 @@ const CreateCompany = () => {
               fontWeight: "400",
               lineHeight: "21px",
               letterSpacing: "0.15px",
+              textDecoration:'none'
             }}
           >
             Company
           </Typography>
         </Link>
-        <Link href="/dashboard" sx={{ textDecoration: "none" }}>
+        <Link href="/dashboard/company/createcompany" style={{ textDecoration: "none" }}>
           <Typography
             sx={{
               marginTop: "10px",
-              color: "#434345",
+              color: "#434345CC",
+         
               fontSize: "16px",
               fontStyle: "normal",
               fontWeight: "400",
@@ -208,7 +214,7 @@ const CreateCompany = () => {
             >
               {/* Name of the Company */}
               <Typography variant="body1">
-                Name of the Company <span sx={{ color: "red" }}> *</span>
+                Name of your Company <span style={{ color: "red" }}> *</span>
               </Typography>
               <TextField
                 label="Enter Company Name"
@@ -229,9 +235,9 @@ const CreateCompany = () => {
               {/* New Staff Code Selection  */}
 
               <Typography variant="body1" sx={{ marginBottom: "8px" }}>
-                Staff Code{" "}
+                Staff Code{" "} <span style={{color:'red'}}>*</span>
               </Typography>
-              <CustomRadioGroup
+              <CustomRadioGroup 
                 name="code"
                 value={formik.values.code}
                 // onChange={(value) => formik.setFieldValue("code", value)}
@@ -250,15 +256,15 @@ const CreateCompany = () => {
                 setFieldValue={formik.setFieldValue}
               />
               {formik.touched.code && Boolean(formik.errors.code) && (
-                <Typography sx={{ color: "red", marginTop: "4px" }}>
+                <span style={{color: "#cc0000", marginTop:'-10px', fontSize:'13px', marginLeft:'9px'  }}>
                   {formik.errors.code}
-                </Typography>
+                </span>
               )}
 
               {/* New Date Selection  */}
 
-              <Typography variant="body1" sx={{ marginBottom: "8px" }}>
-                Date Selection
+              <Typography variant="body1" sx={{ marginBottom: "8px" }} >
+                Date Selection <span style={{color:'red'}}>*</span>
               </Typography>
               <CustomRadioGroup
                 name="date_type"
@@ -267,20 +273,22 @@ const CreateCompany = () => {
                   {
                     value: "English",
                     label: "English",
-                    description: "e.g.: Something",
+                    description: "E.g.: R001, R002, ROO3",
                   },
                   {
                     value: "Nepali",
                     label: "Nepali",
-                    description: "e.g.: Something",
+                    description: "E.g.: R001, R002, ROO3",
                   },
                 ]}
                 setFieldValue={formik.setFieldValue}
               />
               {formik.touched.date_type && Boolean(formik.errors.date_type) && (
-                <Typography sx={{ color: "red", marginTop: "4px" }}>
+               
+                       <span style={{color: "#cc0000", marginTop:'-10px', fontSize:'13px',marginLeft:'9px'  }}>
                   {formik.errors.date_type}
-                </Typography>
+            
+                </span>
               )}
             </Box>
           </Grid>
@@ -292,11 +300,11 @@ const CreateCompany = () => {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "start",
-                mt: 2,
+                mt: -2.5,
               }}
             >
-              <Typography variant="body1" sx={{ marginBottom: "8px" }}>
-                Holidays
+              <Typography variant="body1" sx={{marginTop:'38px' }}>
+                Holidays <span style={{color:'red'}}>*</span>
               </Typography>
               <Box sx={{ marginBottom: "16px" }}>
                 <Box
@@ -309,7 +317,6 @@ const CreateCompany = () => {
                       : isScreenSmall
                       ? "300px"
                       : "500px",
-
                     display: "flex",
                     transition: "background 0.3s, border 0.3s",
                     "&:hover": { background: "#f5f5f5" },
@@ -325,17 +332,10 @@ const CreateCompany = () => {
                     <FormControlLabel
                       value="Government"
                       control={<Radio />}
-                      label="Default Government Holidays"
+                      label="Governmental Holidays"
                     />
                   </RadioGroup>
                 </Box>
-                {/* need to update this part */}
-                {formik.touched.holiday_type &&
-                  formik.errors.holiday_type === "" && (
-                    <Typography sx={{ color: "red", marginTop: "4px" }}>
-                      {formik.errors.holiday_type}
-                    </Typography>
-                  )}
               </Box>
               <Button onClick={() => handleDownload("example1.pdf")}>
                 <Typography
@@ -366,7 +366,7 @@ const CreateCompany = () => {
                     display: "flex",
                     transition: "background 0.3s, border 0.3s",
                     "&:hover": { background: "#f5f5f5" },
-                    marginTop: "16px",
+                    marginTop: "3px",
                   }}
                 >
                   <RadioGroup
@@ -382,6 +382,12 @@ const CreateCompany = () => {
                     />
                   </RadioGroup>
                 </Box>
+                {formik.touched.holiday_type && formik.errors.holiday_type && (
+    <span style={{ color: "#cc0000", marginTop: "4px", fontSize:'13px' ,marginLeft:'9px'}}>
+      {formik.errors.holiday_type}
+    </span>
+  )}
+
               </Box>
               <Button onClick={() => handleDownload("SpecialHoliday.xls")}>
                 <Typography

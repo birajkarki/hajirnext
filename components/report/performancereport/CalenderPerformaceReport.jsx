@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import React, { useState } from "react";
 import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css";
@@ -7,6 +7,10 @@ import MonthlyPerformanceReport from "./tablePerformaceReport/MonthlyPerformance
 import WeeklyPerformanceReport from "./tablePerformaceReport/WeeklyPerformanceReport";
 import DailyPerformanceReport from "./tablePerformaceReport/DailyPerformanceReport";
 import YearlyPerformanceReport from "./tablePerformaceReport/YearlyPerformanceReport";
+import DailyGraphPerformaceReport from "./graphPerformance/DailyGraphPerformaceReport";
+import WeeklyGraphPerformaceReport from "./graphPerformance/WeeklyGraphPerformaceReport";
+import MonthlyGraphPerformaceReport from "./graphPerformance/MonthlyGraphPerformaceReport";
+import YearlyGraphPerformaceReport from "./graphPerformance/YearlyGraphPerformaceReport";
 
 const CalendarPerformanceReport = () => {
   const [selectionRange, setSelectionRange] = useState({
@@ -61,12 +65,10 @@ const CalendarPerformanceReport = () => {
         break;
     }
 
-    // Check if the selected date range is the same as the previously selected range
     const isSameDateRange =
       startDate.toDateString() === selectionRange.startDate.toDateString() &&
       endDate.toDateString() === selectionRange.endDate.toDateString();
 
-    // If it's the same date range, set both start and end dates to the same date
     if (isSameDateRange) {
       startDate = endDate = new Date(startDate);
     }
@@ -76,6 +78,9 @@ const CalendarPerformanceReport = () => {
   };
 
   const determineComponent = (startDate, endDate) => {
+    console.log("Start Date:", startDate);
+    console.log("End Date:", endDate);
+
     const diffInDays = Math.floor(
       (endDate - startDate) / (1000 * 60 * 60 * 24)
     );
@@ -84,7 +89,8 @@ const CalendarPerformanceReport = () => {
       return <DailyPerformanceReport startDate={startDate} endDate={endDate} />;
     } else if (diffInDays === 6 || diffInDays >= 7) {
       return (
-        <WeeklyPerformanceReport startDate={startDate} endDate={endDate} />
+        // <WeeklyPerformanceReport startDate={startDate} endDate={endDate} />
+        <YearlyPerformanceReport StartYear={StartYear} />
       );
     } else if (
       startDate.getDate() === 1 &&
@@ -92,52 +98,50 @@ const CalendarPerformanceReport = () => {
         new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0).getDate()
     ) {
       return (
-        <MonthlyPerformanceReport startDate={startDate} endDate={endDate} />
+        // <MonthlyPerformanceReport startDate={startDate} endDate={endDate} />
+        <YearlyPerformanceReport StartYear={StartYear} />
       );
-    } else if (
-      startDate.getDate() === 1 &&
-      startDate.getMonth() === 0 &&
-      endDate.getDate() === 31 &&
-      endDate.getMonth() === 11
-    ) {
+    } else {
       return (
         <YearlyPerformanceReport startDate={startDate} endDate={endDate} />
       );
-    } else {
-      return null;
     }
   };
-
+  const StartYear = selectionRange.startDate.getFullYear();
+  const StartMonth = selectionRange.startDate.getMonth() + 1;
+  const StartDay = selectionRange.startDate.getDate();
+  const EndYear = selectionRange.endDate.getFullYear();
+  const EndMonth = selectionRange.endDate.getMonth() + 1;
+  const EndDay = selectionRange.endDate.getDate();
   return (
-    <div style={{ display: "flex" }}>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          marginRight: "20px",
-          marginLeft: "20px",
-          marginTop: "20px",
-          gap: "10px",
-          marginLeft: "20px",
-        }}
-      >
-        <Button onClick={() => handlePresetClick("today")}>Today</Button>
-        <Button onClick={() => handlePresetClick("yesterday")}>
-          Yesterday
-        </Button>
-        <Button onClick={() => handlePresetClick("thisWeek")}>This Week</Button>
-        <Button onClick={() => handlePresetClick("lastWeek")}>Last Week</Button>
-        <Button onClick={() => handlePresetClick("thisMonth")}>
-          This Month
-        </Button>
-        <Button onClick={() => handlePresetClick("lastMonth")}>
-          Last Month
-        </Button>
-        <Button onClick={() => handlePresetClick("allMonths")}>
-          All Months
-        </Button>
-      </div>
-      <div>
+    <Box width="100%">
+      <Box display="flex">
+        <Box
+          marginRight="20px"
+          display="flex"
+          flexDirection="column"
+          gap="10px"
+        >
+          <Button onClick={() => handlePresetClick("today")}>Today</Button>
+          <Button onClick={() => handlePresetClick("yesterday")}>
+            Yesterday
+          </Button>
+          <Button onClick={() => handlePresetClick("thisWeek")}>
+            This Week
+          </Button>
+          <Button onClick={() => handlePresetClick("lastWeek")}>
+            Last Week
+          </Button>
+          <Button onClick={() => handlePresetClick("thisMonth")}>
+            This Month
+          </Button>
+          <Button onClick={() => handlePresetClick("lastMonth")}>
+            Last Month
+          </Button>
+          <Button onClick={() => handlePresetClick("allMonths")}>
+            All Months
+          </Button>
+        </Box>
         <DateRange
           editableDateInputs={true}
           months={1}
@@ -147,22 +151,51 @@ const CalendarPerformanceReport = () => {
           scroll={{ enabled: true }}
           direction="vertical"
         />
-      </div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          marginTop: "20px",
-        }}
-      >
+        <Box>
+          {selectedComponent && (
+            <Box>
+              <h2>Graphical Report</h2>
+              {selectionRange.startDate.toDateString() ===
+              selectionRange.endDate.toDateString() ? (
+                <DailyGraphPerformaceReport
+                  startDate={selectionRange.startDate}
+                  endDate={selectionRange.endDate}
+                />
+              ) : selectionRange.startDate.getDate() === 1 &&
+                selectionRange.endDate.getDate() ===
+                  new Date(
+                    selectionRange.startDate.getFullYear(),
+                    selectionRange.startDate.getMonth() + 1,
+                    0
+                  ).getDate() ? (
+                <MonthlyGraphPerformaceReport
+                  startDate={selectionRange.startDate}
+                  endDate={selectionRange.endDate}
+                />
+              ) : (
+                <YearlyGraphPerformaceReport
+                  startDate={selectionRange.startDate}
+                  endDate={selectionRange.endDate}
+                />
+              )}
+            </Box>
+          )}
+        </Box>
+      </Box>
+      <Box display="flex" flexDirection="column" width="100%">
+        <p>
+          Selected Date Range:{" "}
+          {`${selectionRange.startDate.toLocaleDateString()} - ${selectionRange.endDate.toLocaleDateString()}`}
+        </p>
+        {/* <p>Start Year:{StartYear}</p>
+        <p>Start Month: :{StartMonth}</p>
+        <p>Start Day: :{StartDay}</p>
+        <p>End Year::{EndYear} </p>
+        <p>End Month::{EndMonth} </p>
+        <p>End Day: :{EndDay}</p> */}
         {selectedComponent}
-      </div>
-      <p>
-        Selected Date Range:{" "}
-        {`${selectionRange.startDate.toLocaleDateString()} - ${selectionRange.endDate.toLocaleDateString()}`}
-      </p>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

@@ -317,7 +317,7 @@ export const api = createApi({
     // <<v2>>/employer/report/daily-report/95/31?today_date=2022-10-10
     // daily report
     getDailyCompanyCandidatePerformaceReport: builder.query({
-      query: ({ company_id, candidate_id }) => ({
+      query: ({ company_id, candidate_id, today_date }) => ({
         url: `/employer/report/daily-report/${company_id}/${candidate_id}`,
         params: { today_date }, // Pass start and end as query parameters
       }),
@@ -326,19 +326,20 @@ export const api = createApi({
     getWeeklyCompanyCandidatePerformaceReport: builder.query({
       query: ({ company_id, candidate }) => ({
         url: `/employer/report/weekly-report/${company_id}/${candidate}`,
-        params: { start, end }, // Pass start and end as query parameters
+        params: { start, end },
       }),
     }),
     // monthly report
     getMonthlyCompanyCandidatePerformaceReport: builder.query({
       query: ({ company_id, candidate }) => ({
-        url: `/employer/report/monthly-report/${company_id}/${candidate}`,
+        url: `/employer/report/monthly-report/${company_id}/${candidate_id}`,
       }),
     }),
     // yearly report
     getYearlyCompanyCandidatePerformaceReport: builder.query({
-      query: ({ company_id, candidate }) => ({
-        url: `/employer/report/yearly-report/${company_id}/${candidate}`,
+      query: ({ company_id, candidate_id, year }) => ({
+        url: `/employer/report/yearly-report/${company_id}/${candidate_id}`,
+        params: { year },
       }),
     }),
     // send payment

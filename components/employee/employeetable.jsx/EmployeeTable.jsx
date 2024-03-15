@@ -26,7 +26,6 @@ import {
   Avatar,
   Grid,
 } from "@mui/material";
-
 import {
   useDeleteCandidateQuery,
   useGetDepartmentQuery,
@@ -35,9 +34,12 @@ import {
 import { useParams } from "next/navigation";
 import {
   Delete,
+  DoNotDisturbAlt,
   Edit,
   History,
+  InsertInvitationRounded,
   Mail,
+  Share,
   Upcoming,
   Update,
 } from "@mui/icons-material";
@@ -71,13 +73,6 @@ const EmployeeTable = ({ candidates, refetch }) => {
     setSelectedCandidate(candidate);
     setOpenDialog(true);
   };
-
-  const handleSearchTextChange = (event) => {
-    const text = event.target.value.toLowerCase();
-    setSearchText(text);
-    filterData(text, selectedTab);
-  };
-
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
     filterData(searchText, newValue);
@@ -87,6 +82,12 @@ const EmployeeTable = ({ candidates, refetch }) => {
     setSelectedDepartment(department);
     filterData(searchText, department);
   };
+  const handleSearchTextChange = (event) => {
+    const text = event.target.value.toLowerCase();
+    setSearchText(text);
+    filterData(text, selectedTab);
+  };
+
   const filterData = (searchText, department) => {
     refetch();
 
@@ -133,23 +134,22 @@ const EmployeeTable = ({ candidates, refetch }) => {
   };
 
   const handleInviteClick = (candidate_id) => {
-    setSelectedCandidateId(candidate_id);
+    const selectedCandidate = filteredData.find(
+      (candidate) => candidate.id === candidate_id
+    );
+    setSelectedCandidate(selectedCandidate);
     setIsInviteDialogOpen(true);
   };
 
   const handleConfirmInvite = async () => {
     try {
-      console.log(
-        "Inviting candidate with id:",
-        selectedCandidate.candidate_id
-      );
       const status = "Approved";
       await inviteCandidate({
-        candidate_id: selectedCandidateId,
+        candidate_id: selectedCandidate.candidate_id,
         status,
-        company_id: companyId,
+        companyId: companyId,
       });
-      console.log("Invite sent successfully", data);
+      console.log("Invite sent successfully");
       setOpenDialog(false);
       refetch();
     } catch (error) {
@@ -273,6 +273,9 @@ const EmployeeTable = ({ candidates, refetch }) => {
                         borderBottom: "0.7px dotted #ccc",
                         backgroundColor:
                           candidate.id === selectedRow ? "#f2f2f2" : "",
+                        marginBottom: "0px",
+                        maxHeight: "200px",
+                        overflowY: "auto",
                       }}
                       onClick={(event) => handleRowClick(candidate, event)}
                       style={{ cursor: "pointer" }}
@@ -356,37 +359,34 @@ const EmployeeTable = ({ candidates, refetch }) => {
                         {candidate.status === "Not-Verified" ? (
                           <>
                             <IconButton
-                              onClick={() => handleDeleteClick(candidate.id)}
-                              aria-label="Delete Candidate"
+                              onClick={() => handleInviteClick(candidate.id)}
                             >
-                              <Delete />
+                              <Share />
                             </IconButton>
                             <IconButton
                               onClick={() => handleEditClick(candidate.id)}
-                              aria-label="Edit Candidate"
                             >
                               <Edit />
                             </IconButton>
                             <IconButton
-                              onClick={() => handleInviteClick(candidate.id)}
-                              aria-label="Invite Candidate"
+                              onClick={() => handleStatusClick(candidate.id)}
                             >
-                              <Mail />
+                              <DoNotDisturbAlt />
                             </IconButton>
                           </>
                         ) : (
                           <>
                             <IconButton
-                              onClick={() => handleStatusClick(candidate.id)}
-                              aria-label="Update Status"
-                            >
-                              <History />
-                            </IconButton>
-                            <IconButton
-                              onClick={() => handleEditClick(candidate.id)}
-                              aria-label="Edit Candidate"
+                              onClick={() => {
+                                handleEditClick(candidate.id);
+                              }}
                             >
                               <Edit />
+                            </IconButton>
+                            <IconButton
+                              onClick={() => handleStatusClick(candidate.id)}
+                            >
+                              <DoNotDisturbAlt />
                             </IconButton>
                           </>
                         )}
@@ -395,17 +395,25 @@ const EmployeeTable = ({ candidates, refetch }) => {
                   ))}
             </TableBody>
           </Table>
-
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={filteredData?.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
         </TableContainer>
+
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={filteredData?.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          sx={{
+            position: "sticky",
+            bottom: 0,
+            backgroundColor: "#fff",
+            zIndex: 1,
+
+            boxShadow: "0px 0px 0px 1px rgba(0, 0, 0, 0.1)",
+          }}
+        />
       </Box>
 
       <EmployeeDetailsDialog
@@ -520,6 +528,7 @@ const EmployeeTable = ({ candidates, refetch }) => {
             Do you want to invite {selectedCandidate && selectedCandidate.name}?
           </DialogContentText>
         </DialogContent>
+
         <DialogActions>
           <Button onClick={() => setIsInviteDialogOpen(false)}>Cancel</Button>
           <Button onClick={handleConfirmInvite} color="primary">

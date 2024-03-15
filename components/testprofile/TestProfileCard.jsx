@@ -33,7 +33,6 @@ const TestProfileCard = () => {
 
   useEffect(() => {
     if (authUser && authUser.token) {
-      console.log(getProfileQuery);
       refetch();
     }
   }, [authUser]);
@@ -110,10 +109,41 @@ const TestProfileCard = () => {
             >
               {profileData?.name || "Name not available"}
             </Typography>
+            {/* <Typography
+            sx={{ fontSize: "14px", color: "black", textTransform: "none" }}
+          >
+            {profileData?.email || "Email not available"}
+          </Typography> */}
+            {/* <Typography
+  sx={{
+    fontSize: "14px",
+    color: "black",
+    textTransform: "none",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+  }}
+>
+  {profileData?.email.length > 10
+    ? profileData?.email.slice(0, 8) + ".."
+    : profileData?.email || "Email not available"}
+</Typography> */}
             <Typography
-              sx={{ fontSize: "14px", color: "black", textTransform: "none" }}
+              sx={{
+                fontSize: "14px",
+                color: "black",
+                textTransform: "none",
+              }}
             >
-              {profileData?.email || "Email not available"}
+              {profileData?.email.length > 10 ? (
+                <>
+                  <span>{profileData?.email.split("@")[0].slice(0, 13)}</span>
+                  <span style={{ color: "#999" }}>..</span>
+                  <span>@gmail.com</span>
+                </>
+              ) : (
+                profileData?.email || "Email not available"
+              )}
             </Typography>
           </>
         )}

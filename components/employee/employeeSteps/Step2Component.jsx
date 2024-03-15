@@ -275,7 +275,9 @@ const Step2Component = ({ formik }) => {
                 value={formik.values.duty_time}
                 onChange={formik.handleChange}
               />
-              <FormControl sx={{ width: "70px", marginTop: 1, marginLeft:'-10px' }}>
+              <FormControl
+                sx={{ width: "80px", marginTop: 1, marginLeft: "-10px" }}
+              >
                 <InputLabel htmlFor="am">AM/PM</InputLabel>
                 <Select
                   label="AM/PM"
@@ -292,7 +294,10 @@ const Step2Component = ({ formik }) => {
               Break Time <span style={{ color: "red" }}> *</span>
             </Typography>
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <Button variant="outlined" sx={{ height: "55px" ,marginRight: -1.25, marginTop: 0.9}}>
+              <Button
+                variant="outlined"
+                sx={{ height: "55px", marginRight: -1.25, marginTop: 0.9 }}
+              >
                 -
               </Button>
               <TextField
@@ -312,7 +317,10 @@ const Step2Component = ({ formik }) => {
                 onChange={formik.handleChange}
                 inputProps={{ style: { textAlign: "center" } }}
               />
-              <Button variant="outlined" sx={{ height: "55px",marginLeft: -1.3, marginTop: 0.9 }}>
+              <Button
+                variant="outlined"
+                sx={{ height: "55px", marginLeft: -1.3, marginTop: 0.9 }}
+              >
                 +
               </Button>
             </div>
