@@ -1,112 +1,68 @@
-import React from "react";
-import {
-  Box,
-  Grid,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TextField,
-  Button,
-} from "@mui/material";
+import { Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { useGetDailyCompanyCandidatePerformaceReportQuery } from "@/services/api";
 import { useParams } from "next/navigation";
 import NotifyComponent from "../tabNotificationPayment/NotifyComponent";
+import { useEffect } from "react";
 
-const DailyPerformanceReport = ({ startDate, endDate }) => {
+const DailyPerformanceReport = ({ startDateValue, startDate }) => {
   const { candidateId, companyId } = useParams();
+  const dayandmonth = startDateValue.split("/").slice(0, 2).join("/");
+  const year = startDate.getFullYear();
 
-  const { data: dailyCompanyCandidatePerformanceReport } =
-    useGetDailyCompanyCandidatePerformaceReportQuery({
-      candidate_id: candidateId,
-      company_id: companyId,
-    });
-  console.log(dailyCompanyCandidatePerformanceReport);
+  const { data: getDailyCompanyCandidatePerformaceReport, refetch } = useGetDailyCompanyCandidatePerformaceReportQuery({
+    company_id: companyId,
+    candidate_id: candidateId,
+    today_date: dayandmonth,
+    year: year,
+  });
+
+  useEffect(() => {
+    refetch();
+  }, [startDate, startDateValue, refetch]);
+
+  console.log("getDailyCompanyCandidatePerformaceReport", getDailyCompanyCandidatePerformaceReport);
+
   return (
     <Box>
-      <h2>Yearly Performance Report</h2>
-      <p>
-        {/* Displaying data from {startDate.getFullYear()} to{" "}
-        {endDate.getFullYear()} */}
-      </p>
+      <h2>Daily Performance Report</h2>
+      <h3>{startDateValue}</h3>
+      <h4>{dayandmonth}</h4>
+      <h4>{year}</h4>
+      
       <Grid container spacing={3}>
-        {/* Left side with table */}
-        <Grid item xs={6}>
+        <Grid item xs={12}>
           <TableContainer>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>ID</TableCell>
-                  <TableCell>Date</TableCell>
-                  <TableCell>Description</TableCell>
-                  <TableCell>Payment Status</TableCell>
+                  <TableCell>Start Time</TableCell>
+                  <TableCell>End Time</TableCell>
+                  <TableCell>Break Time</TableCell>
+                  <TableCell>Attendance Duration</TableCell>
+                  <TableCell>Total Earnings</TableCell>
+                  <TableCell>Overtime Earnings</TableCell>
+                  <TableCell>Allowance</TableCell>
+                  <TableCell>Status</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {yearlyCompanyCandidatePerformanceReport?.data.map(
-                  (item, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{index + 1}</TableCell>
-                      <TableCell>{item.month}</TableCell>
-                      <TableCell>
-                        <span
-                          style={{
-                            backgroundColor:
-                              item.status === "Paid"
-                                ? "#00800033"
-                                : "#FF505033",
-                            color: item.status === "Paid" ? "green" : "red",
-                            padding: "7px",
-                            borderRadius: "4px",
-
-                            textAlign: "center",
-                            justifyContent: "center",
-                            marginRight: "10px",
-                            height: "34px",
-                            display: "flex",
-                            alignItems: "center",
-                          }}
-                        >
-                          {item.status}
-                        </span>
-                      </TableCell>{" "}
-                      <TableCell>
-                        {typeof item.amount === "string"
-                          ? parseFloat(item.amount).toFixed(2)
-                          : item.amount.toFixed(2)}
-                      </TableCell>
-                    </TableRow>
-                  )
-                )}
-                {/* Total row */}
                 <TableRow>
-                  <TableCell colSpan={3}>Total Amount</TableCell>
-                  <TableCell>
-                    {/* Calculate total amount here */}
-                    {yearlyCompanyCandidatePerformanceReport?.data
-                      .reduce((total, item) => {
-                        return (
-                          total +
-                          (typeof item.amount === "string"
-                            ? parseFloat(item.amount)
-                            : item.amount)
-                        );
-                      }, 0)
-                      .toFixed(2)}
-                  </TableCell>
+                  <TableCell>{getDailyCompanyCandidatePerformaceReport?.data.start_time}</TableCell>
+                  <TableCell>{getDailyCompanyCandidatePerformaceReport?.data.end_time}</TableCell>
+                  <TableCell>{getDailyCompanyCandidatePerformaceReport?.data.break_time}</TableCell>
+                  <TableCell>{getDailyCompanyCandidatePerformaceReport?.data.attendance_duration}</TableCell>
+                  <TableCell>{getDailyCompanyCandidatePerformaceReport?.data.totalearning}</TableCell>
+                  <TableCell>{getDailyCompanyCandidatePerformaceReport?.data.overtime_earning}</TableCell>
+                  <TableCell>{getDailyCompanyCandidatePerformaceReport?.data.allowance}</TableCell>
+                  <TableCell>{getDailyCompanyCandidatePerformaceReport?.data.status}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
           </TableContainer>
         </Grid>
-
-        {/* Right side with message box and submit button */}
-        <Grid item xs={6}>
-          <NotifyComponent />
-        </Grid>
       </Grid>
+
+      <Box mt={2}></Box>
     </Box>
   );
 };
