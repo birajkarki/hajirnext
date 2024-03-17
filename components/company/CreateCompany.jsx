@@ -22,7 +22,8 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/navigation";
 import DatePicker from "../form-components/DatePicker";
-
+const isScreenSmall = useMediaQuery("(max-width:1406px)");
+const isScreenSM = useMediaQuery("(max-width:1132px)");
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -75,13 +76,17 @@ export default function CreateCompany({ formik }) {
       <Typography variant="h5">Add New Company</Typography>
 
       <Grid container spacing={2}>
-        <Grid item xs={12} md={6}>
+        <Grid 
+        item xs={12} md={6}
+        >
           <Item>
             <TextField
               id="standard-basic"
               label="Company Name"
               variant="standard"
-              fullWidth
+          // sx={{
+          //   width:isScreenSM?"140px": isScreenSmall?"190px" : "290px"
+          // }}
             />
             <FormControl component="fieldset" row>
               <FormLabel row  id="demo-row-radio-buttons-group-label" component="legend">Staff Code <span style={{color:'red'}}>*</span></FormLabel>
