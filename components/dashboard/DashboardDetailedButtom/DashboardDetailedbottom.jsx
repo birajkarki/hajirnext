@@ -1,4 +1,3 @@
-"use client";
 import { Grid, Typography } from "@mui/material";
 import * as React from "react";
 import Box from "@mui/material/Box";
@@ -9,15 +8,12 @@ import { useGetEmployerCompaniesQuery } from "@/services/api";
 
 const DashboardDetailedbottom = () => {
   const { companyId } = useParams();
-  // console.log("companyId:", companyId);
 
   const {
     data: companyData,
     isLoading,
     refetch,
   } = useGetEmployerCompaniesQuery(companyId);
-  console.log(companyData?.data?.active_companies, "active_companies");
-  console.log(companyData?.data?.inactive_companies, "inactive_companies");
 
   const activeCompaniesLength =
     companyData?.data?.active_companies?.length || 0;
@@ -29,103 +25,148 @@ const DashboardDetailedbottom = () => {
   return (
     <Box
       sx={{
-        flexGrow: 1,
+        // flexGrow: 1,
         height: "100%",
         display: "flex",
         width: "100%",
+
         flexDirection: "column",
       }}
     >
-      <Stack
-        container="true"
-        direction={{ xs: "column", sm: "row" }}
-        sx={{ width: "100%", marginTop: "10px" }}
-        spacing={{ xs: 1, sm: 2, md: 1 }}
+      <Grid
+        container
+        direction="row"
+        sx={{
+          width: { lg: "95%", xl: "95%", md: "95%", sm: "100%", xs: "100%" },
+        }}
+        spacing={9}
       >
-        <Paper
-          sx={{
-            backgroundColor: "rgba(34, 64, 139, 0.08)",
-            height: "120px",
-            padding: (theme) => theme.spacing(4),
-            textAlign: "center",
-            color: (theme) => theme.palette.text.secondary,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Typography variant="body1" sx={{ color: "black", fontSize: "20px" }}>
-            Total Company
-          </Typography>
-          <Typography sx={{ color: "#22408B", fontSize: "28px" }} variant="h6">
-            {totalCompany}
-          </Typography>
-        </Paper>
+        <Grid item xs={12} sm={6}>
+          <Paper
+            sx={{
+              backgroundColor: "rgba(34, 64, 139, 0.08)",
+              height: "120px",
+              padding: (theme) => theme.spacing(4),
+              textAlign: "center",
+              color: (theme) => theme.palette.text.secondary,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              border: "1px solid #22408B", // Add border
+              borderRadius: "5px",
+            }}
+          >
+            <Typography
+              variant="body1"
+              sx={{ color: "black", fontSize: "20px" }}
+            >
+              Total Company
+            </Typography>
+            <Typography
+              sx={{ color: "#22408B", fontSize: "28px" }}
+              variant="h6"
+            >
+              {totalCompany}
+            </Typography>
+          </Paper>
+        </Grid>
 
-        <Paper
-          sx={{
-            backgroundColor: "rgba(34, 64, 139, 0.09)",
-            height: "120px",
-            padding: (theme) => theme.spacing(4),
-            textAlign: "center",
-            color: (theme) => theme.palette.text.secondary,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Typography variant="body1" sx={{ color: "black", fontSize: "20px" }}>
-            Total Employee
-          </Typography>
-          <Typography sx={{ color: "#22408B", fontSize: "28px" }} variant="h6">
-            0
-          </Typography>
-        </Paper>
+        <Grid item xs={12} sm={6}>
+          <Paper
+            sx={{
+              backgroundColor: "rgba(98, 79, 181, 0.05) ",
 
-        <Paper
-          sx={{
-            backgroundColor: "rgba(0, 128, 0, 0.08)",
-            height: "120px",
-            padding: (theme) => theme.spacing(4),
-            textAlign: "center",
-            color: (theme) => theme.palette.text.secondary,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Typography variant="body1" sx={{ color: "black", fontSize: "20px" }}>
-            Active Employee
-          </Typography>
-          <Typography sx={{ color: "#22408B", fontSize: "28px" }} variant="h6">
-            0
-          </Typography>
-        </Paper>
+              height: "120px",
+              padding: (theme) => theme.spacing(4),
+              textAlign: "center",
+              color: (theme) => theme.palette.text.secondary,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              border: "1px solid #624FB5", // Add border
+              borderRadius: "5px",
+            }}
+          >
+            <Typography
+              variant="body1"
+              sx={{ color: "black", fontSize: "20px" }}
+            >
+              Total Employee
+            </Typography>
+            <Typography
+              sx={{ color: "#22408B", fontSize: "28px" }}
+              variant="h6"
+            >
+              0
+            </Typography>
+          </Paper>
+        </Grid>
 
-        <Paper
-          sx={{
-            backgroundColor: "rgba(255, 80, 80, 0.08)",
-            height: "120px",
-            padding: (theme) => theme.spacing(4),
-            textAlign: "center",
-            color: (theme) => theme.palette.text.secondary,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Typography variant="body1" sx={{ color: "black", fontSize: "20px" }}>
-            InActive Employee
-          </Typography>
-          <Typography sx={{ color: "#22408B", fontSize: "28px" }} variant="h6">
-            0
-          </Typography>
-        </Paper>
-      </Stack>
+        <Grid item xs={12} sm={6}>
+          <Paper
+            sx={{
+              backgroundColor: "rgba(0, 128, 0, 0.05)",
+              height: "120px",
+              padding: (theme) => theme.spacing(4),
+              textAlign: "center",
+              color: (theme) => theme.palette.text.secondary,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              border: "1px solid #00800033", // Add border
+              borderRadius: "5px",
+            }}
+          >
+            <Typography
+              variant="body1"
+              sx={{ color: "black", fontSize: "20px" }}
+            >
+              Active Employee
+            </Typography>
+            <Typography
+              sx={{ color: "#22408B", fontSize: "28px" }}
+              variant="h6"
+            >
+              0
+            </Typography>
+          </Paper>
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
+          <Paper
+            sx={{
+              backgroundColor: "#FF50500D",
+
+              height: "120px",
+              padding: (theme) => theme.spacing(4),
+              textAlign: "center",
+              color: (theme) => theme.palette.text.secondary,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              border: "1px solid #FF505033",
+              borderRadius: "5px",
+            }}
+          >
+            <Typography
+              variant="body1"
+              sx={{ color: "black", fontSize: "20px" }}
+            >
+              Inactive Employee
+            </Typography>
+            <Typography
+              sx={{ color: "#22408B", fontSize: "28px" }}
+              variant="h6"
+            >
+              0
+            </Typography>
+          </Paper>
+        </Grid>
+      </Grid>
     </Box>
   );
 };

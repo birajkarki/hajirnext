@@ -158,15 +158,18 @@ const Otp = () => {
     >
       <Grid container spacing={3} justifyContent="center" alignItems="center">
         <Grid item xs={6}>
-          {!isMobile && (
+            {!isScreenSmall && (
+            <div style={{ position: 'relative', width: '100%', height: '100vh' }}>
             <Image
-              src="/auth/login.png"
+              src="/side-img.png"
               alt="login image"
-              width={isMobile ? 300 : 900}
-              height={900}
-              style={{ display: "block", maxWidth: "100%", height: "auto" }}
+             
+             fill
+             style={{objectFit:"cover"}}
+             sizes="(max-width: 600px) 100vw, 900px"
               priority
             />
+             </div>
           )}
         </Grid>
         <Grid item xs={12} md={6}>
@@ -186,26 +189,32 @@ const Otp = () => {
               background: "transparent",
             }}
           >
-            <div style={{ marginTop: "50px" }}>
-              <Image
+       
+            <Box sx={{ marginTop:'60px', paddingRight:'192px', paddingLeft:'212px', height:'519px'}}>
+              {/* <Image
                 src="/hajir-logo.png"
                 width={140}
                 height={50}
                 alt="Logo"
                 priority
-              />
-            </div>
-            <div>
+           
+              /> */}
+                <div>
+              <Image src="/hajir-logo.png" width={140} height={50} alt="Logo" />
+            </div>     
               <h1
-                style={{
-                  color: "rgba(34, 64, 139, 0.87)",
-                  fontWeight: "500",
-                  fontSize: "18px",
-                  marginTop: "7px",
-                }}
-              >
-                Smart attendance system
-              </h1>
+              style={{
+                color: "rgba(34, 64, 139, 0.87)",
+                fontWeight: "500",
+                fontSize: "18px",
+                marginTop:'8px',
+                marginBottom:'28px',
+          height:'20px',
+          width:'336px'
+              }}
+            >
+              Smart attendance system
+            </h1>
 
               <h1
                 style={{
@@ -213,16 +222,18 @@ const Otp = () => {
                   fontSize: "14px",
                   whiteSpace: "pre-line",
                   marginTop: "5px",
+                  width:'310px',
+                  height:'48px'
                 }}
               >
-                Enter the OTP code that has been sent to your mobile number{" "}
+                Enter the OTP code that has been sent to your mobile number 98******61
               </h1>
-            </div>
+          
             <Image
               src="/auth/maskotp.png"
               width={175}
               height={170}
-              style={{ marginTop: "20px", marginBottom: "60px" }}
+              style={{ marginTop: "15px", marginBottom: "60px" }}
               alt="otp"
               priority
             />
@@ -260,19 +271,27 @@ const Otp = () => {
                       size="small"
                       sx={{
                         width: "50px",
+borderRadius: "5px",
                         height: "40px",
                         textAlign: "center",
                         justifyContent: "center",
                         marginRight: "20px",
                         alignItems: "center",
                         paddingLeft: "8px",
-                        marginTop: "-20px",
+                        color: "rgba(67, 67, 69, 0.6)",
+                     
+                        "&.Mui-focused": {
+                          border: "1.5px solid #434345",
+                        },
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "rgba(67, 67, 69, 0.6)",
+                          borderWidth: "1.5px",
+                        },
+                      
                       }}
                     />
                   ))}
                 </div>
-
-                <br />
 
                 {/* Verify button */}
 
@@ -280,7 +299,7 @@ const Otp = () => {
                   type="submit"
                   variant="contained"
                   color="primary"
-                  sx={{ marginTop: "10px", width: "260px" }}
+                  sx={{ marginTop: "20px", width: "260px", fontSize:"14px"}}
                 >
                   {loading ? (
                     <Image
@@ -294,19 +313,20 @@ const Otp = () => {
                   )}
                 </Button>
               </div>
+              </Box>
             </Box>
-
+<Box sx={{ marginTop:'43px',marginBottom:'43px', fontSize:'14px', width:'372px', height:'21px', display:'flex', justifyContent:'center', alignItems:'center'}}>
             <div
               style={{
                 whiteSpace: "pre-line",
-                marginTop: "8px",
+             
                 display: "flex",
                 alignItems: "center",
-                marginTop: "2px",
+              
               }}
             >
-              <p style={{ color: timer === 0 ? "red" : "inherit" }}>
-                Do not receive OTP? Resend OTP in{" "}
+              <p >
+                Do not receive the OTP code? <span style={{ color: timer === 0 ? "red" : "inherit" }}> Resend Code in{" "} </span>
                 <span style={{ color: "red" }}>
                   {timerMinutes}:
                   {timerSeconds < 10 ? `0${timerSeconds}` : timerSeconds}
@@ -327,6 +347,7 @@ const Otp = () => {
                 </Button>
               )}
             </div>
+            </Box>
           </Paper>
         </Grid>
       </Grid>

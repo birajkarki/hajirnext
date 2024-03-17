@@ -14,6 +14,10 @@ import {
   LinearProgress,
   useMediaQuery,
 } from "@mui/material";
+import SyncIcon from '@mui/icons-material/Sync';
+
+import AddIcon from '@mui/icons-material/Add';
+
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { styled } from "@mui/material/styles";
@@ -37,8 +41,8 @@ const CreateCompany = () => {
   const [file, setFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const isScreenSmall = useMediaQuery("(max-width:1390px)");
-  const isScreenSM = useMediaQuery("(max-width:978px)");
+  const isScreenSmall = useMediaQuery("(max-width:1486px)");
+  const isScreenSM = useMediaQuery("(max-width:1134px)");
  
 
   const validationSchema = yup.object({
@@ -147,7 +151,7 @@ const CreateCompany = () => {
       </Typography>
 
       {/* breadcrumb area  */}
-      <div style={{ display: "flex", gap: "20px" }}>
+      <div style={{ display: "flex", gap: "20px", marginLeft:"4px" }}>
         <Link href="/dashboard" style={{ textDecoration: "none" }}>
           <Typography
             sx={{
@@ -160,7 +164,7 @@ const CreateCompany = () => {
               letterSpacing: "0.15px",
             }}
           >
-            Dashboard
+            Dashboard <span style={{marginLeft:"10px"}}>/</span> 
           </Typography>
         </Link>
         <Link href="/dashboard/company" style={{ textDecoration: "none" }}>
@@ -176,7 +180,7 @@ const CreateCompany = () => {
               textDecoration:'none'
             }}
           >
-            Company
+            Company  <span style={{marginLeft:"10px"}}></span> /
           </Typography>
         </Link>
         <Link href="/dashboard/company/createcompany" style={{ textDecoration: "none" }}>
@@ -199,7 +203,7 @@ const CreateCompany = () => {
 
       <form
         onSubmit={formik.handleSubmit}
-        style={{ marginTop: "20px", marginLeft: "30px" }}
+        style={{ marginTop: "20px"}}
       >
         <Grid container>
           {/* Left Column */}
@@ -221,10 +225,10 @@ const CreateCompany = () => {
                 variant="outlined"
                 sx={{
                   width: isScreenSM
-                    ? "250px"
+                    ? "220px"
                     : isScreenSmall
-                    ? "300px"
-                    : "500px",
+                    ? "380px"
+                    : "552px",
                 }}
                 margin="normal"
                 {...formik.getFieldProps("name")}
@@ -316,11 +320,15 @@ const CreateCompany = () => {
                       ? "250px"
                       : isScreenSmall
                       ? "300px"
-                      : "500px",
+                      : "600px",
                     display: "flex",
                     transition: "background 0.3s, border 0.3s",
                     "&:hover": { background: "#f5f5f5" },
-                    marginTop: "16px",
+                    marginTop: "14px",
+                    height:"57px",
+                    display:"flex",
+                  
+                    alignItems:'center',
                   }}
                 >
                   <RadioGroup
@@ -337,18 +345,29 @@ const CreateCompany = () => {
                   </RadioGroup>
                 </Box>
               </Box>
-              <Button onClick={() => handleDownload("example1.pdf")}>
+              <span onClick={() => handleDownload("example1.pdf")} style={{
+marginLeft: isScreenSmall?"40px":"150px"
+
+              }}>
                 <Typography
                   variant="body2"
                   sx={{
-                    marginTop: "8px",
+                    marginTop: "-9px",
                     display: "flex",
+                    textAlign:"center",
+                    justifyContent:"center",
                     alignItems: "center",
+                    color:"#434345CC",
+                    cursor:"pointer",
+                    textDecoration:"underline",
+                    fontSize:"14px",
+                    fontWeight:"500",
+                    letterSpacing: "0.15px"
                   }}
                 >
                   View Holidays (.pdf)
                 </Typography>
-              </Button>
+              </span>
               <Box>
                 {/* Custom Holidays Box */}
                 <Box
@@ -361,12 +380,16 @@ const CreateCompany = () => {
                       ? "250px"
                       : isScreenSmall
                       ? "300px"
-                      : "500px",
+                      : "600px",
 
                     display: "flex",
                     transition: "background 0.3s, border 0.3s",
                     "&:hover": { background: "#f5f5f5" },
-                    marginTop: "3px",
+                    marginTop: "12px",
+                    // marginTop: "14px",
+                    height:"57px",
+                    alignItems:"center"
+
                   }}
                 >
                   <RadioGroup
@@ -389,18 +412,24 @@ const CreateCompany = () => {
   )}
 
               </Box>
-              <Button onClick={() => handleDownload("SpecialHoliday.xls")}>
+              <span onClick={() => handleDownload("SpecialHoliday.xls")} sx={{width:"253px", fontSize:"14px", fontWeight:"500"}}>
                 <Typography
                   variant="body2"
                   sx={{
                     marginTop: "8px",
                     display: "flex",
                     alignItems: "center",
+                    textDecoration:"underline",
+                    marginLeft: isScreenSmall?"3px":"120px",
+                    fontWeight:"500",
+                    letterSpacing:"0.15px",
+                    color:"#434345CC",
+                    cursor:"pointer"
                   }}
                 >
                   Click to download sample file (.xlsx)
                 </Typography>
-              </Button>{" "}
+              </span>{" "}
               <Box
                 sx={{
                   display: "flex",
@@ -409,8 +438,12 @@ const CreateCompany = () => {
                   marginTop: "16px",
                 }}
               >
-                <Button variant="contained" component="label">
-                  Upload File
+                <Button variant="contained" component="label" sx={{backgroundColor:"white", color:"#22408B",
+                 "&:hover": {
+                  backgroundColor: "white", // Prevent background color change on hover
+                },
+              }}>
+               <AddIcon/>Import Holidays
                   <input type="file" onChange={handleFileChange} hidden />
                 </Button>
                 {isLoading && <LinearProgress value={uploadProgress} />}
@@ -440,9 +473,13 @@ const CreateCompany = () => {
             sx={{
               width: "250px",
               height: "50px",
+              justifyContent:"center",
+              fontSize:"16px",
+             gap:"20px",
             }}
           >
-            Create
+            <SyncIcon />
+            <span>Update</span>
           </Button>
         </Box>
       </form>

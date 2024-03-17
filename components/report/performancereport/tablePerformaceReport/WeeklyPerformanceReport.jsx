@@ -11,26 +11,31 @@ import {
   TextField,
   Button,
 } from "@mui/material";
-import { useGetYearlyCompanyCandidatePerformaceReportQuery } from "@/services/api";
+import { useGetWeeklyCompanyCandidatePerformaceReportQuery } from "@/services/api";
 import { useParams } from "next/navigation";
 import NotifyComponent from "../tabNotificationPayment/NotifyComponent";
+import { useEffect } from "react";
 
-const WeeklyPerformanceReport = ({ startDate, endDate }) => {
+const WeeklyPerformanceReport = ({ startDateValue, endDateValue }) => {
   const { candidateId, companyId } = useParams();
 
-  const { data: yearlyCompanyCandidatePerformanceReport } =
-    useGetYearlyCompanyCandidatePerformaceReportQuery({
+  const { data: getweeklyCompanyCandidatePerformanceReport, refetch } =
+  useGetWeeklyCompanyCandidatePerformaceReportQuery({
       candidate_id: candidateId,
       company_id: companyId,
-      year: StartYear,
+      from_date: startDateValue,
+      to_date: endDateValue,
     });
-  console.log(yearlyCompanyCandidatePerformanceReport);
+
+    useEffect(() => {
+      refetch();
+    }, [startDateValue, endDateValue, refetch]);
+  console.log(getweeklyCompanyCandidatePerformanceReport);
   return (
     <Box>
-      <h2>Yearly Performance Report</h2>
+      <h2>Weekly Performance Report</h2>
       <p>
-        {/* Displaying data from {startDate.getFullYear()} to{" "}
-        {endDate.getFullYear()} */}
+    
       </p>
       <Grid container spacing={3}>
         {/* Left side with table */}
@@ -39,64 +44,25 @@ const WeeklyPerformanceReport = ({ startDate, endDate }) => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>ID</TableCell>
-                  <TableCell>Date</TableCell>
-                  <TableCell>Description</TableCell>
-                  <TableCell>Payment Status</TableCell>
+                  <TableCell>Salary</TableCell>
+                  <TableCell>Overtime</TableCell>
+                  <TableCell>Allowance</TableCell>
+                  <TableCell>Total Salary</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {yearlyCompanyCandidatePerformanceReport?.data.map(
-                  (item, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{index + 1}</TableCell>
-                      <TableCell>{item.month}</TableCell>
-                      <TableCell>
-                        <span
-                          style={{
-                            backgroundColor:
-                              item.status === "Paid"
-                                ? "#00800033"
-                                : "#FF505033",
-                            color: item.status === "Paid" ? "green" : "red",
-                            padding: "7px",
-                            borderRadius: "4px",
+             
+                    <TableRow >
+                    <TableCell>{getweeklyCompanyCandidatePerformanceReport?.data.salary}</TableCell>
+                  <TableCell>{getweeklyCompanyCandidatePerformanceReport?.data.overtime}</TableCell>
+                  <TableCell>{getweeklyCompanyCandidatePerformanceReport?.data.allowance}</TableCell>
+                  <TableCell>{getweeklyCompanyCandidatePerformanceReport?.data.total_salary}</TableCell>
 
-                            textAlign: "center",
-                            justifyContent: "center",
-                            marginRight: "10px",
-                            height: "34px",
-                            display: "flex",
-                            alignItems: "center",
-                          }}
-                        >
-                          {item.status}
-                        </span>
-                      </TableCell>{" "}
-                      <TableCell>
-                        {typeof item.amount === "string"
-                          ? parseFloat(item.amount).toFixed(2)
-                          : item.amount.toFixed(2)}
-                      </TableCell>
-                    </TableRow>
-                  )
-                )}
-                {/* Total row */}
+                  </TableRow>
+
                 <TableRow>
                   <TableCell colSpan={3}>Total Amount</TableCell>
-                  <TableCell>
-                    {/* Calculate total amount here */}
-                    {yearlyCompanyCandidatePerformanceReport?.data
-                      .reduce((total, item) => {
-                        return (
-                          total +
-                          (typeof item.amount === "string"
-                            ? parseFloat(item.amount)
-                            : item.amount)
-                        );
-                      }, 0)
-                      .toFixed(2)}
-                  </TableCell>
+                
                 </TableRow>
               </TableBody>
             </Table>
@@ -105,7 +71,6 @@ const WeeklyPerformanceReport = ({ startDate, endDate }) => {
 
         {/* Right side with message box and submit button */}
         <Grid item xs={6}>
-          <NotifyComponent />
         </Grid>
       </Grid>
     </Box>
