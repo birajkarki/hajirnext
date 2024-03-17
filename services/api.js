@@ -355,8 +355,16 @@ export const api = createApi({
         method: "POST",
       }),
     }),
+    getAllNotifications: builder.query({
+      query: () => ({
+        url: "/notification/all",
+        method:"GET"
+      }),
+    }),
+
   }),
 });
+
 
 export const {
   useGetDataQuery,
@@ -404,4 +412,5 @@ export const {
   useGetYearlyCompanyCandidatePerformaceReportQuery,
   useSendPaymentMutation,
   useSendNotificationMutation,
+  useGetAllNotificationsQuery,
 } = api;
