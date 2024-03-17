@@ -22,10 +22,11 @@ const CustomRadioGroup = ({
     },
     [name, setFieldValue]
   );
-  const isScreenSmall = useMediaQuery("(max-width:1390px)");
-  const isScreenSM = useMediaQuery("(max-width:978px)");
+  const isScreenSmall = useMediaQuery("(max-width:1486px)");
+  const isScreenSM = useMediaQuery("(max-width:1132px)");
   return (
-    <RadioGroup row
+    <RadioGroup 
+    row={true}
      name={name}
       value={value} onChange={onChange} sx={{}}>
       {options.map((option) => (
@@ -36,9 +37,9 @@ const CustomRadioGroup = ({
             borderRadius: "4px",
             padding: "16px",
             display: "flex",
-            width: isScreenSM ? "250px" : isScreenSmall ? "300px" : "500px",
-
-            // width: "330px",
+          
+            width: isScreenSM ? "220px" : isScreenSmall ? "170px" : "258.57px",
+            height:isScreenSmall?'130px':"90px",
             alignItems: "center",
             paddingRight: "50px",
             marginBottom: "17px",
@@ -47,12 +48,13 @@ const CustomRadioGroup = ({
             cursor: "pointer",
             flexDirection: "column",
             transition: "background 0.3s, border 0.3s",
-            "&:hover": {
-              background: "#f5f5f5",
-            },
+            // "&:hover": {
+            //   backgroun",
+            // },
             ...(value === option.value
-              ? { background: "#f5f5f5", border: "1px solid #2196F3" }
+              ? { background: "rgba(0, 128, 0, 0.1)", border: "1px solid #2196F3" }
               : {}),
+            
           }}
           onClick={() => handleChange(option.value)}
         >
@@ -76,6 +78,7 @@ const CustomRadioGroup = ({
             sx={{
               marginLeft: "8px",
               color: "#777",
+              marginTop:isScreenSmall?"":"-11px"
             }}
           >
             {option.description}

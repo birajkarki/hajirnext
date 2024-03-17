@@ -25,8 +25,8 @@ export default function BasicGrid() {
   const images = [
     {
       src: "/auth/img1.png",
-      width: 175,
-      height: 180,
+      width: 131.36,
+      height: 172,
       alt: "First Image",
       content: (
         <>
@@ -41,8 +41,9 @@ export default function BasicGrid() {
     },
     {
       src: "/auth/img2.png",
-      width: 175,
-      height: 180,
+
+      width: 131.36,
+      height: 172,
       alt: "Second Image",
       content: (
         <>
@@ -57,8 +58,9 @@ export default function BasicGrid() {
     },
     {
       src: "/auth/img3.png",
-      width: 175,
-      height: 180,
+      width: 131.36,
+      height: 172,
+   
       alt: "Third Image",
       content: (
         <>
@@ -97,18 +99,20 @@ export default function BasicGrid() {
       <Grid container spacing={3} justifyContent="center" alignItems="center">
         <Grid item xs={12} md={6}>
           {!isMobile && (
+            <div style={{ position: 'relative', width: '100%', height: '100vh' }}>
             <Image
-              src="/auth/login-image-default.png"
+         src="/auth/login-image-default.png"
               alt="login image"
-              width={isMobile ? 300 : 900}
-              height={900}
-              style={{ display: "block", maxWidth: "100%", height: "auto" }}
+             fill
+             style={{objectFit:"cover"}}
+                sizes="(max-width: 600px) 100vw, 900px"
               priority
             />
+             </div>    
           )}
         </Grid>
 
-        <Grid item xs={12} md={6} sx={{ marginBottom: "80px" }}>
+        <Grid item xs={12} md={6} sx={{ marginBottom: "80px", marginTop:"50px" }}>
           <Paper
             sx={{
               padding: "16px",
@@ -118,21 +122,25 @@ export default function BasicGrid() {
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
-              height: "100%",
+              // height: "100%",
               boxShadow: "none",
               elevation: 0,
               background: "transparent",
             }}
           >
-            <div style={{ marginTop: "50px", marginBottom: "0px" }}>
+  
               <Image src="/hajir-logo.png" width={140} height={50} alt="Logo" />
-            </div>
+      
             <div>
               <h1
                 style={{
                   color: "rgba(34, 64, 139, 0.87)",
                   fontWeight: "500",
+                  width:"336px",
+                  height:"20px",
                   fontSize: "18px",
+                  marginTop:"10px",
+                  marginBottom:"10px"
                 }}
               >
                 Smart attendance system
@@ -140,8 +148,12 @@ export default function BasicGrid() {
               <div
                 style={{
                   fontSize: "14px",
-                  fontWeight: "500",
-                  marginTop: images[selectedImageIndex].marginTop,
+                  fontWeight: "400",
+                  width:"310px",
+                  height:"75px",
+                  color:"#434345",
+                  marginBottom:"15px"
+           
                 }}
               >
                 {images[selectedImageIndex].content}
@@ -151,14 +163,17 @@ export default function BasicGrid() {
                 width={images[selectedImageIndex].width}
                 height={images[selectedImageIndex].height}
                 alt={images[selectedImageIndex].alt}
-                style={{ marginTop: "15px" }}
+         priority
+        //  style={{ width: "auto", height: "auto" }}
+
               />
             </div>
             <h1
               style={{
                 fontSize: "14px",
                 fontWeight: "500",
-                marginTop: "40px",
+                marginTop: "54px",
+                marginBottom:"34px"
               }}
             >
               Login to manage your workspace
@@ -167,11 +182,12 @@ export default function BasicGrid() {
               <Button
                 variant="contained"
                 color="primary"
-                sx={{ mt: 3, width: "250px" }}
+                sx={{width: "280px", height:"48px" }}
               >
-                Login
+                L<span style={{textTransform:'lowercase'}}>ogin</span>
               </Button>
             </Link>
+     
           </Paper>
         </Grid>
       </Grid>

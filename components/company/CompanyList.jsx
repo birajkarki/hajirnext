@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useGetEmployerCompaniesQuery } from "@/services/api";
 import TabsActiveInactive from "@/components/dashboard/MainDashboard/TabsActiveInactive";
 import CompanyTable from "../dashboard/MainDashboard/CompanyTable";
+import Link from "next/link";
 
 const CompanyList = () => {
   const router = useRouter();
@@ -61,8 +62,8 @@ const CompanyList = () => {
                 alignItems: "center",
               }}
             >
-              <Box>
-                <h2>Company</h2>
+              <Box sx={{marginBottom:"4px", fontWeight:"500", fontSize:"24px"}}>
+                <span>Company</span>
               </Box>
 
               <Box
@@ -85,10 +86,13 @@ const CompanyList = () => {
                 </Button>
               </Box>
             </Box>
-            <h4>
-              <span>Dashboard</span> / <span>Company</span>
-            </h4>
-            <Box sx={{ flexGrow: 1 }}>
+            <Link href="/dashboard" style={{fontWeight:"400", color:"rgba(67, 67, 69, 0.8)", textDecoration:"none"}}>
+              <span>Dashboard</span> /
+              <Link href="/dashboard/company" style={{textDecoration:"none"}}>
+               <span style={{color:"rgba(67, 67, 69, 0.8)"}}>Company</span>
+               </Link>
+            </Link>
+            <Box sx={{ flexGrow: 1, marginTop:"20px" }}>
               <TabsActiveInactive
                 value={selectedTab}
                 handleChange={handleChangeTab}
