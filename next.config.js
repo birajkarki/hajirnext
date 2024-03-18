@@ -6,7 +6,7 @@ const nextConfig = {
     domains: [
       "source.unsplash.com",
       "https://via.placeholder.com",
-      "production.veloxlabs.net",
+      "veloxlabs.net",
     ],
   },
 };
