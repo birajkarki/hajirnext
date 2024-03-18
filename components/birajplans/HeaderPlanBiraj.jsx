@@ -1,6 +1,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import Link from "next/link";
 
 const HeaderPlanBiraj = () => {
   return (
@@ -10,12 +11,16 @@ const HeaderPlanBiraj = () => {
       <Box>
         <Typography variant="h4" sx={{marginTop:'70px'}}>My Plans</Typography>
         <div style={{ display: 'flex', flexDirection: 'row', gap: '20px' }}>
+          <Link href="/dashboard" style={{textDecoration:"none"}}>
           <Typography variant="subtitle1" color="black">
-            Home
+            Home <span style={{marginLeft:"20px"}}>/</span>
           </Typography>
-          <Typography variant="subtitle1" color="gray">
+          </Link>
+          <Link href="/dashboard/myplansbiraj" style={{textDecoration:"none"}}>
+          <Typography variant="subtitle1" color="gray" >
             My Plans
           </Typography>
+          </Link>
         </div>
       </Box>
       <Box sx={{ display:'flex', flexDirection:'column',justifyContent:'center',textAlign: 'center', margin: 'auto',marginBottom:"10px", marginTop:'5px', alignItems:'center'}}>

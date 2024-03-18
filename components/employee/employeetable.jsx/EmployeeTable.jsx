@@ -512,7 +512,7 @@ const EmployeeTable = ({ candidates }) => {
           </Button>
         </DialogActions>
       </Dialog>
-      {/* invite  dialog  */}
+  
 
       <Dialog
         open={isInviteDialogOpen}

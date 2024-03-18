@@ -18,6 +18,7 @@ import {
   useGetCandidatesQuery,
   useUpdateMissingAttendanceMutation,
 } from "@/services/api";
+import Link from "next/link";
 
 const MissingAttendance = () => {
   const { companyId } = useParams();
@@ -82,7 +83,29 @@ const MissingAttendance = () => {
           backgroundColor: "#fff",
         }}
       >
-        <Typography
+        {/* <Typography
+          sx={{
+            color: "#434345",
+            fontSize: "24px",
+            fontStyle: "normal",
+            fontWeight: 500,
+            lineHeight: "24px",
+            letterSpacing: "0.25px",
+          }}
+        >
+          Missing Attendance
+        </Typography> */}
+        <div
+          style={{
+            display: "flex",
+            fontWeight: "200",
+            flexDirection: "column",
+            fontSize: "20px",
+            marginTop: "3px",
+           
+          }}
+        >
+            <Typography
           sx={{
             color: "#434345",
             fontSize: "24px",
@@ -94,7 +117,19 @@ const MissingAttendance = () => {
         >
           Missing Attendance
         </Typography>
-
+        <div style={{display:"flex", flexDirection:"row", marginTop:"10px"}}>
+ <Link href="/dashboard" style={{textDecoration:"none", color:"#434345"}}>
+          <span style={{ fontWeight: "400", marginRight: "10px", fontSize:"16px" }}>Home</span> <span style={{marginLeft:"10px",marginRight:"10px"}}>/</span>
+         </Link>
+         <Link href=""  style={{textDecoration:"none",color:"#434345"}}>
+          <span style={{ fontWeight: "400", marginRight: "10px" , marginLeft:"10px",fontSize:"16px"}}>Setting</span> <span style={{marginLeft:"10px",marginRight:"10px"}}>/</span>
+          </Link>
+          <Link href={`/dashboard/company/${companyId}/missingattendance`}  style={{textDecoration:"none", color:"gray"}}>
+          <span style={{ fontWeight: "400" ,fontSize:"16px",marginLeft:"10px"}}>Missing Attendance</span>
+          </Link>
+          </div>
+        </div>
+      {/* </div> */}
         <div style={{ display: "flex", alignItems: "center" }}>
           <div style={{ flex: 1 }}>
             <Box sx={{ display: "flex", flexDirection: "column", gap: "16px" }}>

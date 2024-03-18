@@ -20,8 +20,8 @@ const MessagingPage = () => {
             color: "gray",
           }}
         >
-          <p style={{ fontWeight: "200", marginRight: "10px" }}>Home</p>
-          <p style={{ fontWeight: "200", marginRight: "10px" }}>Setting</p>
+          <p style={{ fontWeight: "200", marginRight: "10px" }}>Home</p> <span style={{marginLeft:"10px"}}>/</span>
+          <p style={{ fontWeight: "200", marginRight: "10px" }}>Setting</p> <span style={{marginLeft:"10px"}}>/</span>
           <p style={{ fontWeight: "200" }}>Message</p>
         </div>
       </div>
