@@ -109,11 +109,11 @@ const TestProfileCard = () => {
             >
               {profileData?.name || "Name not available"}
             </Typography>
-            {/* <Typography
+            <Typography
             sx={{ fontSize: "14px", color: "black", textTransform: "none" }}
           >
             {profileData?.email || "Email not available"}
-          </Typography> */}
+          </Typography>
             {/* <Typography
   sx={{
     fontSize: "14px",
@@ -128,14 +128,14 @@ const TestProfileCard = () => {
     ? profileData?.email.slice(0, 8) + ".."
     : profileData?.email || "Email not available"}
 </Typography> */}
-            <Typography
+            {/* <Typography
               sx={{
                 fontSize: "14px",
                 color: "black",
                 textTransform: "none",
               }}
-            >
-              {profileData?.email.length > 10 ? (
+            > */}
+              {/* {profileData?.email.length > 10 ? (
                 <>
                   <span>{profileData?.email.split("@")[0].slice(0, 13)}</span>
                   <span style={{ color: "#999" }}>..</span>
@@ -143,8 +143,8 @@ const TestProfileCard = () => {
                 </>
               ) : (
                 profileData?.email || "Email not available"
-              )}
-            </Typography>
+              )} */}
+            {/* </Typography> */}
           </>
         )}
       </ProfileContainer>
