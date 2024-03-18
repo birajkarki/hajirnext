@@ -13,19 +13,24 @@ export default function DashboardLayout({ children }) {
     <>
       <Header />
       <MainSidebar />
+
       <Box
         component="main"
         sx={{
           flexGrow: 1,
           // bgcolor: "#f2f2f2",
           ml: `${DRAWER_WIDTH}px`,
-          mt: ["48px", "56px", "64px"],
-
-          overflow: "auto", // Make the main content scrollable
+          mt: "90px",
+        
+          // mt: ["48px", "56px", "64px"],
+        
+          // overflow: "auto", // Make the main content scrollable
         }}
+    
       >
         {children}
       </Box>
+   
     </>
   );
 }

@@ -317,17 +317,17 @@ export const api = createApi({
     // <<v2>>/employer/report/daily-report/95/31?today_date=2022-10-10
     // daily report
     getDailyCompanyCandidatePerformaceReport: builder.query({
-      query: ({ company_id, candidate_id, today_date }) => ({
+      query: ({ company_id, candidate_id, today_date, year }) => ({
         url: `/employer/report/daily-report/${company_id}/${candidate_id}`,
-        params: { today_date }, // Pass start and end as query parameters
+        params: { today_date , year}, // Pass start and end as query parameters
       }),
     }),
     // weekly report
     getWeeklyCompanyCandidatePerformaceReport: builder.query({
-      query: ({ company_id, candidate }) => ({
-        url: `/employer/report/weekly-report/${company_id}/${candidate}`,
-        params: { start, end },
-      }),
+      query: ({ company_id, candidate_id, from_date, to_date }) => ({
+        url: `/employer/report/weekly-report/${company_id}/${candidate_id}`,
+        params: { from_date, to_date },
+      }), 
     }),
     // monthly report
     getMonthlyCompanyCandidatePerformaceReport: builder.query({
@@ -356,8 +356,16 @@ export const api = createApi({
         method: "POST",
       }),
     }),
+    getAllNotifications: builder.query({
+      query: () => ({
+        url: "/notification/all",
+        method:"GET"
+      }),
+    }),
+
   }),
 });
+
 
 export const {
   useGetDataQuery,
@@ -405,4 +413,5 @@ export const {
   useGetYearlyCompanyCandidatePerformaceReportQuery,
   useSendPaymentMutation,
   useSendNotificationMutation,
+  useGetAllNotificationsQuery,
 } = api;
