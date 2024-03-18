@@ -84,10 +84,6 @@ const validationSchemaStep4 = Yup.object({
 const HorizontalLinearStepper = () => {
   const { companyId } = useParams();
 
-  const candidateCode = useGetCandidateCodeQuery({
-    company_id: companyId,
-  });
-  // const uniqueCandidateCode = candidateCode?.data?.data;
   // console.log("uniqueCandidateCode", uniqueCandidateCode);
   const [createCandidateMutation] = useCreateCandidateMutation();
 

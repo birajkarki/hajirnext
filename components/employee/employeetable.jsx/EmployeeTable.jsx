@@ -45,7 +45,7 @@ import {
 } from "@mui/icons-material";
 import EmployeeDetailsDialog from "./EmployeeDetailsDialog";
 
-const EmployeeTable = ({ candidates }) => {
+const EmployeeTable = ({ candidates, refetch }) => {
   const { companyId } = useParams();
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedCandidate, setSelectedCandidate] = useState(null);
@@ -89,6 +89,8 @@ const EmployeeTable = ({ candidates }) => {
   };
 
   const filterData = (searchText, department) => {
+    refetch();
+
     if (
       !departmentList ||
       !departmentList.data ||
@@ -149,6 +151,7 @@ const EmployeeTable = ({ candidates }) => {
       });
       console.log("Invite sent successfully");
       setOpenDialog(false);
+      refetch();
     } catch (error) {
       console.error("Error sending invitation:", error);
     }
@@ -163,6 +166,7 @@ const EmployeeTable = ({ candidates }) => {
       });
       console.log("Candidate deleted successfully");
       setIsConfirmationDialogOpen(false);
+      refetch();
     } catch (error) {
       console.error("Error deleting candidate:", error);
     }
