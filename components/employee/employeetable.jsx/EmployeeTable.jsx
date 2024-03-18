@@ -516,7 +516,7 @@ const EmployeeTable = ({ candidates, refetch }) => {
           </Button>
         </DialogActions>
       </Dialog>
-      {/* invite  dialog  */}
+  
 
       <Dialog
         open={isInviteDialogOpen}
