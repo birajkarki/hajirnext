@@ -150,7 +150,7 @@ const EmployeeTable = ({ candidates, refetch }) => {
         companyId: companyId,
       });
       console.log("Invite sent successfully");
-      setOpenDialog(false);
+      setIsInviteDialogOpen(false); // Close the invite dialog
       refetch();
     } catch (error) {
       console.error("Error sending invitation:", error);

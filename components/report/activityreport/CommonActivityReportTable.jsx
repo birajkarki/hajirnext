@@ -32,7 +32,7 @@ const CommonActivityReportTable = ({ data, departments }) => {
   const handleDepartmentChange = (event) => {
     const department = event.target.value;
     setSelectedDepartment(department);
-    setPage(0); // Reset page when changing the department
+    setPage(0); 
     filterData(searchText, department);
   };
 
