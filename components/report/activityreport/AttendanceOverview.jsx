@@ -162,6 +162,7 @@ const AttendanceOverview = () => {
               color="success"
               size={175}
               thickness={4}
+              vairnet="determinate"
             />
             <Typography
               variant="h4"

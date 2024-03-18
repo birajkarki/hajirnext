@@ -114,18 +114,18 @@ const HorizontalLinearStepper = () => {
       allowance_amount: 0, // nullable - double
       joining_date: "", // req  uired - date
       working_hours: "08:00", // required
-      duty_time: "9:00", // required - time
+      duty_time: "07:00", // required - time
       probation_period: "1", // required - unsignedBigInt
-      break_duration: "1:00", // required - min/hr to seconds - string
+      break_duration: "00:30", // required - min/hr to seconds - string
       departments: "1", // required - array - api:{{globalLiveUrl}}/employer/all-departments
-      allow_late_attendance: "", // nullable -time
-      casual_leave: "", //required - unsignedInteger
-      sick_leave: "", //required - unsignedInteger
+      allow_late_attendance: "00:15", // nullable -time
+      casual_leave: "7", //required - unsignedInteger
+      sick_leave: "5", //required - unsignedInteger
       overtime_ratio: "", // double(2.2)
       overtime_hrs: "", // float(2.2)
-      week_days_off: [1, 7], // array
+      week_days_off: [7], // array
       half_days: [], // array
-      allow_network_access: "All Net", // required - enum['All Net', 'QR']
+      allow_network_access: "QR", // required - enum['All Net', 'QR']
       // confirmPhoneNumber: "9808426215",
       // allow_late_attendance_checked: "",
       // casual_leave_checked: "",
@@ -191,7 +191,7 @@ const HorizontalLinearStepper = () => {
         position: "relative",
       }}
     >
-      <HeaderEmployeeSteps  companyId={companyId}/>
+      <HeaderEmployeeSteps companyId={companyId} />
 
       <Stepper
         activeStep={activeStep}

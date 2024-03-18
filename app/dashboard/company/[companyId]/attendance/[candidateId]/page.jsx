@@ -1,17 +1,22 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { useParams } from "next/navigation";
-import {
-  useGetDailyCompanyCandidatePerformaceReportQuery,
-  useGetDailyCompanyCandidateReportQuery,
-} from "@/services/api";
 import "react-date-range/dist/theme/default.css";
-import { addDays, format, isWeekend } from "date-fns";
 import HeaderPerformanceReport from "@/components/report/performancereport/HeaderPerformanceReport";
 import CalenderPerformaceReport from "@/components/report/performancereport/CalenderPerformaceReport";
+import { useGetCandidateDetailQuery } from "@/services/api";
 
-function PerformaceReport({ name, designation }) {
+function PerformaceReport() {
+
   const { candidateId, companyId } = useParams();
+
+  const { data: candidateDetail } = useGetCandidateDetailQuery({
+    candidate_id: candidateId,
+    company_id: companyId,
+  });
+
+  const name = candidateDetail?.data?.name;
+  const designation = candidateDetail?.data?.designation;
 
   return (
     <div>
