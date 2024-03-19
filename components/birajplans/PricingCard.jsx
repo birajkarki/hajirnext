@@ -1,8 +1,13 @@
+
+
 import React from "react";
 import { Grid, Box, Button, Typography } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
+import Link from "next/link";
 
 const PricingCard = ({ title, price, features, planType,buttonText, index, isSpecial }) => {
+
+ 
   const isBasic = title.toLowerCase().includes("basic");
   const isYearly = planType === "yearly";
 
@@ -18,16 +23,32 @@ const PricingCard = ({ title, price, features, planType,buttonText, index, isSpe
   const featureColumns = splitFeatures(features);
 
   const basicWidth = 4.3;
-  const remainingWidth = 3.8; 
-
+  const remainingWidth = 4; 
+  let borderColor;
+  switch (index) {
+    case 0:
+      borderColor = "green";
+      break;
+    case 1:
+      borderColor = "pink";
+      break;
+    case 2:
+      borderColor = "yellow";
+      break;
+    default:
+      borderColor = "black";
+  }
   return (
   
     <Grid item xs={12} sm={12} md={12} lg={6} xl={isBasic ? basicWidth : remainingWidth} 
-ml={-6} mb={8}
+ml={-8} mb={8}
     >
+      
        
-<div style={{ backgroundColor: '#3068E9', height: '84px',
-
+<div style={{  height: '84px',
+  border: `2px solid ${borderColor}`,
+  borderBottom:'2px solid #f5f5f5',
+  borderBottomWidth: '60%',
  marginTop:"-5px",
 paddingLeft:'15px',
 paddingTop:'15px',
@@ -36,27 +57,36 @@ paddingBottom:'29px',
 
   }}>
   
-  <Typography variant="h5" gutterBottom style={{ whiteSpace: 'pre-line',fontSize:"18px", color: 'white', textAlign: 'left',  padding: '0px'}}>
+  <Typography variant="h5" gutterBottom style={{ whiteSpace: 'pre-line',color:"#06038D",fontSize:"17px", fontWeight:"500", textAlign: 'left',  padding: '0px'}}>
+           <div style={{display:"flex", justifyContent:'space-between'}}>
            {title.replace('(Forever) ', '(Forever)\n')}
            {' '}
-           {index === 0 && !isYearly &&<span style={{position: 'relative', top: '-0.4em', fontSize: '12px' ,color:"#FFFFFF", fontWeight:'400' }}>Current Plan</span>}
-           {index === 1 && <br />} 
+           {index === 0 && !isYearly &&<span style={{ fontSize: '17px' , fontWeight:'500', marginRight:"15px" }}>Free</span>}
+           </div>
+       
            {index === 1 && !isYearly && (
              <>
-               <span > {price}    </span>
-               <span style={{ position: 'relative', top: '-0.5em',fontSize: '12px' ,color:"#FFFFFF", fontWeight:'400' }}> Monthly  </span>
+              
+               <div style={{display:"flex", flexDirection:"column", gap:"5px", textAlign:"right", marginRight:"5px", marginTop:"-20px"}}>
+               <span  style={{}}> {price}    </span>
+               <span style={{ position: 'relative',fontSize: '12px' , fontWeight:'400'}}> Monthly  </span>
+           
+               </div>
              </>
            )}
-           {index === 2 && <br />} 
+     
            {index === 2 && !isYearly && (
              <>
-               <span > {price}    </span>
-               <span style={{ position: 'relative', top: '-0.5em',fontSize: '12px' ,color:"#FFFFFF", fontWeight:'400'}}> Monthly  </span>
+               <div style={{display:"flex", flexDirection:"column", gap:"5px", textAlign:"right", marginRight:"5px", marginTop:"-20px"}}>
+               <span  style={{}}> {price}    </span>
+               <span style={{ position: 'relative',fontSize: '12px' , fontWeight:'400'}}> Monthly  </span>
+           
+               </div>
              </>
 
            )}
      
-{isYearly && (
+{/* {isYearly && (
  <>
    {index === 0 && <span style={{position: 'relative', top: '-0.4em',  fontSize: '12px' ,color:"#FFFFFF", fontWeight:'400'}}>Current Plan</span>}
    {index !== 0 && 
@@ -67,19 +97,21 @@ paddingBottom:'29px',
     </span>
     </> }
  </>
-)}
+)} */}
          </Typography>
 </div>
       <Box
         sx={{
-          border: "1px solid #eee",
+    
+          border: `2px solid ${borderColor}`,
         borderTop:'0px',
           textAlign: "center",
           height: "100%",
     position:'relative',
     height: "470px",
         padding:"16px",
-
+        borderRadius:'0px 0px 6px 6px',
+        
         }}
       >
         <Box mt={2} display="flex" flexDirection={isBasic ? "row" : "column"} >
@@ -96,12 +128,17 @@ paddingBottom:'29px',
             </Box>
           ))}
         </Box>
+        {index !== 0 && (
    <div style={{display:'flex', justifyContent:'center',alignItems:'center', textAlign:'center', position:'absolute', top:'88%',   left: "50%",
             transform: "translateX(-50%)"}}>
+
           <Button variant="outlined" style={{ borderColor: "green", width:'303px', height:'45px', color:'black', fontWeight:'500'}}>
             {buttonText}
           </Button>
+       
           </div>
+ )}
+          
       </Box>
     </Grid>
 
@@ -109,4 +146,3 @@ paddingBottom:'29px',
 };
 
 export default PricingCard;
-

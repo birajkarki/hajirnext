@@ -1,62 +1,21 @@
-// components/birajplans/MonthlyPlans.jsx
+
 import React from "react";
 import PricingCard from "./PricingCard";
+import { useGetAllPackagesQuery } from "@/services/api";
 
 const MonthlyPlans = () => {
-  const monthlyPlans = [
-    {
-      title: "Basic (Forever) Free- ",
-      price: "$10/month",
-      features: [
-        "Track live attendance",
-        "QR / All network setup",
-        "Overtime setup",
-        "Office timing setup",
-        "Add candidates/company",
-        "Custom leave setup",
-        "Custom holiday setup",
-        "Add missing attend/leave",
-        "Allowance setup",
-        "Setup weekly day off",
-        "Setup allow late attend",
-        "Salary calculation",
-        "Payroll management",
-        "Add approver",
-        "Performance reports",
-        "Activities reports",
-        "Payment reports",
-        "Attendance reports",
-        "Can export reports",
-        "Many features +",
-        "Add 1 company",
-        "Add 5 employee",
-      ],
-      buttonText: "Get Started",
-    },
-    {
-      title: "Standard(Recommended)",
-      price: "200/-",
-      features: [
-"Everything from free plan+",
-"Add 3 companies",
-"Add 33 employee"
-      ],
-      buttonText: "Upgrade to Standard",
 
-    },
-    {
-      title: "Premium (Enterprise)",
-      price: "500/-",
-      features: [
-        "Everything from free plan+",
-        "Add 3 companies",
-        "Add 33 employee"
-      ],
-      buttonText: "Upgrade to Premium",
-    },
-  ];
-  const buttonTexts = monthlyPlans.map(plan => plan.buttonText);
 
+  const { data: apiResponse, error, isLoading } = useGetAllPackagesQuery(); // Fetch monthly plans data
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+
+  // Check if the API response contains the expected structure and if packages is an array
+  const monthlyPlans = apiResponse?.data?.packages;
+  if (!Array.isArray(monthlyPlans)) {
+    return <div>Error: Invalid data format or missing packages array</div>;
+  }
   return (
     <>
       {monthlyPlans.map((plan, index) => (
@@ -64,11 +23,11 @@ const MonthlyPlans = () => {
           key={index}
           title={plan.title}
           price={plan.price}
-          features={plan.features}
+          features={plan.feature}
           planType="monthly"
           index={index} 
-          buttonText={buttonTexts[index]}
-          isSpecial={index < 2}
+          buttonText={`Upgrade to ${plan.title}`}
+     isSpecial={index < 2}
         />
       ))}
     </>
