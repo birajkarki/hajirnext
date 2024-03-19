@@ -331,11 +331,12 @@ export const api = createApi({
     }),
     // monthly report
     getMonthlyCompanyCandidatePerformaceReport: builder.query({
-      query: ({ company_id, candidate }) => ({
-        url: `/employer/report/monthly-report/${company_id}/${candidate_id}`,
+      query: ({ company_id, candidate_id, monthandyear }) => ({
+        url: `/employer/report/monthly-report/${company_id}/${candidate_id}/${monthandyear}`,
+
       }),
     }),
-    // yearly report
+    // yearly reportd
     getYearlyCompanyCandidatePerformaceReport: builder.query({
       query: ({ company_id, candidate_id, year }) => ({
         url: `/employer/report/yearly-report/${company_id}/${candidate_id}`,

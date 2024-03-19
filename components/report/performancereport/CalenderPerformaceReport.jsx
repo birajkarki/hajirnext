@@ -55,10 +55,10 @@ const CalendarPerformanceReport = () => {
         startDate = new Date(now.getFullYear(), 0, 1);
         endDate = new Date(now.getFullYear(), 11, 31);
         break;
-      case "thisYear":
-        startDate = new Date(now.getFullYear(), 0, 1);
-        endDate = new Date(now.getFullYear(), 11, 31);
-        break;
+      // case "thisYear":
+      //   startDate = new Date(now.getFullYear(), 0, 1);
+      //   endDate = new Date(now.getFullYear(), 11, 31);
+      //   break;
       default:
         startDate = now;
         endDate = now;
@@ -91,6 +91,8 @@ const CalendarPerformanceReport = () => {
         <MonthlyPerformanceReport
         startDateValue={selectionRange.startDate}
         endDateValue={selectionRange.endDate}
+        startDate={selectionRange.startDate}
+
         />
       );
     } else if (diffInMonths < 12) { // Less than or equal to 1 year, render yearly report

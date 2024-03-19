@@ -1,9 +1,21 @@
 import { useSendNotificationMutation } from "@/services/api";
 import { Button, TextField, Box, Stack } from "@mui/material";
+import { useParams } from "next/navigation";
 import React from "react";
 
 const NotifyComponent = () => {
-  const notifyComponent = useSendNotificationMutation();
+  const { candidateId, companyId } = useParams();
+  const { data: notifyComponent } = useSendNotificationMutation({
+    company_id: companyId,
+    candidate_id: candidateId,
+  });
+  const { data: sendPayment } = useSendPaymentMutation({
+    company_id: companyId,
+    candidate_id: candidateId,
+  });
+
+  console.log(notifyComponent)
+  console.log(sendPayment)
   return (
     <Box>
       <Stack>

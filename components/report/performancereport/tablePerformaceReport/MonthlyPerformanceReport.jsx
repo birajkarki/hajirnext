@@ -11,23 +11,25 @@ import {
   TextField,
   Button,
 } from "@mui/material";
-import { useGetYearlyCompanyCandidatePerformaceReportQuery } from "@/services/api";
+import {   useGetMonthlyCompanyCandidatePerformaceReportQuery} from "@/services/api";
 import { useParams } from "next/navigation";
 import NotifyComponent from "../tabNotificationPayment/NotifyComponent";
 
-const MonthlyPerformanceReport = ({ startDate, endDate }) => {
+const MonthlyPerformanceReport = ({ startDate }) => {
   const { candidateId, companyId } = useParams();
+const monthandyear = startDate.getMonth() + 1 + "/" + startDate.getFullYear();
 
-  const { data: yearlyCompanyCandidatePerformanceReport } =
-    useGetYearlyCompanyCandidatePerformaceReportQuery({
+  const { data: getMonthlyCompanyCandidatePerformaceReport } =
+  useGetMonthlyCompanyCandidatePerformaceReportQuery({
       candidate_id: candidateId,
       company_id: companyId,
-      year: StartYear,
+      monthandyear: monthandyear
+      
     });
-  console.log(yearlyCompanyCandidatePerformanceReport);
+  console.log(getMonthlyCompanyCandidatePerformaceReport);
   return (
     <Box>
-      <h2>Yearly Performance Report</h2>
+      <h2>Monthly Performance Report</h2>
       <p>
         {/* Displaying data from {startDate.getFullYear()} to{" "}
         {endDate.getFullYear()} */}
@@ -46,58 +48,8 @@ const MonthlyPerformanceReport = ({ startDate, endDate }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {yearlyCompanyCandidatePerformanceReport?.data.map(
-                  (item, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{index + 1}</TableCell>
-                      <TableCell>{item.month}</TableCell>
-                      <TableCell>
-                        <span
-                          style={{
-                            backgroundColor:
-                              item.status === "Paid"
-                                ? "#00800033"
-                                : "#FF505033",
-                            color: item.status === "Paid" ? "green" : "red",
-                            padding: "7px",
-                            borderRadius: "4px",
-
-                            textAlign: "center",
-                            justifyContent: "center",
-                            marginRight: "10px",
-                            height: "34px",
-                            display: "flex",
-                            alignItems: "center",
-                          }}
-                        >
-                          {item.status}
-                        </span>
-                      </TableCell>{" "}
-                      <TableCell>
-                        {typeof item.amount === "string"
-                          ? parseFloat(item.amount).toFixed(2)
-                          : item.amount.toFixed(2)}
-                      </TableCell>
-                    </TableRow>
-                  )
-                )}
-                {/* Total row */}
-                <TableRow>
-                  <TableCell colSpan={3}>Total Amount</TableCell>
-                  <TableCell>
-                    {/* Calculate total amount here */}
-                    {yearlyCompanyCandidatePerformanceReport?.data
-                      .reduce((total, item) => {
-                        return (
-                          total +
-                          (typeof item.amount === "string"
-                            ? parseFloat(item.amount)
-                            : item.amount)
-                        );
-                      }, 0)
-                      .toFixed(2)}
-                  </TableCell>
-                </TableRow>
+                
+                 
               </TableBody>
             </Table>
           </TableContainer>
