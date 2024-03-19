@@ -16,6 +16,9 @@ const NotifyComponent = () => {
 
   console.log(notifyComponent)
   console.log(sendPayment)
+
+
+  
   return (
     <Box>
       <Stack>
