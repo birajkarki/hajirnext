@@ -363,7 +363,12 @@ export const api = createApi({
         method:"GET"
       }),
     }),
-
+    getAllPackages: builder.query({
+      query: () => ({
+        url: `/employer/package/all`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -415,4 +420,5 @@ export const {
   useSendPaymentMutation,
   useSendNotificationMutation,
   useGetAllNotificationsQuery,
+  useGetAllPackagesQuery
 } = api;
