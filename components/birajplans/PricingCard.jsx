@@ -5,7 +5,7 @@ import { Grid, Box, Button, Typography } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import Link from "next/link";
 
-const PricingCard = ({ title, price, features, planType,buttonText, index, isSpecial }) => {
+const PricingCard = ({id, title, price, features, planType,buttonText, index, isSpecial }) => {
 
  
   const isBasic = title.toLowerCase().includes("basic");
@@ -132,10 +132,20 @@ paddingBottom:'29px',
    <div style={{display:'flex', justifyContent:'center',alignItems:'center', textAlign:'center', position:'absolute', top:'88%',   left: "50%",
             transform: "translateX(-50%)"}}>
 
+
+
+              <Link 
+              // href="/dashboard/myplansbiraj/payment"
+                href={{
+                  pathname: "/dashboard/myplansbiraj/payment",
+                  query: {id,title, price} // Pass the title as a query parameter
+                }}
+              >
+     
           <Button variant="outlined" style={{ borderColor: "green", width:'303px', height:'45px', color:'black', fontWeight:'500'}}>
             {buttonText}
           </Button>
-       
+          </Link>
           </div>
  )}
           

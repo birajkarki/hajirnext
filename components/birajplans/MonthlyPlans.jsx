@@ -21,6 +21,7 @@ const MonthlyPlans = () => {
       {monthlyPlans.map((plan, index) => (
         <PricingCard
           key={index}
+          id={plan.id}
           title={plan.title}
           price={plan.price}
           features={plan.feature}

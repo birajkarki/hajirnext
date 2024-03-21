@@ -368,6 +368,25 @@ export const api = createApi({
         method: "GET",
       }),
     }),
+
+    getPaymentMethod: builder.query({
+      query: () => ({
+        url: `/employer/package/get-payment-methods`,
+        method: "GET",
+      }),
+    }),
+    
+    updatePaymentMethod: builder.mutation({
+      query: ({ id,PaymentDatas} ) => ({
+        url: `/employer/package/payment-submit/${id}`,
+        method: "POST",
+        body: PaymentDatas,
+     
+      }),
+    }),
+
+
+    
   }),
 });
 
@@ -419,5 +438,7 @@ export const {
   useSendPaymentMutation,
   useSendNotificationMutation,
   useGetAllNotificationsQuery,
-  useGetAllPackagesQuery
+  useGetAllPackagesQuery,
+  useGetPaymentMethodQuery,
+  useUpdatePaymentMethodMutation
 } = api;
