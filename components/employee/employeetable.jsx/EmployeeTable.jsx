@@ -116,11 +116,14 @@ const EmployeeTable = ({ candidates, refetch }) => {
   //   console.log(filtered)
   // };
   
-  
   useEffect(() => {
+    setFilteredData(candidates);
+  }, [candidates]);
+  useEffect(() => {
+ 
     // Apply filtering whenever searchText or selectedDepartment changes
     filterData(searchText, selectedDepartment);
-  }, [searchText, selectedDepartment]);
+  }, [searchText, selectedDepartment,candidates]);
 
   const handleDepartmentChange = (event) => {
     const department = event.target.value;
@@ -130,10 +133,11 @@ const EmployeeTable = ({ candidates, refetch }) => {
   const handleSearchTextChange = (event) => {
     const text = event.target.value.toLowerCase();
     setSearchText(text);
+
   };
 
   const filterData = (searchText, department) => {
-    // refetch();
+
 
     let filtered = candidates;
 

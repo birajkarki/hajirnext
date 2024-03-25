@@ -192,7 +192,7 @@ export const api = createApi({
     //approval remove
     removeApproval: builder.mutation({
       query: ({ company_id, candidate_id }) => ({
-        url: `/employer/approver/destroy/${company_id}/${candidate_id}`,
+        url: `/employer/approver/delete/${company_id}/${candidate_id}`,
         method: "POST",
       }),
     }),

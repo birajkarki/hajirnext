@@ -82,12 +82,14 @@ const PricingCard = ({ id, title, price, features, planType, buttonText, index, 
           </Typography>
         </div>
         <Box p={2} style={{ maxHeight: '100%' }} className="content-box">
+   
           {features.map((feature, featureIndex) => (
             <Box key={featureIndex} display="flex" alignItems="center" mb={featureIndex === features.length - 1 ? 4 : 1}>
               <CheckIcon sx={{ marginRight: 0, color: "#008000", paddingRight: '5px', paddingLeft: '6px', alignSelf: 'flex-start' }} />
               <Typography variant="body2" sx={{ whiteSpace: "pre-wrap", maxWidth: "100%", overflowWrap: "break-word", alignSelf: 'flex-start' }}>
                 {feature}
               </Typography>
+           
             </Box>
          
            

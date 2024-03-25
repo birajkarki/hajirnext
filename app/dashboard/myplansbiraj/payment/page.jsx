@@ -4,10 +4,12 @@ import {
   Button,
   FormControl,
   InputLabel,
+  LinearProgress,
   MenuItem,
   Select,
   TextField,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -20,12 +22,16 @@ import {
 import { Box } from "@mui/system";
 import Image from "next/image";
 import DownloadIcon from "@mui/icons-material/Download";
+
+
 const Payment = () => {
   const router = useRouter();
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("Esewa"); // Initial payment method
   const [selectedDuration, setSelectedDuration] = useState("1 month"); // Initial duration
   const [priceMultiplier, setPriceMultiplier] = useState(1); // Price multiplier based on duration
   const [images, setImages] = useState([]);
+  const [isUploadSuccessful, setIsUploadSuccessful] = useState(false); // Flag to track upload success
+
   const { data: apiResponse, error, isLoading } = useGetAllPackagesQuery();
   const monthlyPlans = apiResponse?.data?.packages || [];
   const { data: paymentData } = useGetPaymentMethodQuery();
@@ -45,6 +51,7 @@ const Payment = () => {
     const file = event.target.files[0];
     console.log("Selected file:", file); // Add this line for debugging
     setSelectedFile(file);
+    setIsUploadSuccessful(false);
   };
 
   const handleDurationChange = (event) => {
@@ -116,10 +123,13 @@ const Payment = () => {
       alert("Error submitting payment. Please try again.");
     }
   };
+  const isMid= useMediaQuery("(max-width:1300px)");
+const isSm = useMediaQuery("(max-width:900px)");
   return (
     <>
-      <Box sx={{ display: "flex", flexDirection: "row" }}>
-        <Box sx={{ display: "flex", flex: "1", flexDirection: "column" }}>
+    
+    
+<div style={{display:"flex", flexDirection:"column"}}>
           <Typography
             sx={{
               color: "#434345",
@@ -181,6 +191,9 @@ const Payment = () => {
               </span>
             </Link>
           </div>
+          </div>
+          <Box sx={{ display: "flex", flexDirection: isMid?"column":"row" }}>
+          <Box sx={{ display: "flex", flex: "1", flexDirection: "column" }}>
           <Typography
             style={{
               fontWeight: "500",
@@ -193,26 +206,26 @@ const Payment = () => {
           </Typography>
           <Box>
             <Typography>Duration</Typography>
-            <FormControl sx={{ marginTop: 2, width: "520px" }}>
+            <FormControl sx={{ marginTop: 2, width: isSm?"320px" : isMid?"420px": "520px" }}>
               <InputLabel
                 htmlFor="demo-simple-select-label"
                 sx={{ marginBottom: "20px" }}
               ></InputLabel>
               <Select value={selectedDuration} onChange={handleDurationChange}>
                 <MenuItem value="1 month">1 month</MenuItem>
-                <MenuItem value="6 months">6 months</MenuItem>
+                <MenuItem value="6 month">6 months</MenuItem>
               </Select>
             </FormControl>
             <Box sx={{ marginTop: "16px" }}>
               <Typography>Total Amount</Typography>
               <TextField
-                style={{ width: "520px", marginTop: "8px" }}
+                style={{   width: isSm?"320px" : isMid?"420px": "520px", marginTop: "8px" }}
                 value={(initialPrice * priceMultiplier)} // Multiply price by multiplier
                 readOnly
               />
             </Box>
             <Typography>Payment Method</Typography>
-            <FormControl sx={{ marginTop: 2, width: "520px" }}>
+            <FormControl sx={{ marginTop: 2, width:  isSm?"320px" : isMid?"420px": "520px"}}>
               <InputLabel
                 htmlFor="demo-simple-select-label"
                 sx={{ marginBottom: "20px" }}
@@ -284,11 +297,12 @@ const Payment = () => {
           sx={{
             display: "flex",
             flex: "1",
-            marginTop: "88px",
-            justifyContent: "center",
+            marginTop: isMid?"20px":"70px",
+        
+          
           }}
         >
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
+          <Box sx={{ display: "flex", flexDirection: "column"}}>
             <Typography
               sx={{ width: "146px", fontWeight: "500", fontSize: "18px" }}
             >
@@ -317,13 +331,47 @@ const Payment = () => {
                   backgroundColor: "white",
                 },
                 height: "48px",
-                width: "520px",
+                width: "180px",
                 marginTop: "7px",
               }}
             >
               +Add screenshot
             </Button>
+          
+    {/* {selectedFile &&( */}
+            {/* // <Box sx={{ marginTop: "10px" }}>
+            //   <LinearProgress variant="determinate" value={100} />
+            //   <Image>{selectedFile}</Image>
+            // </Box> */}
 
+{/* <Box sx={{ marginTop: "10px" }}>
+<LinearProgress variant="determinate" value={100} />
+<Image src={URL.createObjectURL(selectedFile)} alt="Uploaded Image" />
+</Box>
+          )} */}
+
+<Box sx={{ marginTop: "10px" }}>
+
+  {selectedFile && (
+    <>
+
+  
+
+    <Image
+      src={URL.createObjectURL(selectedFile)}
+      alt="Uploaded Image"
+      width={350} // or specify a fixed width
+      height={300} // or specify a fixed height
+    />
+    <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+  <Box sx={{ flex: 1 }}>
+    <LinearProgress variant="determinate" value={100}  sx={{ '& .MuiLinearProgress-bar': { backgroundColor: 'green' } }} />
+  </Box>
+  <Typography variant="body1">100%</Typography>
+</Box>
+    </>
+  )}
+</Box>
             <Button
               variant="contained"
               sx={{
@@ -333,8 +381,9 @@ const Payment = () => {
                   backgroundColor: "#22408B",
                 },
                 height: "48px",
-                width: "520px",
-                marginTop: "7px",
+              
+                     width: "180px",
+                marginTop: "20px",
               }}
               onClick={handleFormSubmit}
             >
@@ -347,3 +396,5 @@ const Payment = () => {
   );
 };
 export default Payment;
+
+
