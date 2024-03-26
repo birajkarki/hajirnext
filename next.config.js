@@ -1,14 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "standalone",
+  output: 'standalone',
   reactStrictMode: false,
   images: {
     domains: [
-      "source.unsplash.com",
-      "https://via.placeholder.com",
-      "veloxlabs.net",
+      'source.unsplash.com',
+      'https://via.placeholder.com',
+      'veloxlabs.net',
     ],
   },
-};
+  distDir: 'out',
+}
 
-module.exports = nextConfig;
+module.exports = nextConfig

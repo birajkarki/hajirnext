@@ -220,7 +220,6 @@ export const api = createApi({
         body: formData,
         formData: true,
       }),
-      
     }),
 
     // ************* ATTENDACE REPORT ***************
@@ -320,7 +319,7 @@ export const api = createApi({
     getDailyCompanyCandidatePerformaceReport: builder.query({
       query: ({ company_id, candidate_id, today_date, year }) => ({
         url: `/employer/report/daily-report/${company_id}/${candidate_id}`,
-        params: { today_date, year }, // Pass start and end as query parameters
+        params: { today_date }, // Pass start and end as query parameters
       }),
     }),
     // weekly report

@@ -1,18 +1,21 @@
-import { useSendNotificationMutation } from "@/services/api";
-import { Button, TextField, Box, Stack } from "@mui/material";
-import { useParams } from "next/navigation";
-import React from "react";
+import {
+  useSendNotificationMutation,
+  useSendPaymentMutation,
+} from '@/services/api'
+import { Button, TextField, Box, Stack } from '@mui/material'
+import { useParams } from 'next/navigation'
+import React from 'react'
 
 const NotifyComponent = () => {
-  const { candidateId, companyId } = useParams();
+  const { candidateId, companyId } = useParams()
   const { data: notifyComponent } = useSendNotificationMutation({
     company_id: companyId,
     candidate_id: candidateId,
-  });
+  })
   const { data: sendPayment } = useSendPaymentMutation({
     company_id: companyId,
     candidate_id: candidateId,
-  });
+  })
 
   console.log(notifyComponent)
   console.log(sendPayment)
@@ -30,7 +33,7 @@ const NotifyComponent = () => {
         </Button>
       </Stack>
     </Box>
-  );
-};
+  )
+}
 
-export default NotifyComponent;
+export default NotifyComponent

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useMemo } from 'react'
 import {
   Box,
   Grid,
@@ -8,35 +8,49 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TextField,
-  Button,
-} from "@mui/material";
-import { useGetWeeklyCompanyCandidatePerformaceReportQuery } from "@/services/api";
-import { useParams } from "next/navigation";
-import NotifyComponent from "../tabNotificationPayment/NotifyComponent";
-import { useEffect } from "react";
+} from '@mui/material'
+import { useGetWeeklyCompanyCandidatePerformaceReportQuery } from '@/services/api'
+import { useParams } from 'next/navigation'
+import NotifyComponent from '../tabNotificationPayment/NotifyComponent'
 
 const WeeklyPerformanceReport = ({ startDateValue, endDateValue }) => {
-  const { candidateId, companyId } = useParams();
+  const { candidateId, companyId } = useParams()
+
+  const formattedDates = useMemo(() => {
+    // Format start date and end date
+    const formattedStartDate = new Date(startDateValue)
+    const formattedEndDate = new Date(endDateValue)
+    // Format the date into 'YYYY/MM/DD' format
+    const formattedStartDateValue = `${formattedStartDate.getFullYear()}/${
+      formattedStartDate.getMonth() + 1
+    }/${formattedStartDate.getDate()}`
+    const formattedEndDateValue = `${formattedEndDate.getFullYear()}/${
+      formattedEndDate.getMonth() + 1
+    }/${formattedEndDate.getDate()}`
+
+    return {
+      formattedStartDateValue,
+      formattedEndDateValue,
+    }
+  }, [startDateValue, endDateValue])
 
   const { data: getweeklyCompanyCandidatePerformanceReport, refetch } =
-  useGetWeeklyCompanyCandidatePerformaceReportQuery({
+    useGetWeeklyCompanyCandidatePerformaceReportQuery({
       candidate_id: candidateId,
       company_id: companyId,
-      from_date: startDateValue,
-      to_date: endDateValue,
-    });
+      from_date: formattedDates.formattedStartDateValue, // Use formatted start date
+      to_date: formattedDates.formattedEndDateValue, // Use formatted end date
+    })
 
-    useEffect(() => {
-      refetch();
-    }, [startDateValue, endDateValue, refetch]);
-  console.log(getweeklyCompanyCandidatePerformanceReport);
+  useEffect(() => {
+    refetch()
+  }, [formattedDates, refetch])
+
+  console.log(getweeklyCompanyCandidatePerformanceReport)
+
   return (
     <Box>
       <h2>Weekly Performance Report</h2>
-      <p>
-    
-      </p>
       <Grid container spacing={3}>
         {/* Left side with table */}
         <Grid item xs={6}>
@@ -51,18 +65,25 @@ const WeeklyPerformanceReport = ({ startDateValue, endDateValue }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-             
-                    <TableRow >
-                    <TableCell>{getweeklyCompanyCandidatePerformanceReport?.data.salary}</TableCell>
-                  <TableCell>{getweeklyCompanyCandidatePerformanceReport?.data.overtime}</TableCell>
-                  <TableCell>{getweeklyCompanyCandidatePerformanceReport?.data.allowance}</TableCell>
-                  <TableCell>{getweeklyCompanyCandidatePerformanceReport?.data.total_salary}</TableCell>
-
-                  </TableRow>
-
+                <TableRow>
+                  <TableCell>
+                    {getweeklyCompanyCandidatePerformanceReport?.data.salary}
+                  </TableCell>
+                  <TableCell>
+                    {getweeklyCompanyCandidatePerformanceReport?.data.overtime}
+                  </TableCell>
+                  <TableCell>
+                    {getweeklyCompanyCandidatePerformanceReport?.data.allowance}
+                  </TableCell>
+                  <TableCell>
+                    {
+                      getweeklyCompanyCandidatePerformanceReport?.data
+                        .total_salary
+                    }
+                  </TableCell>
+                </TableRow>
                 <TableRow>
                   <TableCell colSpan={3}>Total Amount</TableCell>
-                
                 </TableRow>
               </TableBody>
             </Table>
@@ -71,10 +92,11 @@ const WeeklyPerformanceReport = ({ startDateValue, endDateValue }) => {
 
         {/* Right side with message box and submit button */}
         <Grid item xs={6}>
+          <NotifyComponent />
         </Grid>
       </Grid>
     </Box>
-  );
-};
+  )
+}
 
-export default WeeklyPerformanceReport;
+export default WeeklyPerformanceReport

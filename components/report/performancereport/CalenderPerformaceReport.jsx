@@ -1,6 +1,6 @@
 import { Box, Button } from '@mui/material'
 import React, { useState, useEffect } from 'react'
-import { DateRangePicker } from 'react-date-range'
+import { DateRange } from 'react-date-range'
 import 'react-date-range/dist/styles.css'
 import 'react-date-range/dist/theme/default.css'
 import DailyPerformanceReport from './tablePerformaceReport/DailyPerformanceReport'
@@ -140,13 +140,10 @@ const CalendarPerformanceReport = () => {
             Last Month
           </Button>
           <Button onClick={() => handlePresetClick('allMonths')}>
-            All Months
-          </Button>
-          <Button onClick={() => handlePresetClick('thisYear')}>
             This Year
           </Button>
         </Box>
-        <DateRangePicker
+        <DateRange
           editableDateInputs={true}
           months={1}
           onChange={(ranges) => setSelectionRange(ranges.selection)}
@@ -154,6 +151,8 @@ const CalendarPerformanceReport = () => {
           ranges={[selectionRange]}
           scroll={{ enabled: true }}
           direction="vertical"
+          onRangeFocusChange={(focusedRange) => console.log(focusedRange)}
+          rangeColors={['#3e82f7']}
         />
       </Box>
       <Box display="flex" flexDirection="column" width="100%">

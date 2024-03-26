@@ -1,33 +1,33 @@
-import React from "react";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import Search from "./Search";
-import ProfileMenu from "./ProfileMenu";
-import HeaderMenu from "./HeaderMenu";
-import Image from "next/image";
-import Link from "next/link";
+import React from 'react'
+import AppBar from '@mui/material/AppBar'
+import Toolbar from '@mui/material/Toolbar'
+import Typography from '@mui/material/Typography'
+import IconButton from '@mui/material/IconButton'
+import MenuIcon from '@mui/icons-material/Menu'
+import Search from './Search'
+import ProfileMenu from './ProfileMenu'
+import HeaderMenu from './HeaderMenu'
+import Image from 'next/image'
+import Link from 'next/link'
 
 const Header = ({ onMenuIconClick }) => (
   <AppBar
     position="fixed"
-    // elevation={1}
+    elevation={1}
     color="inherit"
     // height="513px"
-    sx={{ backgroundColor: "white" }}
+    sx={{ backgroundColor: 'white' }}
   >
     <Toolbar>
       <div
         style={{
-          display: "flex",
-          alignItems: "center",
+          display: 'flex',
+          alignItems: 'center',
           flexGrow: 1,
-          marginLeft: "240px",
+          marginLeft: '240px',
         }}
       >
-        {" "}
+        {' '}
         <Link href="/dashboard">
           <Image
             src="/hajir-logo.png"
@@ -38,12 +38,11 @@ const Header = ({ onMenuIconClick }) => (
         </Link>
       </div>
 
-      <div style={{ display: "flex", alignItems: "center" }}>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
         <HeaderMenu />
       </div>
     </Toolbar>
-
   </AppBar>
-);
+)
 
-export default Header;
+export default Header

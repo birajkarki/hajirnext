@@ -1,70 +1,95 @@
-import { Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import { useGetDailyCompanyCandidatePerformaceReportQuery } from "@/services/api";
-import { useParams } from "next/navigation";
-import NotifyComponent from "../tabNotificationPayment/NotifyComponent";
-import { useEffect } from "react";
+import React, { useEffect } from 'react'
+import {
+  Box,
+  Grid,
+  Table,
+  TableContainer,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+} from '@mui/material'
+import { useGetDailyCompanyCandidatePerformaceReportQuery } from '@/services/api'
+import { useParams } from 'next/navigation'
+import NotifyComponent from '../tabNotificationPayment/NotifyComponent'
 
 const DailyPerformanceReport = ({ startDateValue, startDate }) => {
-  const { candidateId, companyId } = useParams();
-  const dayandmonth = startDateValue.split("/").slice(0, 2).join("/");
-  const year = startDate.getFullYear();
+  const { candidateId, companyId } = useParams()
 
-  const { data: getDailyCompanyCandidatePerformaceReport, refetch } = useGetDailyCompanyCandidatePerformaceReportQuery({
-    company_id: companyId,
-    candidate_id: candidateId,
-    today_date: dayandmonth,
-    year: year,
-  });
+  // Parse the startDateValue string into a Date object
+  const formattedStartDate = new Date(startDateValue)
 
+  // Format the date into 'YYYY/MM/DD' format
+  const formattedDateValue = `${formattedStartDate.getFullYear()}/${
+    formattedStartDate.getMonth() + 1
+  }/${formattedStartDate.getDate()}`
+
+  const { data: getDailyCompanyCandidatePerformaceReport, refetch } =
+    useGetDailyCompanyCandidatePerformaceReportQuery({
+      company_id: companyId,
+      candidate_id: candidateId,
+      today_date: formattedDateValue,
+      year: formattedStartDate.getFullYear(),
+    })
+  console.log(getDailyCompanyCandidatePerformaceReport)
   useEffect(() => {
-    refetch();
-  }, [startDate, startDateValue, refetch]);
-
-  console.log("getDailyCompanyCandidatePerformaceReport", getDailyCompanyCandidatePerformaceReport);
+    refetch()
+  }, [startDateValue, refetch])
 
   return (
     <Box>
       <h2>Daily Performance Report</h2>
-      <h3>{startDateValue}</h3>
-      <h4>{dayandmonth}</h4>
-      <h4>{year}</h4>
-      
       <Grid container spacing={3}>
-        <Grid item xs={12}>
+        <Grid item xs={6}>
           <TableContainer>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Start Time</TableCell>
-                  <TableCell>End Time</TableCell>
-                  <TableCell>Break Time</TableCell>
-                  <TableCell>Attendance Duration</TableCell>
-                  <TableCell>Total Earnings</TableCell>
-                  <TableCell>Overtime Earnings</TableCell>
-                  <TableCell>Allowance</TableCell>
-                  <TableCell>Status</TableCell>
+                  <TableCell>Salary Calculation</TableCell>
+                  <TableCell>Data</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 <TableRow>
-                  <TableCell>{getDailyCompanyCandidatePerformaceReport?.data.start_time}</TableCell>
-                  <TableCell>{getDailyCompanyCandidatePerformaceReport?.data.end_time}</TableCell>
-                  <TableCell>{getDailyCompanyCandidatePerformaceReport?.data.break_time}</TableCell>
-                  <TableCell>{getDailyCompanyCandidatePerformaceReport?.data.attendance_duration}</TableCell>
-                  <TableCell>{getDailyCompanyCandidatePerformaceReport?.data.totalearning}</TableCell>
-                  <TableCell>{getDailyCompanyCandidatePerformaceReport?.data.overtime_earning}</TableCell>
-                  <TableCell>{getDailyCompanyCandidatePerformaceReport?.data.allowance}</TableCell>
-                  <TableCell>{getDailyCompanyCandidatePerformaceReport?.data.status}</TableCell>
+                  <TableCell>Salary</TableCell>
+                  <TableCell>
+                    {
+                      getDailyCompanyCandidatePerformaceReport?.data
+                        .totalearning
+                    }
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>Overtime </TableCell>
+                  <TableCell>
+                    {
+                      getDailyCompanyCandidatePerformaceReport?.data
+                        .overtime_earning
+                    }
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>Allowance</TableCell>
+                  <TableCell>
+                    {getDailyCompanyCandidatePerformaceReport?.data.allowance}
+                  </TableCell>
+                </TableRow>
+                {/* gross salary  */}
+                <TableRow>
+                  <TableCell>Gross Salary</TableCell>
+                  <TableCell>{}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
           </TableContainer>
         </Grid>
+
+        <Grid item xs={6}>
+          <NotifyComponent />
+        </Grid>
       </Grid>
-
-      <Box mt={2}></Box>
     </Box>
-  );
-};
+  )
+}
 
-export default DailyPerformanceReport;
+export default DailyPerformanceReport
