@@ -25,6 +25,7 @@ const UpdateHoliday = () => {
 
         const formData = new FormData();
         formData.append("custom_holiday_file", values.custom_holiday_file);
+        formData.append("companyId", companyId);
 
         const config = {
           onUploadProgress: (progressEvent) => {
@@ -35,7 +36,9 @@ const UpdateHoliday = () => {
           },
         };
 
-        const { data } = await updateCustomHoliday(formData, config);
+    
+        const { data } = await updateCustomHoliday({ company_id: companyId, formData }, config);
+
         console.log("Company id ", companyId); // Corrected variable name to match the parameter name in the route
         console.log("File successfully uploaded:", data);
 
@@ -53,7 +56,7 @@ const UpdateHoliday = () => {
   // Function to handle file change
   const handleFileChange = (event) => {
     formik.setFieldValue("custom_holiday_file", event.target.files[0]);
-    formik.handleSubmit();
+    // formik.handleSubmit();
   };
 
   // Function to handle file download

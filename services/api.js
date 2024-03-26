@@ -192,7 +192,7 @@ export const api = createApi({
     //approval remove
     removeApproval: builder.mutation({
       query: ({ company_id, candidate_id }) => ({
-        url: `/employer/approver/destroy/${company_id}/${candidate_id}`,
+        url: `/employer/approver/delete/${company_id}/${candidate_id}`,
         method: "POST",
       }),
     }),
@@ -220,6 +220,7 @@ export const api = createApi({
         body: formData,
         formData: true,
       }),
+      
     }),
 
     // ************* ATTENDACE REPORT ***************
@@ -369,6 +370,25 @@ export const api = createApi({
         method: "GET",
       }),
     }),
+
+    getPaymentMethod: builder.query({
+      query: () => ({
+        url: `/employer/package/get-payment-methods`,
+        method: "GET",
+      }),
+    }),
+    
+    updatePaymentMethod: builder.mutation({
+      query: ({ id,PaymentDatas} ) => ({
+        url: `/employer/package/payment-submit/${id}`,
+        method: "POST",
+        body: PaymentDatas,
+     
+      }),
+    }),
+
+
+    
   }),
 });
 
@@ -420,5 +440,7 @@ export const {
   useSendPaymentMutation,
   useSendNotificationMutation,
   useGetAllNotificationsQuery,
-  useGetAllPackagesQuery
+  useGetAllPackagesQuery,
+  useGetPaymentMethodQuery,
+  useUpdatePaymentMethodMutation
 } = api;

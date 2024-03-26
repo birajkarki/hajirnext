@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -77,27 +77,70 @@ const EmployeeTable = ({ candidates, refetch }) => {
     setSelectedTab(newValue);
     filterData(searchText, newValue);
   };
+
+// original filtration code w/o using useEffect (doesnot work )
+
+  // const handleDepartmentChange = (event) => {
+  //   const department = event.target.value;
+  //   setSelectedDepartment(department);
+  //   filterData(searchText, department);
+  // };
+  // const handleSearchTextChange = (event) => {
+  //   const text = event.target.value.toLowerCase();
+  //   setSearchText(text);
+  //   filterData(text, selectedTab);
+  //   console.log(text);
+  // };
+
+  // const filterData = (searchText, department) => {
+  //   refetch();
+
+  //   if (
+  //     !departmentList ||
+  //     !departmentList.data ||
+  //     !departmentList.data.candidates
+  //   )
+  //     return;
+  //   let filtered = candidates;
+  //   if (searchText) {
+  //     filtered = filtered.filter((candidate) =>
+  //       candidate.name.toLowerCase().includes(searchText)
+  //     );
+  //   }
+  //   if (department) {
+  //     filtered = filtered.filter((candidate) =>
+  //       candidate.departments.some((dept) => dept.name === department)
+  //     );
+  //   }
+  //   setFilteredData(filtered);
+  //   console.log(filtered)
+  // };
+  
+  useEffect(() => {
+    setFilteredData(candidates);
+  }, [candidates]);
+  useEffect(() => {
+ 
+    // Apply filtering whenever searchText or selectedDepartment changes
+    filterData(searchText, selectedDepartment);
+  }, [searchText, selectedDepartment,candidates]);
+
   const handleDepartmentChange = (event) => {
     const department = event.target.value;
     setSelectedDepartment(department);
-    filterData(searchText, department);
   };
+
   const handleSearchTextChange = (event) => {
     const text = event.target.value.toLowerCase();
     setSearchText(text);
-    filterData(text, selectedTab);
+
   };
 
   const filterData = (searchText, department) => {
-    refetch();
 
-    if (
-      !departmentList ||
-      !departmentList.data ||
-      !departmentList.data.candidates
-    )
-      return;
+
     let filtered = candidates;
+
     if (searchText) {
       filtered = filtered.filter((candidate) =>
         candidate.name.toLowerCase().includes(searchText)
@@ -105,11 +148,13 @@ const EmployeeTable = ({ candidates, refetch }) => {
     }
     if (department) {
       filtered = filtered.filter((candidate) =>
-        candidate.departments.some((dept) => dept.name === department)
+        candidate.departments.some((dept) => dept.id === department)
       );
     }
     setFilteredData(filtered);
   };
+  
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };

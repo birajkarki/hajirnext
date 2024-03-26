@@ -9,18 +9,17 @@ const HeaderPlanBiraj = () => {
      
     >
       <Box>
+      <Link href="/dashboard/myplansbiraj" style={{textDecoration:"none", color:"black"}}>
         <Typography variant="h4" sx={{marginTop:'70px'}}>My Plans</Typography>
+        </Link>
         <div style={{ display: 'flex', flexDirection: 'row', gap: '20px' }}>
           <Link href="/dashboard" style={{textDecoration:"none"}}>
-          <Typography variant="subtitle1" color="black">
+          {/* <Typography variant="subtitle1" color="black">
             Home <span style={{marginLeft:"20px"}}>/</span>
-          </Typography>
+          </Typography> */}
           </Link>
-          <Link href="/dashboard/myplansbiraj" style={{textDecoration:"none"}}>
-          <Typography variant="subtitle1" color="gray" >
-            My Plans
-          </Typography>
-          </Link>
+       
+      
         </div>
       </Box>
       <Box sx={{ display:'flex', flexDirection:'column',justifyContent:'center',textAlign: 'center', margin: 'auto',marginBottom:"10px", marginTop:'5px', alignItems:'center'}}>
