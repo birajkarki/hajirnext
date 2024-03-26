@@ -213,7 +213,7 @@ const isSm = useMediaQuery("(max-width:900px)");
               ></InputLabel>
               <Select value={selectedDuration} onChange={handleDurationChange}>
                 <MenuItem value="1 month">1 month</MenuItem>
-                <MenuItem value="6 month">6 months</MenuItem>
+                <MenuItem value="6 months">6 months</MenuItem>
               </Select>
             </FormControl>
             <Box sx={{ marginTop: "16px" }}>

@@ -53,7 +53,7 @@ const UpdateHoliday = () => {
   // Function to handle file change
   const handleFileChange = (event) => {
     formik.setFieldValue("custom_holiday_file", event.target.files[0]);
-    formik.handleSubmit();
+    // formik.handleSubmit();
   };
 
   // Function to handle file download

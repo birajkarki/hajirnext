@@ -46,8 +46,12 @@ const Messaging = ({ searchText }) => {
             name={msg.name}
             time_ago={msg.created_at}
             timeAgo={formatTimestamp(msg.created_at)}
-            reason={msg.leave_type.title}
-            message={msg.leave_type.desc || "No description"}
+            // reason={msg.leave_type.title}
+            reason={msg.leave_type ? msg.leave_type.title : "Unknown"}
+
+            // message={msg.leave_type.desc || "No description"}
+            message={msg.leave_type ? msg.leave_type.desc : "Unknown"}
+
             status={msg.status}
             onClick={() => handleMessageBoxClick(msg)}
             searchText={searchText}
@@ -58,14 +62,15 @@ const Messaging = ({ searchText }) => {
       <div style={{ flex: "1", width: isScreenSm ? "50%" : "650px" }}>
         {selectedMessage ? (
           <FullMessage
-            message={selectedMessage.message}
-            name={selectedMessage.name}
-            img={selectedMessage.profile_image}
-            status={selectedMessage.status}
-            reason={selectedMessage.leave_type.title}
-            start_date={selectedMessage.start_date}
-            end_date={selectedMessage.end_date}
-            leave_id={selectedMessage.leave_id}
+         
+            message={selectedMessage ? selectedMessage.message : ""}
+name={selectedMessage ? selectedMessage.name : ""}
+img={selectedMessage ? selectedMessage.profile_image : ""}
+status={selectedMessage ? selectedMessage.status : ""}
+start_date={selectedMessage ? selectedMessage.start_date : ""}
+end_date={selectedMessage ? selectedMessage.end_date : ""}
+leave_id={selectedMessage ? selectedMessage.leave_id : ""}
+
           />
         ) : isScreenExtraSmall ? null : (
           <Image
