@@ -1,19 +1,19 @@
 // api.js
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const api = createApi({
-  reducerPath: "api",
+  reducerPath: 'api',
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_API_URL,
     prepareHeaders: (headers) => {
-      const newHeaders = new Headers(headers);
+      const newHeaders = new Headers(headers)
       const token =
-        typeof window !== "undefined"
-          ? JSON.parse(localStorage.getItem("token"))
-          : null;
-      newHeaders.set("Authorization", `Bearer ${token}`);
+        typeof window !== 'undefined'
+          ? JSON.parse(localStorage.getItem('token'))
+          : null
+      newHeaders.set('Authorization', `Bearer ${token}`)
       // newHeaders.set("Content-Type", "application/json");
-      return newHeaders;
+      return newHeaders
     },
   }),
   endpoints: (builder) => ({
@@ -22,8 +22,8 @@ export const api = createApi({
     // Employee Registration
     registerEmployee: builder.mutation({
       query: (employeeData) => ({
-        url: "employer/register",
-        method: "POST",
+        url: 'employer/register',
+        method: 'POST',
         body: employeeData,
       }),
     }),
@@ -31,8 +31,8 @@ export const api = createApi({
     // Verify Employee OTP
     verifyEmployeeOpt: builder.mutation({
       query: (otpData) => ({
-        url: "employer/verify-opt",
-        method: "POST",
+        url: 'employer/verify-opt',
+        method: 'POST',
         body: otpData,
       }),
     }),
@@ -40,8 +40,8 @@ export const api = createApi({
     // Profile Update
     updateProfile: builder.mutation({
       query: (profileData) => ({
-        url: "employer/profile-update",
-        method: "POST",
+        url: 'employer/profile-update',
+        method: 'POST',
         body: profileData,
         formData: true,
       }),
@@ -49,7 +49,7 @@ export const api = createApi({
 
     // Get Profile
     getProfile: builder.query({
-      query: () => "employer/get-profile",
+      query: () => 'employer/get-profile',
     }),
 
     // ***************change number********************
@@ -57,8 +57,8 @@ export const api = createApi({
     // getOtp to change Phone number
     getOtpChangeNumber: builder.mutation({
       query: (new_phone) => ({
-        url: "employer/change-phone",
-        method: "POST",
+        url: 'employer/change-phone',
+        method: 'POST',
         body: new_phone,
       }),
     }),
@@ -66,8 +66,8 @@ export const api = createApi({
     // /employer/phone-change-verify-otp
     verifyOtpChangeNumber: builder.mutation({
       query: ({ otp, new_phone }) => ({
-        url: "employer/phone-change-verify-otp",
-        method: "POST",
+        url: 'employer/phone-change-verify-otp',
+        method: 'POST',
         body: { otp, new_phone },
       }),
     }),
@@ -75,68 +75,68 @@ export const api = createApi({
     // createcompany
     createCompany: builder.mutation({
       query: (companyData) => ({
-        url: "employer/company/store",
-        method: "POST",
+        url: 'employer/company/store',
+        method: 'POST',
         body: companyData,
         formData: true,
       }),
-      invalidatesTags: ["Companies"], // Add invalidation tag
+      invalidatesTags: ['Companies'], // Add invalidation tag
     }),
     //update company
     updateCompany: builder.mutation({
       query: ({ company_id, companyData }) => ({
         url: `employer/company/update/${company_id}`,
-        method: "POST",
+        method: 'POST',
         body: companyData,
         formData: true,
       }),
       invalidatesTags: (result, error, args) => [
-        { type: "Company", id: args.company_id },
+        { type: 'Company', id: args.company_id },
       ], // Add invalidation tag
     }),
     // deletecompany
     deleteCompany: builder.mutation({
       query: (company_id) => ({
         url: `employer/company/destroy/${company_id}`,
-        method: "POST",
+        method: 'POST',
       }),
-      invalidatesTags: ["Companies"], // Add invalidation tag
+      invalidatesTags: ['Companies'], // Add invalidation tag
     }),
 
     // update company status
     updateCompanyStatus: builder.mutation({
       query: ({ company_id, status }) => ({
         url: `employer/company/status/${company_id}`,
-        method: "POST",
+        method: 'POST',
         body: { status },
       }),
       invalidatesTags: (result, error, args) => [
-        { type: "Company", id: args.company_id },
+        { type: 'Company', id: args.company_id },
       ], // Add invalidation tag
     }),
     // All companies
     getEmployerCompanies: builder.query({
-      query: () => "employer/company/employercompanies",
-      providesTags: ["Companies"], // Add tag for caching
+      query: () => 'employer/company/employercompanies',
+      providesTags: ['Companies'], // Add tag for caching
     }),
 
     // Get Active Company
     getActiveCompany: builder.query({
-      query: () => "employer/company/active",
-      providesTags: ["Companies"], // Add tag for caching
+      query: () => 'employer/company/active',
+      providesTags: ['Companies'], // Add tag for caching
     }),
 
     // Get Inactive Company
     getInactiveCompany: builder.query({
-      query: () => "employer/company/inactive",
-      providesTags: ["Companies"], // Add tag for caching
+      query: () => 'employer/company/inactive',
+      providesTags: ['Companies'], // Add tag for caching
     }),
 
     // Get Candidates for a company by company_id
     getCandidates: builder.query({
       query: (companyId) => `/employer/candidate/get-candidates/${companyId}`,
       providesTags: (result, error, companyId) => [
-        { type: "Company", id: companyId },
+        { type: 'Company', id: companyId },
       ],
     }),
 
@@ -144,7 +144,7 @@ export const api = createApi({
     createCandidate: builder.mutation({
       query: ({ candidateData, companyId }) => ({
         url: `employer/candidate/store/${companyId}`,
-        method: "POST",
+        method: 'POST',
         body: candidateData,
       }),
     }),
@@ -153,7 +153,7 @@ export const api = createApi({
     inviteCandidate: builder.mutation({
       query: ({ candidate_id, status, companyId }) => ({
         url: `/employer/${companyId}/invitation/store`,
-        method: "POST",
+        method: 'POST',
         body: { candidate_id, status },
       }),
     }),
@@ -166,7 +166,7 @@ export const api = createApi({
     deleteCandidate: builder.query({
       query: ({ companyId, candidate_id }) => ({
         url: `/employer/candidate/destroy/${companyId}/${candidate_id}`,
-        method: "GET",
+        method: 'GET',
       }),
     }),
 
@@ -174,7 +174,7 @@ export const api = createApi({
     getCandidateCode: builder.query({
       query: ({ company_id }) => ({
         url: `/employer/company/candidate-code/${company_id}`,
-        method: "GET",
+        method: 'GET',
       }),
     }),
     //aproval list
@@ -185,7 +185,7 @@ export const api = createApi({
     assignApproval: builder.mutation({
       query: ({ companyId, candidate_id, status }) => ({
         url: `/employer/approver/store/${companyId}/${candidate_id}`,
-        method: "POST",
+        method: 'POST',
         body: { status },
       }),
     }),
@@ -193,17 +193,17 @@ export const api = createApi({
     removeApproval: builder.mutation({
       query: ({ company_id, candidate_id }) => ({
         url: `/employer/approver/delete/${company_id}/${candidate_id}`,
-        method: "POST",
+        method: 'POST',
       }),
     }),
 
     // all gov holiday prepareDataForValidation
     getGovHoliday: builder.query({
-      query: () => "employer/get-government-holiday-PDF",
+      query: () => 'employer/get-government-holiday-PDF',
     }),
     // all department
     getDepartment: builder.query({
-      query: () => "/employer/all-departments",
+      query: () => '/employer/all-departments',
     }),
     // generate qr code
 
@@ -216,7 +216,7 @@ export const api = createApi({
     updateCustomHoliday: builder.mutation({
       query: ({ company_id, formData }) => ({
         url: `/employer/company/update-special-holiday/${company_id}`,
-        method: "POST",
+        method: 'POST',
         body: formData,
         formData: true,
       }),
@@ -282,7 +282,7 @@ export const api = createApi({
     updateCandidiateLeave: builder.mutation({
       query: ({ leave_id, payStatus, status }) => ({
         url: `employer/candidateLeave/change-status/${leave_id}`,
-        method: "POST",
+        method: 'POST',
         body: { status, payStatus },
       }),
     }),
@@ -297,7 +297,7 @@ export const api = createApi({
     updateMissingAttendance: builder.mutation({
       query: ({ MissingAttendanceData }) => ({
         url: `employer/candidate/missing-attendance-submit`,
-        method: "POST",
+        method: 'POST',
         body: MissingAttendanceData,
       }),
     }),
@@ -306,7 +306,7 @@ export const api = createApi({
     updateMissingLeave: builder.mutation({
       query: ({ MissingLeaveData }) => ({
         url: `/employer/candidate/missing-leave-submit`,
-        method: "POST",
+        method: 'POST',
         body: MissingLeaveData,
       }),
     }),
@@ -319,7 +319,7 @@ export const api = createApi({
     getDailyCompanyCandidatePerformaceReport: builder.query({
       query: ({ company_id, candidate_id, today_date, year }) => ({
         url: `/employer/report/daily-report/${company_id}/${candidate_id}`,
-        params: { today_date , year}, // Pass start and end as query parameters
+        params: { today_date, year }, // Pass start and end as query parameters
       }),
     }),
     // weekly report
@@ -327,13 +327,12 @@ export const api = createApi({
       query: ({ company_id, candidate_id, from_date, to_date }) => ({
         url: `/employer/report/weekly-report/${company_id}/${candidate_id}`,
         params: { from_date, to_date },
-      }), 
+      }),
     }),
     // monthly report
     getMonthlyCompanyCandidatePerformaceReport: builder.query({
       query: ({ company_id, candidate_id, monthandyear }) => ({
         url: `/employer/report/monthly-report/${company_id}/${candidate_id}/${monthandyear}`,
-
       }),
     }),
     // yearly reportd
@@ -347,50 +346,45 @@ export const api = createApi({
     sendPayment: builder.mutation({
       query: ({ company_id, candidate_id }) => ({
         url: `/employer/report/payment-submit/${company_id}/${candidate_id}`,
-        method: "POST",
+        method: 'POST',
       }),
     }),
     // send notification
     sendNotification: builder.mutation({
       query: ({ company_id, candidate_id }) => ({
         url: `/employer/notification-send/${company_id}/${candidate_id}`,
-        method: "POST",
+        method: 'POST',
       }),
     }),
     getAllNotifications: builder.query({
       query: () => ({
-        url: "/notification/all",
-        method:"GET"
+        url: '/notification/all',
+        method: 'GET',
       }),
     }),
     getAllPackages: builder.query({
       query: () => ({
         url: `/employer/package/all`,
-        method: "GET",
+        method: 'GET',
       }),
     }),
 
     getPaymentMethod: builder.query({
       query: () => ({
         url: `/employer/package/get-payment-methods`,
-        method: "GET",
+        method: 'GET',
       }),
     }),
-    
+
     updatePaymentMethod: builder.mutation({
-      query: ({ id,PaymentDatas} ) => ({
+      query: ({ id, PaymentDatas }) => ({
         url: `/employer/package/payment-submit/${id}`,
-        method: "POST",
+        method: 'POST',
         body: PaymentDatas,
-     
       }),
     }),
-
-
-    
   }),
-});
-
+})
 
 export const {
   useGetDataQuery,
@@ -441,5 +435,5 @@ export const {
   useGetAllNotificationsQuery,
   useGetAllPackagesQuery,
   useGetPaymentMethodQuery,
-  useUpdatePaymentMethodMutation
-} = api;
+  useUpdatePaymentMethodMutation,
+} = api
