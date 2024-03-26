@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react'
 import {
   Table,
   TableBody,
@@ -15,45 +15,45 @@ import {
   InputLabel,
   MenuItem,
   Avatar,
-} from "@mui/material";
-import { useGetAttendanceReportTodayQuery } from "@/services/api";
-import { useParams } from "next/navigation";
-import Link from "next/link";
-import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
-import SouthEastIcon from "@mui/icons-material/SouthEast";
+} from '@mui/material'
+import { useGetAttendanceReportTodayQuery } from '@/services/api'
+import { useParams } from 'next/navigation'
+import Link from 'next/link'
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward'
+import SouthEastIcon from '@mui/icons-material/SouthEast'
 const AttendanceTable = () => {
-  const { companyId } = useParams();
+  const { companyId } = useParams()
 
-  const [filteredData, setFilteredData] = useState([]);
-  const [searchText, setSearchText] = useState("");
-  const [selectedDepartment, setSelectedDepartment] = useState("");
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [filteredData, setFilteredData] = useState([])
+  const [searchText, setSearchText] = useState('')
+  const [selectedDepartment, setSelectedDepartment] = useState('')
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(5)
 
   const { data: attendanceData, isLoading: isLoading2 } =
-    useGetAttendanceReportTodayQuery(companyId);
-  console.log(attendanceData);
+    useGetAttendanceReportTodayQuery(companyId)
+  console.log(attendanceData)
   useEffect(() => {
     if (
       attendanceData &&
       attendanceData.data &&
       attendanceData.data.candidates
     ) {
-      setFilteredData(attendanceData.data.candidates);
+      setFilteredData(attendanceData.data.candidates)
     }
-  }, [attendanceData]);
+  }, [attendanceData])
 
   const handleSearchTextChange = (event) => {
-    const text = event.target.value.toLowerCase();
-    setSearchText(text);
-    filterData(text, selectedDepartment);
-  };
+    const text = event.target.value.toLowerCase()
+    setSearchText(text)
+    filterData(text, selectedDepartment)
+  }
 
   const handleDepartmentChange = (event) => {
-    const department = event.target.value;
-    setSelectedDepartment(department);
-    filterData(searchText, department);
-  };
+    const department = event.target.value
+    setSelectedDepartment(department)
+    filterData(searchText, department)
+  }
 
   const filterData = (searchText, department) => {
     if (
@@ -61,39 +61,39 @@ const AttendanceTable = () => {
       !attendanceData.data ||
       !attendanceData.data.candidates
     )
-      return;
+      return
 
-    let filtered = attendanceData.data.candidates;
+    let filtered = attendanceData.data.candidates
     if (searchText) {
       filtered = filtered.filter((candidate) =>
         candidate.name.toLowerCase().includes(searchText)
-      );
+      )
     }
     if (department) {
       filtered = filtered.filter((candidate) =>
         candidate.departments.some((dept) => dept.name === department)
-      );
+      )
     }
-    setFilteredData(filtered);
-  };
+    setFilteredData(filtered)
+  }
 
   const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+    setPage(newPage)
+  }
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+    setRowsPerPage(parseInt(event.target.value, 10))
+    setPage(0)
+  }
 
   return (
     <Box
       sx={{
-        display: "flex",
-        flexDirection: "column",
+        display: 'flex',
+        flexDirection: 'column',
         height: 1000,
         mt: 3,
-        marginTop: "80px",
+        marginTop: '80px',
       }}
     >
       <Box sx={{ mb: 2 }}>
@@ -147,26 +147,26 @@ const AttendanceTable = () => {
                   <TableCell>
                     <Link
                       href={`/dashboard/company/${companyId}/attendance/${candidate.candidate_id}`}
-                      style={{ textDecoration: "none", color: "inherit" }}
+                      style={{ textDecoration: 'none', color: 'inherit' }}
                     >
-                      <div style={{ display: "flex", alignItems: "center" }}>
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
                         <Avatar
-                          src={candidate.profile_image || "/default-avatar.png"}
+                          src={candidate.image || '/default-avatar.png'}
                           sx={{
                             width: 50,
                             height: 50,
-                            cursor: "pointer",
-                            marginRight: "10px",
+                            cursor: 'pointer',
+                            marginRight: '10px',
                           }}
                           alt="Profile Avatar"
                         />
                         <div
-                          style={{ display: "flex", flexDirection: "column" }}
+                          style={{ display: 'flex', flexDirection: 'column' }}
                         >
-                          <span style={{ fontSize: "16px" }}>
+                          <span style={{ fontSize: '16px' }}>
                             {candidate.name}
                           </span>
-                          <span style={{ fontSize: "14px", color: "#555" }}>
+                          <span style={{ fontSize: '14px', color: '#555' }}>
                             {candidate.role}
                           </span>
                         </div>
@@ -174,74 +174,74 @@ const AttendanceTable = () => {
                     </Link>
                   </TableCell>
                   <TableCell>
-                    {candidate.start_time}{" "}
-                    <span style={{ color: "green", fontSize: "16px" }}>
-                      {" "}
-                      <SouthEastIcon sx={{ fontSize: "medium" }} />
+                    {candidate.start_time}{' '}
+                    <span style={{ color: 'green', fontSize: '16px' }}>
+                      {' '}
+                      <SouthEastIcon sx={{ fontSize: 'medium' }} />
                     </span>
                   </TableCell>
                   <TableCell>
-                    {candidate.end_time}{" "}
-                    <span style={{ color: "red", fontSize: "16px" }}>
-                      <ArrowOutwardIcon sx={{ fontSize: "medium" }} />
+                    {candidate.end_time}{' '}
+                    <span style={{ color: 'red', fontSize: '16px' }}>
+                      <ArrowOutwardIcon sx={{ fontSize: 'medium' }} />
                     </span>
                   </TableCell>
                   <TableCell>
-                    {candidate.status === "Absent" && (
+                    {candidate.status === 'Absent' && (
                       <span
                         style={{
-                          backgroundColor: "rgba(255, 0, 0, 0.1)",
-                          color: "darkred",
-                          padding: "3px 6px",
-                          borderRadius: "4px",
+                          backgroundColor: 'rgba(255, 0, 0, 0.1)',
+                          color: 'darkred',
+                          padding: '3px 6px',
+                          borderRadius: '4px',
                         }}
                       >
                         {candidate.status}
                       </span>
                     )}
-                    {candidate.status === "Late" && (
+                    {candidate.status === 'Late' && (
                       <span
                         style={{
-                          backgroundColor: "rgba(255, 165, 0, 0.1)",
-                          color: "darkorange",
-                          padding: "3px 6px",
-                          borderRadius: "4px",
+                          backgroundColor: 'rgba(255, 165, 0, 0.1)',
+                          color: 'darkorange',
+                          padding: '3px 6px',
+                          borderRadius: '4px',
                         }}
                       >
                         {candidate.status}
                       </span>
                     )}
-                    {candidate.status === "Leave" && (
+                    {candidate.status === 'Leave' && (
                       <span
                         style={{
-                          backgroundColor: "rgba(255, 0, 0, 0.1)",
-                          color: "darkred",
-                          padding: "3px 6px",
-                          borderRadius: "4px",
+                          backgroundColor: 'rgba(255, 0, 0, 0.1)',
+                          color: 'darkred',
+                          padding: '3px 6px',
+                          borderRadius: '4px',
                         }}
                       >
                         {candidate.status}
                       </span>
                     )}
-                    {candidate.status === "Waiting" && (
+                    {candidate.status === 'Waiting' && (
                       <span
                         style={{
-                          backgroundColor: "rgba(169, 169, 169, 0.1)",
-                          color: "darkgray",
-                          padding: "3px 6px",
-                          borderRadius: "4px",
+                          backgroundColor: 'rgba(169, 169, 169, 0.1)',
+                          color: 'darkgray',
+                          padding: '3px 6px',
+                          borderRadius: '4px',
                         }}
                       >
                         {candidate.status}
                       </span>
                     )}
-                    {candidate.status === "Present" && (
+                    {candidate.status === 'Present' && (
                       <span
                         style={{
-                          backgroundColor: "rgba(0, 128, 0, 0.1)",
-                          color: "darkgreen",
-                          padding: "3px 6px",
-                          borderRadius: "4px",
+                          backgroundColor: 'rgba(0, 128, 0, 0.1)',
+                          color: 'darkgreen',
+                          padding: '3px 6px',
+                          borderRadius: '4px',
                         }}
                       >
                         {candidate.status}
@@ -270,7 +270,7 @@ const AttendanceTable = () => {
       </TableContainer>
       ;
     </Box>
-  );
-};
+  )
+}
 
-export default AttendanceTable;
+export default AttendanceTable
