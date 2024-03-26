@@ -1,12 +1,18 @@
 // messaging/page.jsx
 "use client"
-import React from "react";
+import React, { useState } from "react";
 import { TextField, Typography } from "@mui/material";
 import Messaging from "@/components/messaging/Messaging";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 const MessagingPage = () => {
   const { companyId } = useParams();
+  const [searchText, setSearchText] = useState("");
+
+  const handleSearchTextChange = (e) => {
+    setSearchText(e.target.value);
+  };
+
   return (
     <div>
       <div>
@@ -38,15 +44,15 @@ const MessagingPage = () => {
         label="search message"
         variant="outlined"
         size="small"
-        // onChange={handleSearchTextChange}
-        // value={searchText}
+        onChange={handleSearchTextChange}
+        value={searchText}
       />{" "}
       <Typography
         style={{ marginBottom: "30px", marginTop: "20px", fontWeight: "500" }}
       >
         Messages
       </Typography>
-      <Messaging style={{ marginBottom: "10px" }} />
+      <Messaging searchText={searchText} style={{ marginBottom: "10px" }} />
     </div>
   );
 };

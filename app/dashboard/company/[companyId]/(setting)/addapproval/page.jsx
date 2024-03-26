@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import {
   Autocomplete,
@@ -22,9 +22,14 @@ const AddApproval = () => {
     useGetCandidatesQuery(companyId);
   const { data: approvalData } = useGetApprovalQuery(companyId);
   const [assignApproval] = useAssignApprovalMutation();
-  const removeApprovalMutation = useRemoveApprovalMutation();
+  const [removeApprovalMutation]= useRemoveApprovalMutation();
   const [approvalName, setApprovalName] = useState("");
   const [approvals, setApprovals] = useState([]);
+  useEffect(() => {
+    const savedApprovals = JSON.parse(localStorage.getItem("approvals")) || [];
+    setApprovals(savedApprovals);
+  }, []);
+  const filteredApprovals = approvals.filter(approval => approval.companyId === companyId);
 
   const handleAddApproval = async () => {
     if (typeof approvalName === "string" && approvalName.trim() !== "") {
@@ -32,9 +37,10 @@ const AddApproval = () => {
         (candidate) => candidate.name === approvalName
       );
       if (selectedCandidate) {
-        const { id: candidate_id } = selectedCandidate;
+        const {candidate_id } = selectedCandidate;
+        console.log(selectedCandidate)
         console.log("candidate_id", candidate_id);
-
+  
         try {
           const status = "Active";
           await assignApproval({
@@ -42,12 +48,13 @@ const AddApproval = () => {
             status,
             companyId,
           });
+  
+          console.log("Approval name before update:", approvals);
+setApprovals([...approvals, { name: approvalName, candidate_id:candidate_id ,companyId: companyId }]);
+localStorage.setItem("approvals", JSON.stringify([...approvals, { name: approvalName, candidate_id:candidate_id, companyId: companyId}]));
 
-          setApprovals([...approvals, approvalName]);
-          setApprovalName("");
-
-          console.log("Approval added successfully:", approvalName);
-
+          setApprovalName("")
+         
           alert("Approval added successfully!");
         } catch (error) {
           console.error("Error adding approval:", error);
@@ -62,19 +69,38 @@ const AddApproval = () => {
       alert("Approval name cannot be empty.");
     }
   };
-
+  
   const handleDeleteApproval = async (approval) => {
-    try {
-      await removeApprovalMutation.mutateAsync({
-        companyId,
-        approvalId: approval.id,
-      });
-      setApprovals(approvals.filter((item) => item !== approval));
-    } catch (error) {
-      console.error("Error deleting approval:", error);
+ console.log(approval)
+    if (approval) {
+      try {
+        const { candidate_id } = approval;
+        await removeApprovalMutation({
+          company_id: companyId,  
+          candidate_id: candidate_id, 
+        });
+ 
+        console.log("Deleting approval with ID:", candidate_id);
+     
+  
+        setApprovals(prevApprovals =>
+          prevApprovals.filter(item => item !== approval)
+        );
+
+        const updatedApprovals = approvals.filter((item) => item !== approval);
+        localStorage.setItem("approvals", JSON.stringify(updatedApprovals));
+    
+    
+   
+ 
+      } catch (error) {
+        console.error("Error deleting approval:", error);
+      }
+    } else {
+      console.error("Approval object is invalid or missing.");
     }
   };
-
+  
   return (
     <Box
       sx={{
@@ -99,15 +125,7 @@ const AddApproval = () => {
 
       <div style={{ display: "flex", alignItems: "center" }}>
         <div style={{ flex: 1 }}>
-          <div>
-            <Typography variant="h6">List of candidates:</Typography>
-            {candidateData?.data?.active_candidates.map((candidate, index) => (
-              <Typography key={index}>
-                Name: {candidate.name}, Candidate ID: {candidate.id}
-              </Typography>
-            ))}
-          </div>
-
+   
           {candidatesLoading ? (
             <Typography>Loading...</Typography>
           ) : (
@@ -133,8 +151,11 @@ const AddApproval = () => {
           <Button variant="contained" onClick={handleAddApproval}>
             Add
           </Button>
-          {approvalData?.data?.map((approval, index) => (
-            <Box
+        {/* {approvals.map((approval, index) => ( */}
+     {approvals
+      .filter(approval => approval.companyId === companyId) // Filter approvals based on companyId
+      .map((approval, index) => (
+      <Box
               key={index}
               sx={{
                 display: "flex",
@@ -148,7 +169,8 @@ const AddApproval = () => {
               }}
             >
               <Typography sx={{ flex: 1, marginRight: "10px" }}>
-                ID: {approval.id}, Name: {approval.name}
+                
+                  Name: {approval.name}
               </Typography>
               <Button
                 variant="outlined"
@@ -157,10 +179,11 @@ const AddApproval = () => {
               >
                 Delete
               </Button>
-            </Box>
-          ))}
-        </div>
-
+      </Box>
+     ) )}
+     
+     
+</div>
         <div style={{ flex: 1 }}>
           <Image
             width="600"

@@ -10,7 +10,7 @@ import { useGetCompanyCandidateLeavesQuery } from "@/services/api";
 import { formatTimestamp } from "@/utils/FormatTimestamp";
 import attached1 from "@/public/messaging/attached1.png";
 
-const Messaging = () => {
+const Messaging = ({ searchText }) => {
   const { companyId } = useParams();
   const { data: companyCandidateLeaves, isLoading: isLoading } =
     useGetCompanyCandidateLeavesQuery(companyId);
@@ -50,6 +50,7 @@ const Messaging = () => {
             message={msg.leave_type.desc || "No description"}
             status={msg.status}
             onClick={() => handleMessageBoxClick(msg)}
+            searchText={searchText}
           />
         ))}
       </div>
