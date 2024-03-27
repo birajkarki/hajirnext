@@ -23,6 +23,7 @@ import {
   useGetCandidatesQuery,
   useUpdateMissingLeaveMutation,
 } from "@/services/api";
+import Link from "next/link";
 const MissingAttendance = () => {
   const { companyId } = useParams();
   const { data: candidateData, isLoading: candidatesLoading } =
@@ -74,7 +75,7 @@ const MissingAttendance = () => {
           height: "100vh",
           padding: "10px",
           backgroundColor: "#fff",
-          paddingTop:"90px"
+          // paddingTop:"90px"
         }}
       >
         <Typography
@@ -89,6 +90,19 @@ const MissingAttendance = () => {
         >
           Missing Leave
         </Typography>
+
+        <div style={{display:"flex", flexDirection:"row", marginTop:"10px"}}>
+ <Link href="/dashboard" style={{textDecoration:"none", color:"#434345"}}>
+          <span style={{ fontWeight: "400", marginRight: "10px", fontSize:"18px" }}>Home</span> <span style={{marginLeft:"10px",marginRight:"10px"}}>/</span>
+         </Link>
+         <Link href=""  style={{textDecoration:"none",color:"#434345"}}>
+          <span style={{ fontWeight: "400", marginRight: "10px" , marginLeft:"10px",fontSize:"18px"}}>Setting</span> <span style={{marginLeft:"10px",marginRight:"10px"}}>/</span>
+          </Link>
+          <Link href={`/dashboard/company/${companyId}/missingattendance`}  style={{textDecoration:"none", color:"gray"}}>
+          <span style={{ fontWeight: "400" ,fontSize:"18px",marginLeft:"10px"}}>Missing Attendance</span>
+          </Link>
+   
+      </div>
 
         <div style={{ display: "flex", alignItems: "center" }}>
           <div style={{ flex: 0.4 }}>

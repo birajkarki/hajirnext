@@ -7,6 +7,7 @@ import { useGetCandidatesQuery } from "@/services/api";
 import TabsActiveInactive from "../dashboard/MainDashboard/TabsActiveInactive";
 import EmployeeTable from "./employeetable.jsx/EmployeeTable";
 import { useMediaQuery } from "@mui/material";
+import Link from "next/link";
 
 const EmployeeList = () => {
   const router = useRouter();
@@ -49,7 +50,7 @@ const EmployeeList = () => {
               }}
             >
               <Box>
-                <h2>Employee</h2>
+                <span style={{fontWeight:"500", fontSize:"24px"}}>Employee</span>
               </Box>
               <Box
                 sx={{
@@ -73,10 +74,11 @@ const EmployeeList = () => {
                 </Button>
               </Box>
             </Box>
-            <h4>
-              <span>Dashboard</span> / <span>Company</span> /{" "}
-              <span>Employee</span>
-            </h4>
+            <div style={{color:"#434345", marginTop:"8px"}}>
+          <Link href="/dashboard" style={{textDecoration:"none"}}>
+              <span style={{fontSize:"18px", fontWeight:"400", marginRight:"10px", color:"#434345"}}>Home</span></Link> / <Link href={`/dashboard/company/${companyId}` }  style={{textDecoration:"none"}}><span style={{fontSize:"18px", fontWeight:"400", marginLeft:"10px",color:"gray"}} >Employee</span></Link> {" "}
+            
+            </div>
             <Box sx={{ flexGrow: 1 }}>
               <TabsActiveInactive
                 value={selectedTab}

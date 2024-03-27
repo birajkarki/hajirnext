@@ -1,10 +1,12 @@
 "use client";
 import { useState } from "react";
 import { Box, Button, LinearProgress, Typography } from "@mui/material";
+import SyncIcon from '@mui/icons-material/Sync';
 import Image from "next/image";
 import { useUpdateCustomHolidayMutation } from "@/services/api";
 import { useParams } from "next/navigation"; // Assuming this is the correct import for useParams
 import { useFormik } from "formik";
+import Link from "next/link";
 
 const UpdateHoliday = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -23,6 +25,7 @@ const UpdateHoliday = () => {
 
         const formData = new FormData();
         formData.append("custom_holiday_file", values.custom_holiday_file);
+        formData.append("companyId", companyId);
 
         const config = {
           onUploadProgress: (progressEvent) => {
@@ -33,7 +36,9 @@ const UpdateHoliday = () => {
           },
         };
 
-        const { data } = await updateCustomHoliday(formData, config);
+    
+        const { data } = await updateCustomHoliday({ company_id: companyId, formData }, config);
+
         console.log("Company id ", companyId); // Corrected variable name to match the parameter name in the route
         console.log("File successfully uploaded:", data);
 
@@ -51,6 +56,7 @@ const UpdateHoliday = () => {
   // Function to handle file change
   const handleFileChange = (event) => {
     formik.setFieldValue("custom_holiday_file", event.target.files[0]);
+    // formik.handleSubmit();
   };
 
   // Function to handle file download
@@ -86,63 +92,118 @@ const UpdateHoliday = () => {
       >
         Update Holiday
       </Typography>
+  
+      <div style={{display:"flex", flexDirection:"row", marginTop:"10px"}}>
+ <Link href="/dashboard" style={{textDecoration:"none", color:"#434345"}}>
+          <span style={{ fontWeight: "400", marginRight: "10px", fontSize:"16px" }}>Home</span> <span style={{marginLeft:"10px",marginRight:"10px"}}>/</span>
+         </Link>
+         <Link href=""  style={{textDecoration:"none",color:"#434345"}}>
+          <span style={{ fontWeight: "400", marginRight: "10px" , marginLeft:"10px",fontSize:"16px"}}>Setting</span> <span style={{marginLeft:"10px",marginRight:"10px"}}>/</span>
+          </Link>
+          <Link href={`/dashboard/company/${companyId}/updateholiday`}  style={{textDecoration:"none", color:"gray"}}>
+          <span style={{ fontWeight: "400" ,fontSize:"16px",marginLeft:"10px"}}>Update Holiday</span>
+          </Link>
+   
+      </div>
 
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <div style={{ flex: 1 }}>
+      <div style={{ display: "flex",  }}>
+        <div style={{  }}>
           <Box
             sx={{
               display: "flex",
-              alignItems: "center",
+           
               flexDirection: "column",
               marginTop: "16px",
             }}
           >
-            <Button variant="contained" component="label">
-              Upload File
-              <input
-                type="file"
+           
+              <Button variant="contained" component="label"   type="file"
+              
+                onClick={() => handleDownload("SpecialHoliday.xls")}
+                hidden
+                accept=".xls,.xlsx"
+                 sx={{backgroundColor:"white", color:"#22408B",
+                 "&:hover": {
+                  backgroundColor: "white",
+            
+                },
+                width: "362px",
+                height:"48px"
+              }}>
+              View current Holidays
+                
+                </Button>
+                <span onClick={() => handleDownload("SpecialHoliday.xls")} sx={{width:"362px", fontSize:"14px", fontWeight:"500"}}>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    marginTop: "8px",
+                    display: "flex",
+                 fontSize:"16px",
+                    textDecoration:"underline",
+                
+                    fontWeight:"500",
+                    letterSpacing:"0.15px",
+                    color:"#434345CC",
+                    cursor:"pointer",
+                    textAlign:"center",
+                  justifyContent:'space-between',
+                  marginLeft:'30px',
+                  marginTop:"15px"
+
+                  }}
+                >
+                  Click to download sample file (.xlsx)
+                </Typography>
+              </span>{" "}
+              <Button variant="contained" component="label"   type="file"
                 onChange={handleFileChange}
                 hidden
                 accept=".xls,.xlsx"
-              />
-            </Button>
-            {isLoading && <LinearProgress value={uploadProgress} />}
+                 sx={{backgroundColor:"white", color:"#22408B",
+                 "&:hover": {
+                  backgroundColor: "white",
+
+                },
+                width: "362px",
+                height:"48px",
+                marginTop:"24px"
+              }}>
+         Import Holidays
+                  <input type="file" onChange={handleFileChange} hidden  
+            
+                accept=".xls,.xlsx" />
+                </Button>
+            {isLoading && <LinearProgress value={uploadProgress} sx={{marginTop:'10px'}} />}
             {formik.values.custom_holiday_file && (
               <Typography variant="body2" sx={{ marginTop: "8px" }}>
                 Uploaded File: {formik.values.custom_holiday_file.name}
               </Typography>
             )}
+        
+
+ 
           </Box>
-          <Box
+   
+<Button
+            type="submit"
+            variant="contained"
+            // disabled={isLoading}
+            onClick={formik.handleSubmit}
+            color="primary"
             sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              marginBottom: "10px",
-              padding: "10px",
-              borderRadius: "5px",
-              boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
-              backgroundColor: "#ffffff",
+              width: "250px",
+              height: "50px",
+              justifyContent:"center",
+              fontSize:"16px",
+             gap:"20px",
+             marginTop:"93px"
             }}
           >
-            <Typography sx={{ flex: 1, marginRight: "10px" }}>
-              <Button onClick={() => handleDownload("SpecialHoliday.xls")}>
-                Download Current Holiday File (.pdf)
-              </Button>
-            </Typography>
-            <Button type="submit" onClick={formik.handleSubmit}>
-              Submit
-            </Button>
-          </Box>
-        </div>
-
-        <div style={{ flex: 1 }}>
-          <Image
-            width="600"
-            height="500"
-            src="/dashboard/approval/addapprover.png"
-            alt="Image"
-          />
+            <SyncIcon/>
+            <span>Update</span>
+          </Button>
+     
         </div>
       </div>
     </Box>

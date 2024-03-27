@@ -16,7 +16,7 @@ import { useMediaQuery } from "@mui/material";
 
 const Step4Component = ({ formik }) => {
   const handleHoursChange = (increase) => {
-    const [hours, minutes] = formik.values.working_hours.split(":").map(Number);
+    const [hours, minutes] = formik.values.allow_late_attendance.split(":").map(Number);
     let totalMinutes = hours * 60 + minutes;
     totalMinutes = increase ? totalMinutes + 10 : totalMinutes - 10;
     totalMinutes = (totalMinutes + 1440) % 1440;
@@ -25,7 +25,7 @@ const Step4Component = ({ formik }) => {
     const formattedHours = String(newHours).padStart(2, "0");
     const formattedMinutes = String(newMinutes).padStart(2, "0");
     formik.setFieldValue(
-      "working_hours",
+      "allow_late_attendance",
       `${formattedHours}:${formattedMinutes}`
     );
   };
@@ -242,14 +242,14 @@ const Step4Component = ({ formik }) => {
               <FormControlLabel
                 control={
                   <Checkbox
-                    checked={formik.values.allow_late_attendance === 1}
+                    checked={formik.values.allow_late_attendance_checked === 1}
                     onChange={(e) =>
                       formik.setFieldValue(
-                        "allow_late_attendance",
+                        "allow_late_attendance_checked",
                         e.target.checked ? 1 : 0
                       )
                     }
-                    name="allow_late_attendance"
+                    name="allow_late_attendance_checked"
                     style={{
                       marginRight: isScreenSm
                         ? "30px"
@@ -282,7 +282,7 @@ const Step4Component = ({ formik }) => {
                   -
                 </Button>
                 <TextField
-                  // label="Working Hours"
+                  // label="allow_late_attendance"
                   variant="outlined"
                   sx={{
                     width: isScreenSm
@@ -293,11 +293,11 @@ const Step4Component = ({ formik }) => {
                     textAlign: "center",
                   }}
                   margin="normal"
-                  name="working_hours"
+                  name="allow_late_attendance"
                   inputProps={{ style: { textAlign: "center" } }}
-                  {...formik.getFieldProps("working_hours")}
+                  {...formik.getFieldProps("allow_late_attendance")}
                   InputProps={{
-                    disabled: !formik.values.allow_late_attendance,
+                    disabled: !formik.values.allow_late_attendance_checked,
                   }}
                 />
                 <Button
@@ -319,7 +319,7 @@ const Step4Component = ({ formik }) => {
                 marginLeft: isScreenSmall ? "-10px" : "60px",
               }}
             >
-              Over Time Ratio <span style={{ color: "red" }}>*</span>
+              Over Time Ratio 
             </Typography>
             <Box>
               <TextField
@@ -359,7 +359,7 @@ const Step4Component = ({ formik }) => {
               }}
             >
               <FormControlLabel
-                value="all"
+                value="All Net"
                 control={<Radio />}
                 label="All Net"
                 checked={formik.values.allow_network_access === "All Net"}

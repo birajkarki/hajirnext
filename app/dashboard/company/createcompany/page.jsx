@@ -448,6 +448,7 @@ marginLeft: isScreenSmall?"40px":"150px"
                 </Button>
                 {isLoading && <LinearProgress value={uploadProgress} />}
 
+
                 {file && (
                   <Typography variant="body2" sx={{ marginTop: "8px" }}>
                     Uploaded File: {file.name}

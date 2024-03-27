@@ -82,8 +82,21 @@ const EditProfileDialog = ({ open, handleClose, profileData }) => {
   };
 
   const handlePhotoChange = (event) => {
-    formikEdit.setFieldValue("uploadfile", event.target.files[0]);
+    const file = event.target.files[0];
+    const fileType = file.type.split('/').pop().toLowerCase();
+    const acceptedTypes = ['jpeg', 'jpg', 'png', 'gif'];
+  
+    if (file && acceptedTypes.includes(fileType)) {
+      formikEdit.setFieldValue("uploadfile", file);
+    } else {
+      // Display an error message indicating invalid file type
+      alert("Invalid file type. Please upload a jpeg, jpg, png, or gif file.");
+      // Clear the file input
+      event.target.value = null;
+    }
   };
+  
+
   const isScreenSmall = useMediaQuery("(max-width:1024px)");
   const isScreenExtraSmall = useMediaQuery("(max-width:732px)");
   const isScreenSmallest = useMediaQuery("(max-width:539px)");

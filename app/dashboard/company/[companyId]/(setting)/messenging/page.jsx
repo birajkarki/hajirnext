@@ -4,6 +4,11 @@ import { Typography } from "@mui/material";
 import Messaging from "@/components/messaging/Messaging";
 
 const MessagingPage = () => {
+  const [searchText, setSearchText] = useState("");
+
+  const handleSearchTextChange = (e) => {
+    setSearchText(e.target.value);
+  };
   return (
     <div>
       <div>
@@ -20,8 +25,8 @@ const MessagingPage = () => {
             color: "gray",
           }}
         >
-          <p style={{ fontWeight: "200", marginRight: "10px" }}>Home</p>
-          <p style={{ fontWeight: "200", marginRight: "10px" }}>Setting</p>
+          <p style={{ fontWeight: "200", marginRight: "10px" }}>Home</p> <span style={{marginLeft:"10px"}}>/</span>
+          <p style={{ fontWeight: "200", marginRight: "10px" }}>Setting</p> <span style={{marginLeft:"10px"}}>/</span>
           <p style={{ fontWeight: "200" }}>Message</p>
         </div>
       </div>
@@ -30,7 +35,7 @@ const MessagingPage = () => {
       >
         Messages
       </Typography>
-      <Messaging style={{ marginBottom: "10px" }} />
+      <Messaging searchText={searchText}  style={{ marginBottom: "10px" }} />
     </div>
   );
 };

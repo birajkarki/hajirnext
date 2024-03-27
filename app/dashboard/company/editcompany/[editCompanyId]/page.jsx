@@ -113,6 +113,7 @@ const EditCompany = () => {
         height: "100vh",
         padding: "10px",
         backgroundColor: "#fff",
+      
       }}
     >
       <Typography
@@ -130,7 +131,7 @@ const EditCompany = () => {
 
       {/* breadcrumb area  */}
       <div style={{ display: "flex", gap: "20px" }}>
-        <Link href="/dashboard" sx={{ textDecoration: "none" }}>
+        <Link href="/dashboard"  style={{ textDecoration: "none" }}>
           <Typography
             sx={{
               marginTop: "10px",
@@ -145,7 +146,8 @@ const EditCompany = () => {
             Dashboard
           </Typography>
         </Link>
-        <Link href="/dashboard" sx={{ textDecoration: "none" }}>
+    
+        <Link href="/dashboard/company"  style={{ textDecoration: "none" }}>
           <Typography
             sx={{
               marginTop: "10px",
@@ -156,11 +158,11 @@ const EditCompany = () => {
               lineHeight: "21px",
               letterSpacing: "0.15px",
             }}
-          >
-            Company
+          >     <span style={{marginRight:"10px"}}>/</span>
+         Company
           </Typography>
         </Link>
-        <Link href="/dashboard" sx={{ textDecoration: "none" }}>
+        <Link href= {`/dashboard/company/editcompany/${editCompanyId}`} style={{ textDecoration: "none" }}>
           <Typography
             sx={{
               marginTop: "10px",
@@ -172,7 +174,7 @@ const EditCompany = () => {
               letterSpacing: "0.15px",
             }}
           >
-            Update Company
+            <span style={{marginRight:"10px"}}>/</span> Update Company
           </Typography>
         </Link>
       </div>
@@ -190,6 +192,7 @@ const EditCompany = () => {
                 flexDirection: "column",
                 alignItems: "start",
                 mt: 2,
+                ml:-3.5
               }}
             >
               {/* Name of the Company */}
