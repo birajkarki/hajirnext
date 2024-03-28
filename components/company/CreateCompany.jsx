@@ -1,550 +1,523 @@
-// "use client";
-// import React, { useState } from "react";
-// import { styled } from "@mui/material/styles";
-// import Box from "@mui/material/Box";
-// import Paper from "@mui/material/Paper";
-// import Grid from "@mui/material/Grid";
-// import Button from "@mui/material/Button";
-// import SendIcon from "@mui/icons-material/Send";
+'use client'
+import React, { useState } from 'react'
+import * as yup from 'yup'
+import { useFormik } from 'formik'
+import {
+  Box,
+  Typography,
+  Button,
+  TextField,
+  Radio,
+  Grid,
+  FormControlLabel,
+  RadioGroup,
+  LinearProgress,
+  useMediaQuery,
+} from '@mui/material'
+import SyncIcon from '@mui/icons-material/Sync'
 
-// import {
-//   Autocomplete,
-//   Checkbox,
-//   FormControl,
-//   FormControlLabel,
-//   FormGroup,
-//   FormLabel,
-//   Radio,
-//   RadioGroup,
-//   Stack,
-//   TextField,
-//   Typography,
-// } from "@mui/material";
-// import { useRouter } from "next/navigation";
-// import DatePicker from "../form-components/DatePicker";
-// const isScreenSmall = useMediaQuery("(max-width:1406px)");
-// const isScreenSM = useMediaQuery("(max-width:1132px)");
-// const label = { inputProps: { "aria-label": "Checkbox demo" } };
+import AddIcon from '@mui/icons-material/Add'
 
-// const Item = styled(Paper)(({ theme }) => ({
-//   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-//   ...theme.typography.body2,
-//   padding: theme.spacing(4),
-//   textAlign: "left",
-//   color: theme.palette.text.secondary,
-//   display: "flex",
-//   flexDirection: "column",
-//   justifyContent: "center",
-//   alignItems: "stretch",
-//   height: "100%",
-//   gap: theme.spacing(2),
-// }));
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { styled } from '@mui/material/styles'
+import CustomRadioGroup from '@/components/company/createcompany/RadioButton'
+import { useCreateCompanyMutation } from '@/services/api'
+const VisuallyHiddenInput = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
+  height: 1,
+  overflow: 'hidden',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  whiteSpace: 'nowrap',
+  width: 1,
+})
 
-// const SickLeaveAllowed = [
-//   { label: "Weekly" },
-//   { label: "Monthly" },
-//   { label: "Yearly" },
-// ];
-// const ProbationPeriod = [
-//   { label: "Weekly" },
-//   { label: "Monthly" },
-//   { label: "Yearly" },
-// ];
+const CreateCompany = () => {
+  const router = useRouter()
+  const createCompanyMutation = useCreateCompanyMutation()
+  const [file, setFile] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState(0)
+  const isScreenSmall = useMediaQuery('(max-width:1486px)')
+  const isScreenSM = useMediaQuery('(max-width:1134px)')
 
-// export default function CreateCompany({ formik }) {
-//   const [response, setResponse] = useState({});
-//   const router = useRouter();
+  const validationSchema = yup.object({
+    name: yup
+      .string()
+      .required('Full name is required')
+      .matches(/^[A-Za-z][A-Za-z0-9 ]*$/, 'Alphanumeric value only')
+      .test(
+        'first-letter-alphabet',
+        'First letter should be alphabetical for name',
+        (value) => {
+          return /^[A-Za-z]/.test(value)
+        }
+      ),
+    code: yup.string().required('Please select a staff code'),
+    date_type: yup.string().required('Please select a date'),
+    holiday_type: yup
+      .string()
+      .required('Please select holiday type')
+      .oneOf(
+        ['Government', 'Custom'],
+        'Please select either Default Government Holidays or Custom Holidays'
+      ),
+  })
 
-//   const handleDecreaseTime = () => {
-//     updateFormState("workingHours", (prevHours) => Math.max(prevHours - 10, 0));
-//   };
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      code: '',
+      date_type: '',
+      holiday_type: '',
+      // custom_holiday_file: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        setIsLoading(true)
 
-//   const handleIncreaseTime = () => {
-//     updateFormState("workingHours", (prevHours) => prevHours + 10);
-//   };
+        console.log('Data being sent:', values)
+        // Prepare form data
+        const formData = new FormData()
+        formData.append('name', values.name)
+        formData.append('code', values.code)
+        formData.append('date_type', values.date_type)
+        formData.append('holiday_type', values.holiday_type)
+        formData.append('custom_holiday_file', file)
 
-//   const formatTime = (minutes) => {
-//     const hours = Math.floor(minutes / 60);
-//     const mins = minutes % 60;
-//     return `${hours.toString().padStart(2, "0")}:${mins
-//       .toString()
-//       .padStart(2, "0")}`;
-//   };
+        const [mutateAsync] = createCompanyMutation
 
-//   return (
-//     <Box sx={{ flexGrow: 1, height: "100vh", padding: "10px" }}>
-//       <Typography variant="h5">Add New Company</Typography>
+        const { data } = await mutateAsync(formData, {
+          onUploadProgress: (progressEvent) => {
+            const progress = Math.round(
+              (progressEvent.loaded / progressEvent.total) * 100
+            )
+            setUploadProgress(progress)
+          },
+        })
 
-//       <Grid container spacing={2}>
-//         <Grid 
-//         item xs={12} md={6}
-//         >
-//           <Item>
-//             <TextField
-//               id="standard-basic"
-//               label="Company Name"
-//               variant="standard"
-//           // sx={{
-//           //   width:isScreenSM?"140px": isScreenSmall?"190px" : "290px"
-//           // }}
-//             />
-//             <FormControl component="fieldset" row>
-//               <FormLabel row  id="demo-row-radio-buttons-group-label" component="legend">Staff Code <span style={{color:'red'}}>*</span></FormLabel>
-//               <RadioGroup
-//                 row
-//                 name="row-radio-buttons-group"
-//                 defaultValue="Auto"
-//               >
-//                 <FormControlLabel
-//                   value="Auto"
-//                   control={<Radio />}
-//                   label="Auto"
-//                 />
-//                 <FormControlLabel
-//                   value="Custom"
-//                   control={<Radio />}
-//                   label="Custom"
-//                 />
-//               </RadioGroup>
-//             </FormControl>
-//             <FormControl component="fieldset" row>
-//               <FormLabel component="legend">Date Selection <span style={{color:'red'}}>*</span></FormLabel>
-//               <RadioGroup
-//                 row
-//                 name="row-radio-buttons-group"
-//                 defaultValue="English"
-//               >
-//                 <FormControlLabel
-//                   value="English"
-//                   control={<Radio />}
-//                   label="English"
-//                 />
-//                 <FormControlLabel
-//                   value="Nepali"
-//                   control={<Radio />}
-//                   label="Nepali"
-//                 />
-//               </RadioGroup>
-//             </FormControl>
-//             <FormControl component="fieldset">
-//               <FormLabel component="legend">Salary Calculation</FormLabel>
-//               <RadioGroup
-//                 row
-//                 name="row-radio-buttons-group"
-//                 defaultValue="Calendar Days"
-//               >
-//                 <FormControlLabel
-//                   value="Calendar Days"
-//                   control={<Radio />}
-//                   label="Calendar Days"
-//                 />
-//                 <FormControlLabel
-//                   value="30 Days"
-//                   control={<Radio />}
-//                   label="30 Days"
-//                 />
-//               </RadioGroup>
-//             </FormControl>
-//             <Grid container spacing={2}>
-//               <DatePicker
-//                 title="Government Days"
-//                 placeholder="Select a government day"
-//                 dateFormat={(date) => new Date(date).toDateString()}
-//                 onDelete={(newDates) =>
-//                   console.log("New government dates:", newDates)
-//                 }
-//               />
-//             </Grid>
-//             <Grid container spacing={2}>
-//               <DatePicker
-//                 title="Holidays Days"
-//                 placeholder="Select a holidays day"
-//                 dateFormat={(date) => new Date(date).toDateString()}
-//                 onDelete={(newDates) =>
-//                   console.log("New holidays dates:", newDates)
-//                 }
-//               />
-//             </Grid>
+        await mutateAsync(values)
 
-//             <Grid container spacing={2}>
-//               <Grid item xs={12} md={6}>
-//                 <Grid container spacing={2}>
-//                   <Typography variant="h6" gutterBottom>
-//                     Sick Leave Allowed
-//                   </Typography>
-//                   <Autocomplete
-//                     disablePortal
-//                     id="combo-box-demo"
-//                     options={SickLeaveAllowed}
-//                     sx={{ width: 300 }}
-//                     renderInput={(params) => (
-//                       <TextField
-//                         {...params}
-//                         label="Sick Leave Allowed"
-//                         fullWidth
-//                       />
-//                     )}
-//                   />
-//                 </Grid>
-//               </Grid>
-//             </Grid>
-//           </Item>
-//         </Grid>
-//         <Grid item xs={6}>
-//           <Grid container spacing={2}>
-//             <Grid item xs={12} md={6}>
-//               <Grid container spacing={2}>
-//                 <Typography variant="h6" gutterBottom>
-//                   Probation Period
-//                 </Typography>
-//                 <Autocomplete
-//                   disablePortal
-//                   id="combo-box-demo"
-//                   options={ProbationPeriod}
-//                   sx={{ width: 300 }}
-//                   renderInput={(params) => (
-//                     <TextField {...params} label="Probation Period" fullWidth />
-//                   )}
-//                 />
-//               </Grid>
-//             </Grid>
-//           </Grid>
-//           <Typography variant="h6" gutterBottom>
-//             Business Leave Days *
-//           </Typography>
-//           <FormGroup>
-//             <FormControlLabel control={<Checkbox />} label="Sunday" />
-//             <FormControlLabel control={<Checkbox />} label="Monday" />
-//             <FormControlLabel control={<Checkbox />} label="Tuesday" />
-//             <FormControlLabel control={<Checkbox />} label="Wednesday" />
-//             <FormControlLabel control={<Checkbox />} label="Thursday" />
-//             <FormControlLabel control={<Checkbox />} label="Friday" />
-//             <FormControlLabel control={<Checkbox />} label="Saturday" />
-//           </FormGroup>
-//           <div className="mb-4 mt-8">
-//             <Typography variant="h6">Office Working Hours</Typography>
-//             <div className="flex items-center space-x-3">
-//               <Button
-//                 onClick={handleDecreaseTime}
-//                 variant="contained"
-//                 color="primary"
-//                 size="small"
-//               >
-//                 -
-//               </Button>
-//               {/* <Typography>{formatTime(formState.workingHours)}</Typography> */}
-//               <Button
-//                 onClick={handleIncreaseTime}
-//                 variant="contained"
-//                 color="primary"
-//                 size="small"
-//               >
-//                 +
-//               </Button>
-//             </div>"use client";
-// import React, { useState } from "react";
-// import { styled } from "@mui/material/styles";
-// import Box from "@mui/material/Box";
-// import Paper from "@mui/material/Paper";
-// import Grid from "@mui/material/Grid";
-// import Button from "@mui/material/Button";
-// import SendIcon from "@mui/icons-material/Send";
+        console.log('Company added successfully:', data)
 
-// import {
-//   Autocomplete,
-//   Checkbox,
-//   FormControl,
-//   FormControlLabel,
-//   FormGroup,
-//   FormLabel,
-//   Radio,
-//   RadioGroup,
-//   Stack,
-//   TextField,
-//   Typography,
-// } from "@mui/material";
-// import { useRouter } from "next/navigation";
-// import DatePicker from "../form-components/DatePicker";
-// const isScreenSmall = useMediaQuery("(max-width:1406px)");
-// const isScreenSM = useMediaQuery("(max-width:1132px)");
-// const label = { inputProps: { "aria-label": "Checkbox demo" } };
+        alert('Company added successfully!')
+        resetForm()
 
-// const Item = styled(Paper)(({ theme }) => ({
-//   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-//   ...theme.typography.body2,
-//   padding: theme.spacing(4),
-//   textAlign: "left",
-//   color: theme.palette.text.secondary,
-//   display: "flex",
-//   flexDirection: "column",
-//   justifyContent: "center",
-//   alignItems: "stretch",
-//   height: "100%",
-//   gap: theme.spacing(2),
-// }));
+        router.push('/dashboard/company')
+      } catch (error) {
+        console.error('Error adding company:', error)
 
-// const SickLeaveAllowed = [
-//   { label: "Weekly" },
-//   { label: "Monthly" },
-//   { label: "Yearly" },
-// ];
-// const ProbationPeriod = [
-//   { label: "Weekly" },
-//   { label: "Monthly" },
-//   { label: "Yearly" },
-// ];
+        alert('Error adding company. Please try again.')
+      }
+    },
+  })
 
-// export default function CreateCompany({ formik }) {
-//   const [response, setResponse] = useState({});
-//   const router = useRouter();
+  const handleFileChange = (event) => {
+    const uploadedFile = event.target.files[0]
+    setFile(uploadedFile)
+    console.log(uploadedFile)
+  }
+  const handleDownload = (fileName) => {
+    const filePath = `/${fileName}`
 
-//   const handleDecreaseTime = () => {
-//     updateFormState("workingHours", (prevHours) => Math.max(prevHours - 10, 0));
-//   };
+    const link = document.createElement('a')
+    link.href = filePath
+    link.download = fileName
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+  return (
+    <Box
+      sx={{
+        flexGrow: 1,
+        height: '100vh',
+        padding: '10px',
+        backgroundColor: '#fff',
+        marginTop: '70px',
+      }}
+    >
+      <Typography
+        sx={{
+          color: '#434345',
+          fontSize: '24px',
+          fontStyle: 'normal',
+          fontWeight: 500,
+          lineHeight: '24px',
+          letterSpacing: '0.25px',
+        }}
+      >
+        Create New Company
+      </Typography>
 
-//   const handleIncreaseTime = () => {
-//     updateFormState("workingHours", (prevHours) => prevHours + 10);
-//   };
+      {/* breadcrumb area  */}
+      <div style={{ display: 'flex', gap: '20px', marginLeft: '4px' }}>
+        <Link href="/dashboard" style={{ textDecoration: 'none' }}>
+          <Typography
+            sx={{
+              marginTop: '10px',
+              color: '#434345',
+              fontSize: '16px',
+              fontStyle: 'normal',
+              fontWeight: '400',
+              lineHeight: '21px',
+              letterSpacing: '0.15px',
+            }}
+          >
+            Dashboard <span style={{ marginLeft: '10px' }}>/</span>
+          </Typography>
+        </Link>
+        <Link href="/dashboard/company" style={{ textDecoration: 'none' }}>
+          <Typography
+            sx={{
+              marginTop: '10px',
+              color: '#434345',
+              fontSize: '16px',
+              fontStyle: 'normal',
+              fontWeight: '400',
+              lineHeight: '21px',
+              letterSpacing: '0.15px',
+              textDecoration: 'none',
+            }}
+          >
+            Company <span style={{ marginLeft: '10px' }}></span> /
+          </Typography>
+        </Link>
+        <Link
+          href="/dashboard/company/createcompany"
+          style={{ textDecoration: 'none' }}
+        >
+          <Typography
+            sx={{
+              marginTop: '10px',
+              color: '#434345CC',
 
-//   const formatTime = (minutes) => {
-//     const hours = Math.floor(minutes / 60);
-//     const mins = minutes % 60;
-//     return `${hours.toString().padStart(2, "0")}:${mins
-//       .toString()
-//       .padStart(2, "0")}`;
-//   };
+              fontSize: '16px',
+              fontStyle: 'normal',
+              fontWeight: '400',
+              lineHeight: '21px',
+              letterSpacing: '0.15px',
+            }}
+          >
+            New Company
+          </Typography>
+        </Link>
+      </div>
 
-//   return (
-//     <Box sx={{ flexGrow: 1, height: "100vh", padding: "10px" }}>
-//       <Typography variant="h5">Add New Company</Typography>
+      <form onSubmit={formik.handleSubmit} style={{ marginTop: '20px' }}>
+        <Grid container>
+          {/* Left Column */}
+          <Grid item xs={6}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'start',
+                mt: 2,
+              }}
+            >
+              {/* Name of the Company */}
+              <Typography variant="body1">
+                Name of your Company <span style={{ color: 'red' }}> *</span>
+              </Typography>
+              <TextField
+                label="Enter Company Name"
+                variant="outlined"
+                sx={{
+                  width: isScreenSM
+                    ? '220px'
+                    : isScreenSmall
+                    ? '380px'
+                    : '552px',
+                }}
+                margin="normal"
+                {...formik.getFieldProps('name')}
+                error={formik.touched.name && Boolean(formik.errors.name)}
+                helperText={formik.touched.name && formik.errors.name}
+              />
 
-//       <Grid container spacing={2}>
-//         <Grid 
-//         item xs={12} md={6}
-//         >
-//           <Item>
-//             <TextField
-//               id="standard-basic"
-//               label="Company Name"
-//               variant="standard"
-//           // sx={{
-//           //   width:isScreenSM?"140px": isScreenSmall?"190px" : "290px"
-//           // }}
-//             />
-//             <FormControl component="fieldset" row>
-//               <FormLabel row  id="demo-row-radio-buttons-group-label" component="legend">Staff Code <span style={{color:'red'}}>*</span></FormLabel>
-//               <RadioGroup
-//                 row
-//                 name="row-radio-buttons-group"
-//                 defaultValue="Auto"
-//               >
-//                 <FormControlLabel
-//                   value="Auto"
-//                   control={<Radio />}
-//                   label="Auto"
-//                 />
-//                 <FormControlLabel
-//                   value="Custom"
-//                   control={<Radio />}
-//                   label="Custom"
-//                 />
-//               </RadioGroup>
-//             </FormControl>
-//             <FormControl component="fieldset" row>
-//               <FormLabel component="legend">Date Selection <span style={{color:'red'}}>*</span></FormLabel>
-//               <RadioGroup
-//                 row
-//                 name="row-radio-buttons-group"
-//                 defaultValue="English"
-//               >
-//                 <FormControlLabel
-//                   value="English"
-//                   control={<Radio />}
-//                   label="English"
-//                 />
-//                 <FormControlLabel
-//                   value="Nepali"
-//                   control={<Radio />}
-//                   label="Nepali"
-//                 />
-//               </RadioGroup>
-//             </FormControl>
-//             <FormControl component="fieldset">
-//               <FormLabel component="legend">Salary Calculation</FormLabel>
-//               <RadioGroup
-//                 row
-//                 name="row-radio-buttons-group"
-//                 defaultValue="Calendar Days"
-//               >
-//                 <FormControlLabel
-//                   value="Calendar Days"
-//                   control={<Radio />}
-//                   label="Calendar Days"
-//                 />
-//                 <FormControlLabel
-//                   value="30 Days"
-//                   control={<Radio />}
-//                   label="30 Days"
-//                 />
-//               </RadioGroup>
-//             </FormControl>
-//             <Grid container spacing={2}>
-//               <DatePicker
-//                 title="Government Days"
-//                 placeholder="Select a government day"
-//                 dateFormat={(date) => new Date(date).toDateString()}
-//                 onDelete={(newDates) =>
-//                   console.log("New government dates:", newDates)
-//                 }
-//               />
-//             </Grid>
-//             <Grid container spacing={2}>
-//               <DatePicker
-//                 title="Holidays Days"
-//                 placeholder="Select a holidays day"
-//                 dateFormat={(date) => new Date(date).toDateString()}
-//                 onDelete={(newDates) =>
-//                   console.log("New holidays dates:", newDates)
-//                 }
-//               />
-//             </Grid>
+              {/* New Staff Code Selection  */}
 
-//             <Grid container spacing={2}>
-//               <Grid item xs={12} md={6}>
-//                 <Grid container spacing={2}>
-//                   <Typography variant="h6" gutterBottom>
-//                     Sick Leave Allowed
-//                   </Typography>
-//                   <Autocomplete
-//                     disablePortal
-//                     id="combo-box-demo"
-//                     options={SickLeaveAllowed}
-//                     sx={{ width: 300 }}
-//                     renderInput={(params) => (
-//                       <TextField
-//                         {...params}
-//                         label="Sick Leave Allowed"
-//                         fullWidth
-//                       />
-//                     )}
-//                   />
-//                 </Grid>
-//               </Grid>
-//             </Grid>
-//           </Item>
-//         </Grid>
-//         <Grid item xs={6}>
-//           <Grid container spacing={2}>
-//             <Grid item xs={12} md={6}>
-//               <Grid container spacing={2}>
-//                 <Typography variant="h6" gutterBottom>
-//                   Probation Period
-//                 </Typography>
-//                 <Autocomplete
-//                   disablePortal
-//                   id="combo-box-demo"
-//                   options={ProbationPeriod}
-//                   sx={{ width: 300 }}
-//                   renderInput={(params) => (
-//                     <TextField {...params} label="Probation Period" fullWidth />
-//                   )}
-//                 />
-//               </Grid>
-//             </Grid>
-//           </Grid>
-//           <Typography variant="h6" gutterBottom>
-//             Business Leave Days *
-//           </Typography>
-//           <FormGroup>
-//             <FormControlLabel control={<Checkbox />} label="Sunday" />
-//             <FormControlLabel control={<Checkbox />} label="Monday" />
-//             <FormControlLabel control={<Checkbox />} label="Tuesday" />
-//             <FormControlLabel control={<Checkbox />} label="Wednesday" />
-//             <FormControlLabel control={<Checkbox />} label="Thursday" />
-//             <FormControlLabel control={<Checkbox />} label="Friday" />
-//             <FormControlLabel control={<Checkbox />} label="Saturday" />
-//           </FormGroup>
-//           <div className="mb-4 mt-8">
-//             <Typography variant="h6">Office Working Hours</Typography>
-//             <div className="flex items-center space-x-3">
-//               <Button
-//                 onClick={handleDecreaseTime}
-//                 variant="contained"
-//                 color="primary"
-//                 size="small"
-//               >
-//                 -
-//               </Button>
-//               {/* <Typography>{formatTime(formState.workingHours)}</Typography> */}
-//               <Button
-//                 onClick={handleIncreaseTime}
-//                 variant="contained"
-//                 color="primary"
-//                 size="small"
-//               >
-//                 +
-//               </Button>
-//             </div>
-//           </div>
-//           <FormControl component="fieldset">
-//             <FormLabel component="legend">Access Network</FormLabel>
-//             <RadioGroup
-//               row
-//               name="row-radio-buttons-group"
-//               defaultValue="Calendar Days"
-//             >
-//               <FormControlLabel
-//                 value="Any Network"
-//                 control={<Radio />}
-//                 label="Any Network"
-//               />
-//               <FormControlLabel
-//                 value="QR Code"
-//                 control={<Radio />}
-//                 label="QR Code"
-//               />
-//             </RadioGroup>
-//           </FormControl>
-//           <br />
-//           <Stack direction="row" spacing={2}>
-//             <Button variant="contained" endIcon={<SendIcon />}>
-//               Send
-//             </Button>
-//           </Stack>
-//         </Grid>
-//       </Grid>
-//     </Box>
-//   );
-// }
+              <Typography variant="body1" sx={{ marginBottom: '8px' }}>
+                Staff Code <span style={{ color: 'red' }}>*</span>
+              </Typography>
+              <CustomRadioGroup
+                name="code"
+                value={formik.values.code}
+                // onChange={(value) => formik.setFieldValue("code", value)}
+                options={[
+                  {
+                    value: '1',
+                    label: 'Auto',
+                    description: 'E.g.: R001, R002, ROO3 ',
+                  },
+                  {
+                    value: '2',
+                    label: 'Custom',
+                    description: 'E.g.: 021, 022 or 0100, 0101 ',
+                  },
+                ]}
+                setFieldValue={formik.setFieldValue}
+              />
+              {formik.touched.code && Boolean(formik.errors.code) && (
+                <span
+                  style={{
+                    color: '#cc0000',
+                    marginTop: '-10px',
+                    fontSize: '13px',
+                    marginLeft: '9px',
+                  }}
+                >
+                  {formik.errors.code}
+                </span>
+              )}
 
-//           </div>
-//           <FormControl component="fieldset">
-//             <FormLabel component="legend">Access Network</FormLabel>
-//             <RadioGroup
-//               row
-//               name="row-radio-buttons-group"
-//               defaultValue="Calendar Days"
-//             >
-//               <FormControlLabel
-//                 value="Any Network"
-//                 control={<Radio />}
-//                 label="Any Network"
-//               />
-//               <FormControlLabel
-//                 value="QR Code"
-//                 control={<Radio />}
-//                 label="QR Code"
-//               />
-//             </RadioGroup>
-//           </FormControl>
-//           <br />
-//           <Stack direction="row" spacing={2}>
-//             <Button variant="contained" endIcon={<SendIcon />}>
-//               Send
-//             </Button>
-//           </Stack>
-//         </Grid>
-//       </Grid>
-//     </Box>
-//   );
-// }
+              {/* New Date Selection  */}
+
+              <Typography variant="body1" sx={{ marginBottom: '8px' }}>
+                Date Selection <span style={{ color: 'red' }}>*</span>
+              </Typography>
+              <CustomRadioGroup
+                name="date_type"
+                value={formik.values.date_type}
+                options={[
+                  {
+                    value: 'English',
+                    label: 'English',
+                    description: 'E.g.: R001, R002, ROO3',
+                  },
+                  {
+                    value: 'Nepali',
+                    label: 'Nepali',
+                    description: 'E.g.: R001, R002, ROO3',
+                  },
+                ]}
+                setFieldValue={formik.setFieldValue}
+              />
+              {formik.touched.date_type && Boolean(formik.errors.date_type) && (
+                <span
+                  style={{
+                    color: '#cc0000',
+                    marginTop: '-10px',
+                    fontSize: '13px',
+                    marginLeft: '9px',
+                  }}
+                >
+                  {formik.errors.date_type}
+                </span>
+              )}
+            </Box>
+          </Grid>
+
+          {/* Right Column */}
+          <Grid item xs={6}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'start',
+                mt: -2.5,
+              }}
+            >
+              <Typography variant="body1" sx={{ marginTop: '38px' }}>
+                Holidays <span style={{ color: 'red' }}>*</span>
+              </Typography>
+              <Box sx={{ marginBottom: '16px' }}>
+                <Box
+                  sx={{
+                    border: '1px solid #ccc',
+                    borderRadius: '4px',
+                    padding: '16px',
+                    width: isScreenSM
+                      ? '250px'
+                      : isScreenSmall
+                      ? '300px'
+                      : '600px',
+                    display: 'flex',
+                    transition: 'background 0.3s, border 0.3s',
+                    '&:hover': { background: '#f5f5f5' },
+                    marginTop: '14px',
+                    height: '57px',
+                    display: 'flex',
+
+                    alignItems: 'center',
+                  }}
+                >
+                  <RadioGroup
+                    row
+                    name="holiday_type"
+                    value={formik.values.holiday_type}
+                    onChange={formik.handleChange}
+                  >
+                    <FormControlLabel
+                      value="Government"
+                      control={<Radio />}
+                      label="Governmental Holidays"
+                    />
+                  </RadioGroup>
+                </Box>
+              </Box>
+              <span
+                onClick={() => handleDownload('example1.pdf')}
+                style={{
+                  marginLeft: isScreenSmall ? '40px' : '150px',
+                }}
+              >
+                <Typography
+                  variant="body2"
+                  sx={{
+                    marginTop: '-9px',
+                    display: 'flex',
+                    textAlign: 'center',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    color: '#434345CC',
+                    cursor: 'pointer',
+                    textDecoration: 'underline',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    letterSpacing: '0.15px',
+                  }}
+                >
+                  View Holidays (.pdf)
+                </Typography>
+              </span>
+              <Box>
+                {/* Custom Holidays Box */}
+                <Box
+                  sx={{
+                    border: '1px solid #ccc',
+                    borderRadius: '4px',
+                    padding: '16px',
+
+                    width: isScreenSM
+                      ? '250px'
+                      : isScreenSmall
+                      ? '300px'
+                      : '600px',
+
+                    display: 'flex',
+                    transition: 'background 0.3s, border 0.3s',
+                    '&:hover': { background: '#f5f5f5' },
+                    marginTop: '12px',
+                    // marginTop: "14px",
+                    height: '57px',
+                    alignItems: 'center',
+                  }}
+                >
+                  <RadioGroup
+                    row
+                    name="holiday_type"
+                    value={formik.values.holiday_type}
+                    onChange={formik.handleChange}
+                  >
+                    <FormControlLabel
+                      value="Custom"
+                      control={<Radio />}
+                      label="Custom Holidays"
+                    />
+                  </RadioGroup>
+                </Box>
+                {formik.touched.holiday_type && formik.errors.holiday_type && (
+                  <span
+                    style={{
+                      color: '#cc0000',
+                      marginTop: '4px',
+                      fontSize: '13px',
+                      marginLeft: '9px',
+                    }}
+                  >
+                    {formik.errors.holiday_type}
+                  </span>
+                )}
+              </Box>
+              <span
+                onClick={() => handleDownload('SpecialHoliday.xls')}
+                sx={{ width: '253px', fontSize: '14px', fontWeight: '500' }}
+              >
+                <Typography
+                  variant="body2"
+                  sx={{
+                    marginTop: '8px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    textDecoration: 'underline',
+                    marginLeft: isScreenSmall ? '3px' : '120px',
+                    fontWeight: '500',
+                    letterSpacing: '0.15px',
+                    color: '#434345CC',
+                    cursor: 'pointer',
+                  }}
+                >
+                  Click to download sample file (.xlsx)
+                </Typography>
+              </span>{' '}
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  flexDirection: 'column',
+                  marginTop: '16px',
+                }}
+              >
+                <Button
+                  variant="contained"
+                  component="label"
+                  sx={{
+                    backgroundColor: 'white',
+                    color: '#22408B',
+                    '&:hover': {
+                      backgroundColor: 'white', // Prevent background color change on hover
+                    },
+                  }}
+                >
+                  <AddIcon />
+                  Import Holidays
+                  <input type="file" onChange={handleFileChange} hidden />
+                </Button>
+                {isLoading && <LinearProgress value={uploadProgress} />}
+
+                {file && (
+                  <Typography variant="body2" sx={{ marginTop: '8px' }}>
+                    Uploaded File: {file.name}
+                  </Typography>
+                )}
+              </Box>
+            </Box>
+          </Grid>
+        </Grid>
+
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            mt: 2,
+          }}
+        >
+          <Button
+            type="submit"
+            variant="contained"
+            disabled={isLoading}
+            color="primary"
+            sx={{
+              width: '250px',
+              height: '50px',
+              justifyContent: 'center',
+              fontSize: '16px',
+              gap: '20px',
+            }}
+          >
+            <SyncIcon />
+            <span>Update</span>
+          </Button>
+        </Box>
+      </form>
+    </Box>
+  )
+}
+
+export default CreateCompany

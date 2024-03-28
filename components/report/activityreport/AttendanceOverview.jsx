@@ -1,283 +1,158 @@
-"use client";
-import * as React from "react";
-import { useState } from "react";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import IconButton from "@mui/material/IconButton";
-import GetAppIcon from "@mui/icons-material/GetApp";
-import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
-import EventIcon from "@mui/icons-material/Event";
-import CircularProgress from "@mui/material/CircularProgress";
-import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
-import { Paper } from "@mui/material";
-import { Stack } from "@mui/system";
-import { useParams } from "next/navigation";
-import Link from "next/link";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
+'use client'
+import { Box, Button } from '@mui/material'
+import React, { useState, useEffect } from 'react'
+import { DateRange } from 'react-date-range'
+import 'react-date-range/dist/styles.css'
+import 'react-date-range/dist/theme/default.css'
+
 const AttendanceOverview = () => {
-  const currentYear = new Date().getFullYear();
-  const currentMonth = new Date().toLocaleString("default", { month: "long" });
+  const [selectionRange, setSelectionRange] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+    key: 'selection',
+  })
+  const [selectedComponent, setSelectedComponent] = useState(null)
 
-  const yearOptions = Array.from(
-    { length: 5 },
-    (_, index) => currentYear - index
-  );
+  const handlePresetClick = (preset) => {
+    const now = new Date()
+    let startDate, endDate
 
-  const monthOptions = Array.from({ length: 12 }, (_, index) => {
-    const month = new Date(0, index).toLocaleString("default", {
-      month: "long",
-    });
-    return { value: month, label: month };
-  });
-  const { companyId } = useParams();
+    switch (preset) {
+      case 'today':
+        startDate = now
+        endDate = now
+        break
+      // case 'yesterday':
+      //   startDate = new Date(now)
+      //   startDate.setDate(now.getDate() - 1)
+      //   endDate = new Date(now)
+      //   endDate.setDate(now.getDate() - 1)
+      //   break
+      case 'thisWeek':
+        startDate = new Date(now)
+        startDate.setDate(now.getDate() - now.getDay())
+        endDate = new Date(now)
+        endDate.setDate(startDate.getDate() + 6)
+        break
+      // case 'lastWeek':
+      //   startDate = new Date(now)
+      //   startDate.setDate(now.getDate() - now.getDay() - 7)
+      //   endDate = new Date(now)
+      //   endDate.setDate(startDate.getDate() + 6)
+      //   break
+      case 'thisMonth':
+        startDate = new Date(now.getFullYear(), now.getMonth(), 1)
+        endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0)
+        break
+      // case 'lastMonth':
+      //   startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1)
+      //   endDate = new Date(now.getFullYear(), now.getMonth(), 0)
+      //   break
+      case 'allMonths':
+        startDate = new Date(now.getFullYear(), 0, 1)
+        endDate = new Date(now.getFullYear(), 11, 31)
+        break
+      // case "thisYear":
+      //   startDate = new Date(now.getFullYear(), 0, 1);
+      //   endDate = new Date(now.getFullYear(), 11, 31);
+      //   break;
+      default:
+        startDate = now
+        endDate = now
+        break
+    }
 
-  const [selectedYear, setSelectedYear] = useState(currentYear);
-  const [selectedMonth, setSelectedMonth] = useState(currentMonth);
+    setSelectionRange({ startDate, endDate, key: 'selection' })
+  }
 
-  const handleYearChange = (event) => {
-    setSelectedYear(event.target.value);
-  };
-
-  const handleMonthChange = (event) => {
-    setSelectedMonth(event.target.value);
-  };
-  // Mock data for attendance performance (90%)
-  const attendancePercentage = 90;
-
-  // Mock data for calendar (present, absent, leave)
-  const calendarData = [
-    { day: 1, status: "present" },
-    { day: 2, status: "absent" },
-    // ... more data
-  ];
-
-  // Mock data for attendance metrics
-  const data = [
-    {
-      label: "Attendance",
-      value: 90,
-      color: "#0080000D",
-      borderColor: "#008000",
-      href: `/dashboard/company/${companyId}/activityreport/attendance/`,
-    },
-    {
-      label: "Absent",
-      value: 10,
-      color: "#FF50500D",
-      borderColor: "#FF5050",
-      // backgroundColor: "white",
-      href: `/dashboard/company/${companyId}/activityreport/absent/`,
-    },
-    {
-      label: "Late Clock In",
-      value: 5,
-      color: "#22408B0D",
-      borderColor: "#22408B",
-      href: `/dashboard/company/${companyId}/activityreport/lateclockin/`,
-    },
-    {
-      label: "Early clock in",
-      value: 20,
-      color: "#8000800D",
-      borderColor: "#800080",
-      href: `/dashboard/company/${companyId}/activityreport/earlyclockin/`,
-    },
-    {
-      label: "Leave Taken",
-      value: 10,
-      color: "#FFA5000D",
-      borderColor: "#FFA500",
-      href: `/dashboard/company/${companyId}/activityreport/leavetaken/`,
-    },
-    {
-      label: "Extra Taken",
-      value: 5,
-      color: "#EA00E10D",
-      borderColor: "#EA00E1",
-      href: `/dashboard/company/${companyId}/activityreport/extrabreaktaken/`,
-    },
-  ];
+  useEffect(() => {
+    const diffInDays = Math.floor(
+      (selectionRange.endDate - selectionRange.startDate) /
+        (1000 * 60 * 60 * 24)
+    )
+    const diffInMonths =
+      selectionRange.endDate.getMonth() -
+      selectionRange.startDate.getMonth() +
+      12 *
+        (selectionRange.endDate.getFullYear() -
+          selectionRange.startDate.getFullYear())
+    if (diffInDays === 0) {
+      setSelectedComponent()
+      // <DailyPerformanceReport
+      //   startDateValue={selectionRange.startDate.toLocaleDateString()}
+      //   startDate={selectionRange.startDate}
+      // />
+    } else if (diffInDays <= 6) {
+      // Less than or equal to 6 days, render weekly report
+      setSelectedComponent()
+      // <WeeklyPerformanceReport
+      //   startDateValue={selectionRange.startDate}
+      //   endDateValue={selectionRange.endDate}
+      // />
+    } else if (diffInMonths === 0) {
+      // Less than or equal to 1 month, render monthly report
+      setSelectedComponent()
+      // <MonthlyPerformanceReport
+      //   startDateValue={selectionRange.startDate}
+      //   endDateValue={selectionRange.endDate}
+      //   startDate={selectionRange.startDate}
+      // />
+    } else if (diffInMonths < 12) {
+      // Less than or equal to 1 year, render yearly report
+      setSelectedComponent()
+      // <YearlyPerformanceReport
+      //   startDateValue={selectionRange.startDate}
+      //   endDateValue={selectionRange.endDate}
+      // />
+    }
+  }, [selectionRange])
 
   return (
-    <Box>
-      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Typography variant="h6">Year:</Typography>
-          <Select
-            value={selectedYear}
-            onChange={handleYearChange}
-            sx={{ ml: 2 }}
-          >
-            {yearOptions.map((year) => (
-              <MenuItem key={year} value={year}>
-                {year}
-              </MenuItem>
-            ))}
-          </Select>
-        </Box>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Typography variant="h6">Month:</Typography>
-          <Select
-            value={selectedMonth}
-            onChange={handleMonthChange}
-            sx={{ ml: 2 }}
-          >
-            {monthOptions.map((month) => (
-              <MenuItem key={month.value} value={month.value}>
-                {month.label}
-              </MenuItem>
-            ))}
-          </Select>
-        </Box>
-      </Box>
-      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+    <Box width="100%">
+      <Box display="flex">
         <Box
-          sx={{
-            width: "50%",
-            backgroundColor: "#f5f5f5",
-            padding: 2,
-            borderRadius: 8,
-          }}
+          marginRight="20px"
+          display="flex"
+          flexDirection="column"
+          gap="10px"
         >
-          <Typography variant="h6" mb={2}>
-            Attendance Performance
-          </Typography>
-          {/* Professional-looking circular progress */}
-          <Box
-            sx={{
-              position: "relative",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              height: 150,
-            }}
-          >
-            <CircularProgress
-              variant="determinate"
-              value={50}
-              color="success"
-              size={175}
-              thickness={4}
-              vairnet="determinate"
-            />
-            <Typography
-              variant="h4"
-              color="textPrimary"
-              sx={{
-                position: "absolute",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: "100%",
-                height: "100%",
-              }}
-            >
-              50%
-            </Typography>
-          </Box>
-
-          <Box sx={{ mt: 2 }}>
-            <IconButton color="primary" aria-label="Download PDF">
-              <PictureAsPdfIcon />
-            </IconButton>
-            <IconButton color="primary" aria-label="Download Excel">
-              <GetAppIcon />
-            </IconButton>
-          </Box>
+          <Button onClick={() => handlePresetClick('today')}>Today</Button>
+          {/* <Button onClick={() => handlePresetClick('yesterday')}>
+            Yesterday
+          </Button> */}
+          <Button onClick={() => handlePresetClick('thisWeek')}>
+            This Week
+          </Button>
+          {/* <Button onClick={() => handlePresetClick('lastWeek')}>
+            Last Week
+          </Button> */}
+          <Button onClick={() => handlePresetClick('thisMonth')}>
+            This Month
+          </Button>
+          {/* <Button onClick={() => handlePresetClick('lastMonth')}>
+            Last Month
+          </Button> */}
+          <Button onClick={() => handlePresetClick('allMonths')}>
+            This Year
+          </Button>
         </Box>
-        <Box
-          sx={{
-            width: "50%",
-            backgroundColor: "#f5f5f5",
-            padding: 2,
-            borderRadius: 8,
-          }}
-        >
-          <Typography variant="h6" mb={2}>
-            Calendar View
-          </Typography>
-          {/* Full calendar view */}
-          {/* <Box
-            sx={{
-              display: "grid",
-              gridTemplateColumns: "repeat(7, 1fr)",
-              gap: 1,
-              textAlign: "center",
-            }}
-          >
-            {Array.from({ length: 31 }, (_, index) => (
-              <Box
-                key={index + 1}
-                sx={{
-                  width: "30px",
-                  height: "30px",
-                  borderRadius: "50%",
-                  backgroundColor:
-                    calendarData[index]?.status === "present"
-                      ? "#4CAF50"
-                      : calendarData[index]?.status === "absent"
-                      ? "#FF5252"
-                      : "#FFC107",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "0.8em",
-                  color: "white",
-                  mb: 1,
-                }}
-              >
-                {index + 1}
-              </Box>
-            ))}
-          </Box> */}
-          {/* mui calender code need to add in new file */}
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateCalendar sx={{ width: "100%", height: "100%" }} />
-          </LocalizationProvider>
-          <IconButton color="primary" aria-label="View Full Calendar">
-            <EventIcon />
-          </IconButton>
-        </Box>
+        <DateRange
+          editableDateInputs={true}
+          months={1}
+          onChange={(ranges) => setSelectionRange(ranges.selection)}
+          moveRangeOnFirstSelection={false}
+          ranges={[selectionRange]}
+          scroll={{ enabled: true }}
+          direction="vertical"
+          onRangeFocusChange={(focusedRange) => console.log(focusedRange)}
+          rangeColors={['#3e82f7']}
+        />
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          mb: 2,
-          flexWrap: "wrap",
-        }}
-      >
-        {data.map(({ label, value, color, borderColor, href }) => (
-          <Box
-            key={label}
-            sx={{
-              flex: "0 0 30%", // Set to 30% width for three boxes in one line
-              backgroundColor: color,
-              padding: 2,
-              textDecoration: "none",
-              borderRadius: 3,
-              textAlign: "center",
-              border: `1px solid ${borderColor}`,
-              color: ` ${borderColor} `,
-              marginBottom: 2,
-              height: "100px",
-            }}
-          >
-            <Typography variant="h6" mb={1}>
-              <Link sx={{ decoration: "none" }} href={href}>
-                {value}
-              </Link>
-            </Typography>
-            <Typography variant="subtitle1">{label}</Typography>
-          </Box>
-        ))}
+      <Box display="flex" flexDirection="column" width="100%">
+        {selectedComponent}
       </Box>
     </Box>
-  );
-};
+  )
+}
 
-export default AttendanceOverview;
+export default AttendanceOverview

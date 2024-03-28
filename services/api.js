@@ -383,6 +383,46 @@ export const api = createApi({
         body: PaymentDatas,
       }),
     }),
+
+    // activity report
+    getDailyActivityReport: builder.query({
+      query: ({ company_id, date }) => ({
+        url: `employer/report/daily/${company_id}`,
+        params: { date },
+      }),
+    }),
+    getWeeklyActivityReport: builder.query({
+      query: ({ company_id, from_date, to_date }) => ({
+        url: `employer/report/weekly/${company_id}`,
+        params: { from_date, to_date },
+      }),
+    }),
+    getMonthlyActivityReport: builder.query({
+      query: ({ company_id, month, year }) => ({
+        url: `employer/report/monthly/${company_id}`,
+        params: { month, year },
+      }),
+    }),
+    // activity report deatil
+
+    getDetailDailyActivityReport: builder.query({
+      query: ({ company_id, date }) => ({
+        url: `/employer/report/daily-candidate-list/${company_id}`,
+        params: { date },
+      }),
+    }),
+    getDetailWeeklyActivityReport: builder.query({
+      query: ({ company_id, from_date, to_date }) => ({
+        url: `/employer/report/weekly-candidate-list/${company_id}`,
+        params: { from_date, to_date },
+      }),
+    }),
+    getDetailMonthlyActivityReport: builder.query({
+      query: ({ company_id, month, year }) => ({
+        url: `/employer/report/monthly-candidate-list/${company_id}`,
+        params: { month, year },
+      }),
+    }),
   }),
 })
 
@@ -436,4 +476,10 @@ export const {
   useGetAllPackagesQuery,
   useGetPaymentMethodQuery,
   useUpdatePaymentMethodMutation,
+  useGetDailyActivityReportQuery,
+  useGetWeeklyActivityReportQuery,
+  useGetMonthlyActivityReportQuery,
+  useGetDetailDailyActivityReportQuery,
+  useGetDetailWeeklyActivityReportQuery,
+  useGetDetailMonthlyActivityReportQuery,
 } = api

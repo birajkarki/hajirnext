@@ -14,7 +14,7 @@
 // import { useAuth } from "@/context/AuthContext";
 // import { Typography } from "@mui/material";
 // const HeaderMenu = () => {
-  
+
 //   const { data: getAllNotificationsQuery } = useGetAllNotificationsQuery();
 //   const [openDialog, setOpenDialog] = useState(false);
 // console.log("Notifications:", getAllNotificationsQuery);
@@ -147,7 +147,7 @@
 //         <Dialog open={openDialog} onClose={handleCloseNotification}>
 //           <DialogTitle>Notifications</DialogTitle>
 //           <DialogContent>
-            
+
 //             {notifications && notifications.notifications && notifications.notifications.length > 0 ? (
 //   notifications.notifications.map((notification, index) => (
 //     <div key={index}>
@@ -171,53 +171,3 @@
 // };
 
 // export default HeaderMenu;
-
-"use client"
-// HeaderMenu.jsx
-import React, { useState } from "react";
-import MenuItem from "@mui/material/MenuItem";
-import IconButton from "@mui/material/IconButton";
-import Badge from "@mui/material/Badge";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import NotificationDialog from "./Notif";
-import LanguageIcon from "@mui/icons-material/Language";
-const HeaderMenu = () => {
-  const [openDialog, setOpenDialog] = useState(false);
-
-  const handleNotificationClick = () => {
-    setOpenDialog(true);
-  };
-
-  const handleCloseNotification = () => {
-    setOpenDialog(false);
-  };
-
-  return (
-    <>
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <MenuItem>
-          <IconButton size="large" aria-label="show 17 new notifications" color="black">
-            <Badge badgeContent={"En"} color="info">
-              <LanguageIcon />
-            </Badge>
-          </IconButton>
-        </MenuItem>
-        <MenuItem>
-          <IconButton
-            size="large"
-            aria-label="show notifications"
-            color="black"
-            onClick={handleNotificationClick}
-          >
-            <Badge color="error">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-        </MenuItem>
-      </div>
-      <NotificationDialog open={openDialog} handleClose={handleCloseNotification} />
-    </>
-  );
-};
-
-export default HeaderMenu;

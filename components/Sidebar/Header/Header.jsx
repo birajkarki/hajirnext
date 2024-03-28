@@ -1,48 +1,67 @@
-import React from 'react'
+'use client'
+// Header.jsx// Header.jsx
+import React, { useState } from 'react'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
-import Typography from '@mui/material/Typography'
+import MenuItem from '@mui/material/MenuItem'
 import IconButton from '@mui/material/IconButton'
-import MenuIcon from '@mui/icons-material/Menu'
-import Search from './Search'
-import ProfileMenu from './ProfileMenu'
-import HeaderMenu from './HeaderMenu'
-import Image from 'next/image'
-import Link from 'next/link'
+import Badge from '@mui/material/Badge'
+import NotificationsIcon from '@mui/icons-material/Notifications'
+import NotificationDialog from './Notif'
+import LanguageIcon from '@mui/icons-material/Language'
 
-const Header = ({ onMenuIconClick }) => (
-  <AppBar
-    position="fixed"
-    elevation={1}
-    color="inherit"
-    // height="513px"
-    sx={{ backgroundColor: 'white' }}
-  >
-    <Toolbar>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          flexGrow: 1,
-          marginLeft: '240px',
-        }}
-      >
-        {' '}
-        <Link href="/dashboard">
-          <Image
-            src="/hajir-logo.png"
-            width={150}
-            height={50}
-            alt="Hajir Logo"
-          />
-        </Link>
-      </div>
+const Header = ({ isSplitScreenOpen }) => {
+  const [openDialog, setOpenDialog] = useState(false)
 
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <HeaderMenu />
-      </div>
-    </Toolbar>
-  </AppBar>
-)
+  const handleNotificationClick = () => {
+    setOpenDialog(true)
+  }
+
+  const handleCloseNotification = () => {
+    setOpenDialog(false)
+  }
+
+  return (
+    <>
+      <AppBar position="fixed" elevation={1} color="inherit">
+        <Toolbar
+          sx={{ justifyContent: isSplitScreenOpen ? 'center' : 'flex-end' }}
+        >
+          {' '}
+          {/* Adjust the justifyContent property */}
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <MenuItem>
+              <IconButton
+                size="large"
+                aria-label="show 17 new notifications"
+                color="black"
+              >
+                <Badge badgeContent={'En'} color="info">
+                  <LanguageIcon />
+                </Badge>
+              </IconButton>
+            </MenuItem>
+            <MenuItem>
+              <IconButton
+                size="large"
+                aria-label="show notifications"
+                color="black"
+                onClick={handleNotificationClick}
+              >
+                <Badge color="error">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+            </MenuItem>
+          </div>
+        </Toolbar>
+      </AppBar>
+      <NotificationDialog
+        open={openDialog}
+        handleClose={handleCloseNotification}
+      />
+    </>
+  )
+}
 
 export default Header
