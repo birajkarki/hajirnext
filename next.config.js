@@ -7,6 +7,7 @@ const nextConfig = {
       "source.unsplash.com",
       "https://via.placeholder.com",
       "veloxlabs.net",
+	"http://production.veloxlabs.net",
     ],
   },
 };
